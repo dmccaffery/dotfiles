@@ -1,0 +1,8 @@
+*
+!README.md
+!.gitignore
+
+!nvim/
+!nvim/**
+
+lazy-lock.json
