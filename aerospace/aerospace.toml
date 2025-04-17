@@ -54,8 +54,24 @@ if.app-id = 'com.apple.Safari'
 run = ['layout tiling', 'move-node-to-workspace B']
 
 [[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = ['layout tiling', 'move-node-to-workspace B']
+
+[[on-window-detected]]
 if.app-id = 'com.microsoft.Outlook'
 run = ['layout tiling', 'move-node-to-workspace C']
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Word'
+run = ['layout tiling', 'move-node-to-workspace P']
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Powerpoint'
+run = ['layout tiling', 'move-node-to-workspace P']
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Excel'
+run = ['layout tiling', 'move-node-to-workspace P']
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.teams2'
@@ -88,7 +104,7 @@ inner.horizontal = 10
 inner.vertical = 10
 outer.left = 10
 outer.bottom = 10
-outer.top = [{ monitor."main" = 45 }, { monitor."secondary" = 45 }, 10]
+outer.top = [{ monitor."main" = 50 }, 20]
 outer.right = 10
 
 # 'main' binding mode declaration
@@ -139,9 +155,6 @@ l = 'move right'
 u = 'workspace prev'
 i = 'workspace next'
 
-p = 'focus-monitor prev'
-n = 'focus-monitor next'
-
 # see: https://nikitabobko.github.io/AeroSpace/commands#resize
 minus = 'resize smart -50'
 equal = 'resize smart +50'
@@ -152,6 +165,7 @@ t = 'workspace T'
 b = 'workspace B'
 m = 'workspace M'
 c = 'workspace C'
+p = 'workspace P'
 
 # see: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 shift-1 = 'move-node-to-workspace 1 --focus-follows-window'
@@ -159,6 +173,7 @@ shift-t = 'move-node-to-workspace T --focus-follows-window'
 shift-b = 'move-node-to-workspace B --focus-follows-window'
 shift-m = 'move-node-to-workspace M --focus-follows-window'
 shift-c = 'move-node-to-workspace C --focus-follows-window'
+shift-p = 'move-node-to-workspace P --focus-follows-window'
 
 tab = 'workspace-back-and-forth'
 shift-tab = 'move-workspace-to-monitor --wrap-around next'
