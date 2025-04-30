@@ -62,6 +62,14 @@ if.app-id = 'com.microsoft.Outlook'
 run = ['layout tiling', 'move-node-to-workspace C']
 
 [[on-window-detected]]
+if.app-id = 'com.microsoft.teams2'
+run = ['layout tiling', 'move-node-to-workspace C']
+
+[[on-window-detected]]
+if.app-id = 'us.zoom.xos'
+run = ['layout tiling', 'move-node-to-workspace C']
+
+[[on-window-detected]]
 if.app-id = 'com.microsoft.Word'
 run = ['layout tiling', 'move-node-to-workspace P']
 
@@ -74,14 +82,12 @@ if.app-id = 'com.microsoft.Excel'
 run = ['layout tiling', 'move-node-to-workspace P']
 
 [[on-window-detected]]
-if.app-id = 'com.microsoft.teams2'
+if.app-id = 'com.apple.Music'
 run = ['layout tiling', 'move-node-to-workspace M']
-# run = 'layout floating'
 
 [[on-window-detected]]
-if.app-id = 'us.zoom.xos'
+if.app-id = 'com.apple.news'
 run = ['layout tiling', 'move-node-to-workspace M']
-# run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
@@ -104,7 +110,7 @@ inner.horizontal = 10
 inner.vertical = 10
 outer.left = 10
 outer.bottom = 10
-outer.top = [{ monitor."main" = 50 }, 20]
+outer.top = [{ monitor."main" = 20 }, 20]
 outer.right = 10
 
 # 'main' binding mode declaration
