@@ -36,7 +36,7 @@ brew "ripgrep"
 brew "stow"
 brew "switchaudio-osx"
 brew "trivy"
-brew "tmux"
+brew "tmux", args: ["HEAD"]
 brew "wget"
 brew "yq"
 brew "zinit"
