@@ -2,7 +2,7 @@ local settings = require("settings")
 
 -- Equivalent to the --bar domain
 SBar.bar({
-  display = "main",
+  display = "all",
   topmost = "window",
   height = settings.bar.height,
   color = settings.bar.background,
