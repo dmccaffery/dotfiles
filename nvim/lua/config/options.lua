@@ -1,34 +1,57 @@
 -- event: BeforeLazy
 -- defaults: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 
-local opt = vim.opt
+local g = vim.g
+local o = vim.opt
 local space = "·"
 
--- cursor
-opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
+-- optimise startup
+vim.loader.enable()
 
--- tabs / indentation
-opt.autoindent = true
+-- defaults
+g.lualine_info_extras = false
+g.lazyvim_cmp = "blink"
+g.lazyvim_picker = "snacks"
+
+-- formatting
+g.autoformat = true
+
+-- editor config
+g.editorconfig = true
+
+-- root dir detection
+g.root_spec = {
+  "lsp",
+  { ".git", "Makefile", "go.mod" },
+  "cwd",
+}
+
+-- ui
+g.gui_font_default_size = 10
+g.gui_font_fize = g.gui_font_default_size
+g.gui_font_face = "FiraCode Nerd Font"
+
+-- cursor
+o.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 
 -- line wrapping
-opt.whichwrap:append("<>[]hl")
+o.whichwrap:append("<>[]hl")
+o.autoindent = true
 
 -- backspace
-opt.backspace = "indent,eol,start"
+o.backspace = { "start", "eol", "indent" }
+o.breakindent = true
 
 -- split windows
-opt.splitright = true
-opt.splitbelow = true
+o.splitright = true
+o.splitbelow = true
 
 -- add a ruler
-opt.colorcolumn = "80,120"
-
--- disable lsp logs -- this will grow infinitely so only enable it if you need it
-vim.lsp.log_level = vim.lsp.log_levels.OFF
+o.colorcolumn = "80,120"
 
 -- show whitespace characters
-opt.list = true
-opt.listchars:append({
+o.list = true
+o.listchars:append({
   tab = ">—",
   multispace = space,
   extends = ">",
@@ -37,8 +60,21 @@ opt.listchars:append({
   trail = space,
 })
 
--- smooth scrolling
-opt.smoothscroll = true
+-- disable native bufferline
+o.showtabline = 0
 
--- disable lsp logging
+-- command options
+o.laststatus = 3
+
+-- spell checking
+o.spell = true
+
+-- backspace
+o.backspace = { "start", "eol", "indent" }
+o.breakindent = true
+
+-- smooth scrolling
+o.smoothscroll = true
+
+-- disable lsp logs -- this will grow infinitely so only enable it if you need it
 vim.lsp.log.set_level("off")
