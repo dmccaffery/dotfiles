@@ -1,5 +1,8 @@
 #! /usr/bin/env zsh
 
+# set xdg config home (so lazygit picks it up)
+export XDG_CONFIG_HOME="$HOME/.config"
+
 # ensure that brew is configured
 if command -v brew 1>/dev/null 2>&1; then
 	eval "$(brew shellenv)"
