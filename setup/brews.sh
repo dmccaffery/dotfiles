@@ -5,6 +5,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "${SCRIPT_DIR}/printing.sh"
 
+INSTALL_DIR="${INSTALL_DIR:-${SCRIPT_DIR}/..}"
+
 brew_cmd=$(command -v brew 2>&1)
 
 if [ -z "${brew_cmd:-}" ]; then

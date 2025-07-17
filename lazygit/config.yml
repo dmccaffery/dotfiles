@@ -22,6 +22,6 @@ gui:
 quitOnTopLevelReturn: true
 git:
   paging:
-    pager: delta --dark --paging=never --diff-so-fancy
+    pager: delta --dark --paging=never --diff-so-fancy --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
 os:
   editPreset: "nvim-remote"
