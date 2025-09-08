@@ -75,13 +75,6 @@ autocmd("BufEnter", {
   end,
 })
 
-autocmd("VimEnter", {
-  callback = function()
-    require("persistence").load()
-  end,
-  nested = true,
-})
-
 -- toggle between relative and absolute line numbers
 local numbertoggle = augroup("numbertoggle", { clear = true })
 autocmd({ "BufEnter", "FocusGained", "InsertLeave", "CmdlineLeave", "WinEnter" }, {
