@@ -71,3 +71,6 @@ o.smoothscroll = true
 
 -- disable lsp logs -- this will grow infinitely so only enable it if you need it
 vim.lsp.log.set_level("off")
+
+-- enable tofu ls
+vim.lsp.enable("tofu_ls")
