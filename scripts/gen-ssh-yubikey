@@ -1,5 +1,7 @@
 #! /usr/bin/env sh
 
+set -eu
+
 comment="${1:-}"
 
 if [ -n "${comment:-}" ]; then
