@@ -2,6 +2,10 @@
 
 # set xdg config home (so lazygit picks it up)
 export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_RUNTIME_DIR="$HOME/.local/runtime"
 
 # ensure that brew is configured
 if command -v brew 1>/dev/null 2>&1; then
@@ -98,7 +102,7 @@ if [ "${TERM_PROGRAM}" = "vscode" ]; then
 	export EDITOR='code --wait'
 fi
 
-SCRIPTS_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/scripts"
+SCRIPTS_DIR="${XDG_CONFIG_HOME}/scripts"
 
 export NVM_DIR="$HOME/.nvm"
 
