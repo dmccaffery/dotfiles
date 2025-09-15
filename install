@@ -3,12 +3,16 @@
 set -euo pipefail
 
 brew services stop borders 2>/dev/null || true
-brew services stop sketchybark 2>/dev/null || true
+brew services stop sketchybar 2>/dev/null || true
 
 INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SETUP_DIR="${INSTALL_DIR}/setup"
+SCRIPT_DIR="${INSTALL_DIR}/scripts"
 
 . "${SETUP_DIR}/printing.sh"
+
+warning "Requesting sudo to disable zscaler..."
+"${SCRIPT_DIR}/disable-zs"
 
 . "${SETUP_DIR}/prerequisites.sh"
 . "${SETUP_DIR}/defaults.sh"
@@ -17,5 +21,8 @@ SETUP_DIR="${INSTALL_DIR}/setup"
 . "${SETUP_DIR}/stow.sh"
 . "${SETUP_DIR}/shell.sh"
 
-# run neofetch
-neofetch
+warning "Requesting sudo to enable zscaler..."
+"${SCRIPT_DIR}/enable-zs"
+
+fastfetch
+printf '\n'
