@@ -33,7 +33,7 @@
 	gitHubAuthModes = oauth
 	gitlabAuthModes = browser
 	gitHubAccountFiltering = false
-	helper = 
+	helper =
 	helper = /usr/local/share/gcm-core/git-credential-manager
 
 [credential "https://github.com"]
@@ -42,31 +42,32 @@
 
 [alias]
 	append = town append
+	browse = town repo
 	compress = town compress
 	contribute = town contribute
+	delete = town delete
 	diff-parent = town diff-parent
+	done = "!f() { git checkout main; git sync; }; f"
 	hack = town hack
 	observe = town observe
 	park = town park
+	pr = town prepare
 	prepend = town prepend
 	propose = town propose
+	prototype = town hack --prototype
+	rename = town rename
 	repo = town repo
 	set-parent = town set-parent
 	sync = town sync --all
 	start = town hack
-	done = town sync --all
-	pr = town prepare
-	delete = town delete
-	rename = town rename
-	browse = town repo
 
 [git-town]
 	perennial-regex = ^v([[:digit:]]\\.?)+$
 	push-hook = false
 	ship-delete-tracking-branch = false
 	sync-feature-strategy = rebase
+	sync-tags = false
 	sync-upstream = true
-	sync-tags = true
 	share-new-branches = push
 
 [include]
