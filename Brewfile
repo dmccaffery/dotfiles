@@ -44,7 +44,6 @@ brew "ripgrep"
 brew "sqlfluff"
 brew "stow"
 brew "switchaudio-osx"
-brew "terraform"
 brew "trivy"
 brew "tmux", args: ["HEAD"]
 brew "wget"
