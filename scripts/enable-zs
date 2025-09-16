@@ -2,15 +2,24 @@
 
 set -eu
 
+default_color=$(tput sgr 0)
+yellow="$(tput setaf 3)"
+
+warning() {
+	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color"
+}
+
 LAUNCH_DAEMONS=/Library/LaunchDaemons/
 
 ZSCALER_SERVICE="${LAUNCH_DAEMONS}/com.zscaler.service.plist"
 ZSCALER_TUNNEL="${LAUNCH_DAEMONS}/com.zscaler.tunnel.plist"
 
 if [ -f "${ZSCALER_SERVICE}" ] && ! sudo launchctl list | grep 'com.zscaler.service' >/dev/null; then
+	warning "enabling zscaler service..."
 	sudo launchctl load "${ZSCALER_SERVICE}"
 fi
 
 if [ -f "${ZSCALER_TUNNEL}" ] && ! sudo launchctl list | grep 'com.zscaler.tunnel' >/dev/null; then
+	warning "enabling zscaler tunnel..."
 	sudo launchctl load "${ZSCALER_TUNNEL}"
 fi
