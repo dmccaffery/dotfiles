@@ -96,7 +96,7 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 eval "$(direnv hook zsh)"
 
-eval "$(oh-my-posh init zsh)"
+eval "$(oh-my-posh init zsh --config "${POSH_THEME}")"
 
 if [ "${TERM_PROGRAM}" = "vscode" ]; then
 	export EDITOR='code --wait'
