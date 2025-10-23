@@ -19,13 +19,6 @@ g.autoformat = true
 -- editor config
 g.editorconfig = true
 
--- root dir detection
-g.root_spec = {
-  "lsp",
-  { ".git", "Makefile", "go.mod" },
-  "cwd",
-}
-
 -- ui
 g.gui_font_default_size = 10
 g.gui_font_fize = g.gui_font_default_size
