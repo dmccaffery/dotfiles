@@ -1,7 +1,4 @@
-package.path = package.path
-    .. ";"
-    .. os.getenv("HOME")
-    .. "/.local/share/sketchybar_lua/?.lua"
+package.path = package.path .. ";" .. os.getenv("HOME") .. "/.local/share/sketchybar_lua/?.lua"
 
 -- Require the sketchybar module
 SBar = require("sketchybar")
