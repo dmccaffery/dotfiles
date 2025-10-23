@@ -93,7 +93,6 @@ alias ll='ls -l'
 alias sts='start-tmux-session'
 alias vim='nvim'
 alias vi='nvim'
-alias br='git-town repo'
 
 POSH_THEME="${HOME}/.config/oh-my-posh/flags.toml"
 
