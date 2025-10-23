@@ -4,50 +4,50 @@ INSTALL_DIR="$(cd -- "$(dirname -- "$0")" && pwd -P)"
 
 # ensure that brew is installed
 if ! command -v brew 1>/dev/null 2>&1 && [ ! -x "/opt/homebrew/bin/brew" ]; then
-    # install brew
-    /bin/bash -c "CI=true $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh) && brew config"
+	# install brew
+	/bin/bash -c "CI=true $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh) && brew config"
 fi
 
 brew_cmd=$(command -v brew 2>&1)
 
 if [ -z "${brew_cmd:-}" ]; then
-    brew_cmd=/opt/homebrew/bin/brew
+	brew_cmd=/opt/homebrew/bin/brew
 fi
 
 if [ ! -x "${brew_cmd:-}" ]; then
-    printf '\n\nBREW COULD NOT BE FOUND\n\n' >&2
-    exit 1
+	printf '\n\nBREW COULD NOT BE FOUND\n\n' >&2
+	exit 1
 fi
 
 eval "$(${brew_cmd} shellenv)"
 
 brew update
 brew install --overwrite \
-    awscli \
-    aws-sam-cli \
-    jandedobbeleer/oh-my-posh/oh-my-posh \
-    curl \
-    direnv \
-    fzf \
-    git \
-    git-town \
-    gh \
-    go \
-    lazygit \
-    nodenv \
-    nvim \
-    ripgrep \
-    stow \
-    tmux \
-    zinit \
-    zoxide \
-    zsh
+	awscli \
+	aws-sam-cli \
+	jandedobbeleer/oh-my-posh/oh-my-posh \
+	curl \
+	direnv \
+	fzf \
+	git \
+	git-town \
+	gh \
+	go \
+	lazygit \
+	nodenv \
+	nvim \
+	ripgrep \
+	stow \
+	tmux \
+	zinit \
+	zoxide \
+	zsh
 
 brew install --cask \
-    google-cloud-sdk \
-    git-credential-manager \
-    font-fira-code-nerd-font \
-    wezterm
+	google-cloud-sdk \
+	git-credential-manager \
+	font-fira-code-nerd-font \
+	wezterm
 
 brew tap homebrew/command-not-found
 
@@ -56,6 +56,6 @@ stow --dir="${INSTALL_DIR}" --target="${HOME}" .
 ZSH_BIN="$(command -v zsh)"
 
 if [ "${ZSH_BIN:-}" != "${SHELL:-}" ]; then
-    sudo sh -c "printf '%s\n' \"${ZSH_BIN}\" >> /etc/shells"
-    chsh -s "${ZSH_BIN}"
+	sudo sh -c "printf '%s\n' \"${ZSH_BIN}\" >> /etc/shells"
+	chsh -s "${ZSH_BIN}"
 fi

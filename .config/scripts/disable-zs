@@ -5,9 +5,9 @@ ZSCALER_SERVICE="${LAUNCH_DAEMONS}/com.zscaler.service.plist"
 ZSCALER_TUNNEL="${LAUNCH_DAEMONS}/com.zscaler.tunnel.plist"
 
 if [ -f "${ZSCALER_SERVICE}" ]; then
-    sudo launchctl unload "${ZSCALER_SERVICE}"
+	sudo launchctl unload "${ZSCALER_SERVICE}"
 fi
 
 if [ -f "${ZSCALER_TUNNEL}" ]; then
-    sudo launchctl unload "${ZSCALER_TUNNEL}"
+	sudo launchctl unload "${ZSCALER_TUNNEL}"
 fi

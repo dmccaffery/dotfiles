@@ -6,20 +6,19 @@ backup_path=".backup/${now}"
 mkdir -p "${backup_path}" 1>/dev/null 2>&1 || true
 
 __backup() {
-  name="${1:-}"
+	name="${1:-}"
 
-  if [ -z "${name:-}" ]; then
-    return 0
-  fi
+	if [ -z "${name:-}" ]; then
+		return 0
+	fi
 
-  path="${HOME}/${name}"
+	path="${HOME}/${name}"
 
-  if [ -f "${path:-}" ] && [ ! -h "${path:-}" ]; then
-    printf 'backing up %s to %s\n' "${name}" "${backup_path}"
-    mv "${path}" "${backup_path}"
-  fi
+	if [ -f "${path:-}" ] && [ ! -h "${path:-}" ]; then
+		printf 'backing up %s to %s\n' "${name}" "${backup_path}"
+		mv "${path}" "${backup_path}"
+	fi
 }
 
 __backup .config
 __backup .zshrc
-
