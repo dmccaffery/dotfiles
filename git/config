@@ -1,20 +1,8 @@
 [core]
 	autocrlf = input
 
-[commit]
-	gpgSign = true
-
-[tag]
-	gpgSign = true
-
-[gpg]
-	format = ssh
-
 [checkout]
 	defaultRemote = origin
-
-[push]
-	gpgSign = true
 
 [pull]
 	ff = only
@@ -81,9 +69,6 @@
 	sync-tags = false
 	sync-upstream = true
 	share-new-branches = push
-
-[user]
-	signingKey = ~/.ssh/id_default_sk
 
 [include]
 	path = ~/.config/private/git/config
