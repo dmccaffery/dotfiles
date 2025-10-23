@@ -1,4 +1,4 @@
-#! /usr/bin/env sh
+#! /usr/bin/env zsh
 
 # ensure that brew is configured
 if command -v brew 1>/dev/null 2>&1; then
