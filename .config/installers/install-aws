@@ -1,0 +1,5 @@
+#! /usr/bin/env sh
+
+install-with-brew \
+	awscli \
+	aws-sam-cli

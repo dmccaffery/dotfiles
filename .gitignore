@@ -1,0 +1,10 @@
+.*
+.config/iterm2/
+
+!.config/
+!.local/
+
+!.gitignore
+!.zshrc
+
+!.stow-local-ignore

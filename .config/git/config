@@ -1,0 +1,73 @@
+[core]
+	autocrlf = input
+
+[gpg]
+	format = ssh
+
+[checkout]
+	defaultRemote = origin
+
+[pull]
+	ff = only
+	rebase = true
+
+[rebase]
+	autoStash = true
+	autoSquash = true
+	interactive = true
+
+[init]
+	defaultBranch = main
+	templatedir = ~/.config/git/template
+
+[lfs]
+	locksverify = true
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[credential]
+	gitHubAuthModes = oauth
+	gitlabAuthModes = browser
+	gitHubAccountFiltering = false
+	helper =
+	helper = /usr/local/share/gcm-core/git-credential-manager
+
+[credential "https://github.com"]
+	provider = github
+	namespace = personal
+
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+
+[alias]
+	append = town append
+	compress = town compress
+	contribute = town contribute
+	diff-parent = town diff-parent
+	hack = town hack
+	kill = town kill
+	observe = town observe
+	park = town park
+	prepend = town prepend
+	propose = town propose
+	rename-branch = town rename-branch
+	repo = town repo
+	set-parent = town set-parent
+	ship = town ship
+	sync = town sync
+
+[git-town]
+	main-branch = main
+	perennial-branches = 
+	perennial-regex = ^v([[:digit:]]\\.?)+$
+	push-hook = false
+	push-new-branches = true
+	ship-delete-tracking-branch = false
+	sync-feature-strategy = rebase
+
+[include]
+	path = ~/.config/git/private/user.gitconfig

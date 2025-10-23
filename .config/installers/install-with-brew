@@ -1,0 +1,9 @@
+#! /usr/bin/env sh
+
+if ! command -v brew; then
+	printf '\nbrew must be available on your path\n' >&2
+	exit 1
+fi
+
+brew update
+brew install "$@"

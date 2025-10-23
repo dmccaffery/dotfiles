@@ -1,0 +1,10 @@
+#! /usr/bin/env sh
+
+install-with-brew \
+	kubernetes-cli \
+	kubectx
+
+if [ 'Darwin' = "$(uname)" ]; then
+	install-with-brew \
+		colima
+fi
