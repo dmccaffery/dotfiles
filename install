@@ -49,6 +49,7 @@ brew install --cask \
 
 brew tap homebrew/command-not-found
 
+mkdir -p "${HOME}/.config"
 stow --dir="${INSTALL_DIR}" --target="${HOME}" .
 
 ZSH_BIN="$(command -v zsh)"

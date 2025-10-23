@@ -69,4 +69,4 @@
 	sync-tags = true
 
 [include]
-	path = ~/.config/git/private/user.gitconfig
+	path = ~/.config/private/git/config

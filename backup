@@ -1,7 +1,7 @@
 #! /usr/bin/env sh
 
 now=$(date +'%Y-%M-%d-%H%M%S')
-backup_path=".backup/${now}"
+backup_path="backup/${now}"
 
 mkdir -p "${backup_path}" 1>/dev/null 2>&1 || true
 
