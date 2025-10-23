@@ -1,0 +1,28 @@
+#! /usr/bin/env sh
+
+set -eu
+curdir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+
+WALLPAPER_PATH="${WALLPAPER_PATH:-${HOME}/Documents/Wallpapers}"
+
+if [ ! -d "${WALLPAPER_PATH:-}" ]; then
+	printf 'WALLPAPER_PATH not set or does not exist. Please set WALLPAPER_PATH in .zshenv, .zprofile, or .zshrc\n\n'
+	exit 1
+fi
+
+MCX_WALLPAPER_DIR="${MCX_WALLPAPER_DIR:-/Library/SPG/Branding/Desktop}"
+
+if [ ! -d "${MCX_WALLPAPER_DIR:-}" ]; then
+	printf 'MCX_WALLPAPER_DIR not set or does not exist. Please set MCX_WALLPAPER_DIR in .zshenv, .zprofile, or .zshrc\n\n'
+	exit 1
+fi
+
+selected="${1:-}"
+selected=$(find "${WALLPAPER_PATH}" -type f -a \( -name '*.jpg' -o -name '*.jpeg' \) | fzf --delimiter / --with-nth -1 --query "${selected}" -select-1)
+
+if [ -z "${selected:-}" ]; then
+	exit 0
+fi
+
+sudo find "${MCX_WALLPAPER_DIR}" -type f -name '*.jpg' -mindepth 1 -maxdepth 1 -exec cp -vf "${selected}" {} \;
+killall WallpaperAgent
