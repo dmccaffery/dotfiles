@@ -39,3 +39,6 @@ opt.listchars:append({
 
 -- smooth scrolling
 opt.smoothscroll = true
+
+-- disable lsp logging
+vim.lsp.log.set_level("off")
