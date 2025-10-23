@@ -1,7 +1,5 @@
 k9s:
   liveViewAutoRefresh: false
-  gpuVendors: {}
-  screenDumpDir: /Users/deavon_mccaffery/.local/state/k9s/screen-dumps
   refreshRate: 2
   apiServerTimeout: 15s
   maxConnRetry: 5
@@ -9,11 +7,12 @@ k9s:
   noExitOnCtrlC: false
   portForwardAddress: localhost
   ui:
+    skin: cyberdream
     enableMouse: false
     headless: false
-    logoless: false
+    logoless: true
     crumbsless: false
-    splashless: false
+    splashless: true
     reactive: false
     noIcons: false
     defaultsToFullScreen: false
@@ -45,4 +44,3 @@ k9s:
     memory:
       critical: 90
       warn: 70
-  defaultView: ""
