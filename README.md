@@ -11,6 +11,7 @@
 - [catppuccin][catppuccin-url] theme (mocha) everywhere, including terminal prompt, tmux, and neovim
 - simple install script that sets up all dependencies
 - uses [stow][stow-url] to link farm the configuration
+- extensible git configuration
 
 ## Setup
 
@@ -35,6 +36,15 @@ Once this is done, simply run ./install:
 ./install
 ```
 
+## Customization
+
+The [`start-tmux-session`][sts-url] cmd assumes that you store git repositories in `${HOME}/Repos/` and uses this path
+to search for git repositories in order to create named sessions. To set a different path, update the .zshrc to export
+a variable called `REPOS_DIR` or modify the [`start-tmux-session`][sts-url] cmd itself to use a different default.
+
+[Extending the git configuration][git-config-include] can be achieved by adding a `~/.config/git/private/user.gitconfig`.
+A private submodule can be used for this purpose as well.
+
 ## Future Improvements
 
 - add support for linux environments
@@ -49,3 +59,5 @@ Once this is done, simply run ./install:
 [oh-my-posh-url]: https://ohmyposh.dev
 [catppuccin-url]: https://catppuccin.com
 [stow-url]: https://www.gnu.org/software/stow/
+[git-config-include]: https://github.com/dmccaffery/dotfiles/blob/main/.config/git/config#L73
+[sts-url]: https://github.com/dmccaffery/dotfiles/blob/main/.config/scripts/start-tmux-session#L3

@@ -13,7 +13,7 @@ _darcs
 \.gitignore
 \.gitmodules
 
-.+~ 
+.+~
 \#.*\#
 
 ^/README.*
@@ -21,3 +21,4 @@ _darcs
 ^/COPYING
 
 install
+.markdownlint.yaml
