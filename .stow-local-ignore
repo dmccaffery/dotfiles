@@ -21,4 +21,6 @@ _darcs
 ^/COPYING
 
 install
+backup
+.backup/
 .markdownlint.yaml

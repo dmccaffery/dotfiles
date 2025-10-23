@@ -1,0 +1,19 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+char_set = utf-8
+insert_final_newline = true
+
+[*.{js,json}]
+indent_size = 2
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[*.{hcl,tf}]
+indent_size = 2
+
+[{Makefile,config,*.config}]
+indent_style = tab

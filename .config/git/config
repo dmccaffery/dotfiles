@@ -40,9 +40,6 @@
 	provider = github
 	namespace = personal
 
-[credential "https://dev.azure.com"]
-	useHttpPath = true
-
 [alias]
 	append = town append
 	compress = town compress

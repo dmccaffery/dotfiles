@@ -9,3 +9,4 @@
 
 !.stow-local-ignore
 !.markdownlint.yaml
+!.editorconfig
