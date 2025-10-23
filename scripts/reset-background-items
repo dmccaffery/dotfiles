@@ -1,0 +1,22 @@
+#! /usr/bin/env sh
+
+set -eu
+
+default_color=$(tput sgr 0)
+yellow="$(tput setaf 3)"
+
+warning() {
+	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color"
+}
+
+warning "This will reset the current state of ALL remaining background items"
+warning "press any key to continue..."
+read -n 1 -s -r continue
+
+sudo sfltool resetbtm
+
+warning "A reboot is required to complete this task..."
+warning "press any key to reboot now..."
+read -n 1 -s -r continue
+
+sudo reboot
