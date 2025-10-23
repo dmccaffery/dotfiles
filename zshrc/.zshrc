@@ -122,7 +122,7 @@ if [ -z "${TMUX:-}" ]; then
 fi
 
 # detect gcloud path
-if [ command -v 'gcloud' 2>/dev/null ]; then
+if command -v 'gcloud' 1>/dev/null 2>&1; then
 	GOOGLE_BIN_PATH=$(dirname $(readlink -f $(command -v 'gcloud')))
 	export PATH="${GOOGLE_BIN_PATH}:${PATH}"
 fi
