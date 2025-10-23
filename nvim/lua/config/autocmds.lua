@@ -15,3 +15,10 @@ autocmd("BufWritePre", {
   pattern = { "*" },
   command = [[%s/\s\+$//e]],
 })
+
+autocmd("VimEnter", {
+  callback = function()
+    require("persistence").load()
+  end,
+  nested = true,
+})

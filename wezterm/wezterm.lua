@@ -1,10 +1,10 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
-wezterm.on("gui-startup", function(cmd)
-    local _, _, window = wezterm.mux.spawn_window(cmd or {})
-    window:gui_window():toggle_fullscreen()
-end)
+-- wezterm.on("gui-startup", function(cmd)
+--     local _, _, window = wezterm.mux.spawn_window(cmd or {})
+--     window:gui_window():toggle_fullscreen()
+-- end)
 
 config = {
     -- theme
@@ -13,7 +13,7 @@ config = {
         "FiraCode Nerd Font",
         { weight = 450, stretch = "Normal", style = "Normal" }
     ),
-    font_size = 15,
+    font_size = 14,
 
     -- cursor
     default_cursor_style = "SteadyBlock",
@@ -24,19 +24,19 @@ config = {
     -- window
     enable_tab_bar = false,
     window_decorations = "RESIZE",
-    window_background_opacity = 0.90,
+    window_background_opacity = 1.0,
     window_padding = {
         left = 0,
         right = 0,
-        top = 15,
+        top = 30,
         bottom = 0,
     },
-    macos_window_background_blur = 10,
+    macos_window_background_blur = 0,
     native_macos_fullscreen_mode = false,
 
     -- term
-    term = "xterm-kitty",
-    enable_kitty_graphics = true,
+    -- term = "xterm-kitty",
+    -- enable_kitty_graphics = true,
 
     -- performance
     scrollback_lines = 2500,

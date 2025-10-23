@@ -88,7 +88,6 @@ export POSH_THEME="${HOME}/.config/oh-my-posh/flags.toml"
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 eval "$(direnv hook zsh)"
-eval "$(nodenv init - zsh)"
 
 eval "$(oh-my-posh init zsh)"
 
@@ -98,6 +97,23 @@ fi
 
 SCRIPTS_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/scripts"
 
+export NVM_DIR="$HOME/.nvm"
+
+nvm_prefix="${HOMEBREW_PREFIX}/opt/nvm"
+
+if [ -s "${nvm_prefix}/nvm.sh" ]; then
+	source "${nvm_prefix}/nvm.sh"
+fi
+
+if [ -s "${nvm_prefix}/etc/bash_completion.d/nvm" ]; then
+	source "${nvm_prefix}/etc/bash_completion.d/nvm"
+fi
+
 if [ -d "${SCRIPTS_DIR:-}" ]; then
 	export PATH="${PATH}:${SCRIPTS_DIR}"
+fi
+
+# start tmux if not already running
+if [ -z "${TMUX:-}" ]; then
+	tmux start-server 1>/dev/null 2>&1
 fi

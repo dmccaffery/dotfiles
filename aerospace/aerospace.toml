@@ -1,0 +1,146 @@
+# start at login
+start-at-login = true
+
+# normalizations. see: https://nikitabobko.github.io/AeroSpace/guide#normalization
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# see: https://nikitabobko.github.io/AeroSpace/guide#layouts
+accordion-padding = 30
+
+# possible values: tiles|accordion
+default-root-container-layout = 'tiles'
+
+# possible values: horizontal|vertical|auto
+# 'auto' means: wide monitor (anything wider than high) gets horizontal orientation,
+#               tall monitor (anything higher than wide) gets vertical orientation
+default-root-container-orientation = 'auto'
+
+# mouse follows focus when focused monitor changes
+# see: https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
+# see: https://nikitabobko.github.io/AeroSpace/commands#move-mouse
+on-focus-changed = ['move-mouse window-lazy-center']
+
+# see: https://nikitabobko.github.io/AeroSpace/goodness#disable-hide-app
+automatically-unhide-macos-hidden-apps = false
+
+after-startup-command = [
+    'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0',
+]
+
+# custom app locations
+# [[on-window-detected]]
+# if.app-id = 'com.apple.systempreferences'
+# if.app-name-regex-substring = 'settings'
+# if.window-title-regex-substring = 'substring'
+# if.workspace = 'workspace-name'
+# if.during-aerospace-startup = true
+# check-further-callbacks = true
+# run = ['layout floating', 'move-node-to-workspace S']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.teams2'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'us.zoom.xos'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.github.wez.wezterm'
+run = 'move-node-to-workspace T'
+
+# possible values: (qwerty|dvorak)
+# see: https://nikitabobko.github.io/AeroSpace/guide#key-mapping
+[key-mapping]
+preset = 'qwerty'
+
+# gaps between windows (inner-*) and between monitor edges (outer-*).
+# possible values:
+# - constant:     gaps.outer.top = 8
+# - per monitor:  gaps.outer.top = [{ monitor.main = 16 }, { monitor."some-pattern" = 32 }, 24]
+#                 In this example, 24 is a default value when there is no match.
+#                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
+#                 see: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
+[gaps]
+inner.horizontal = 10
+inner.vertical = 10
+outer.left = 20
+outer.bottom = 20
+outer.top = 10
+outer.right = 20
+
+# 'main' binding mode declaration
+# See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
+# 'main' binding mode must be always presented
+# Fallback value (if you omit the key): mode.main.binding = {}
+[mode.main.binding]
+ctrl-alt-cmd-space = ['mode alt']
+ctrl-alt-cmd-backtick = ['mode service']
+
+[mode.alt.binding]
+space = ['mode main']
+esc = ['mode main']
+backtick = ['reload-config', 'mode main']
+
+ctrl-shift-f = 'fullscreen'
+
+ctrl-shift-left = 'join-with left'
+ctrl-shift-down = 'join-with down'
+ctrl-shift-up = 'join-with up'
+ctrl-shift-right = 'join-with right'
+
+# see: https://nikitabobko.github.io/AeroSpace/commands#layout
+slash = 'layout horizontal vertical'
+quote = 'layout tiles accordion'
+
+# see: https://nikitabobko.github.io/AeroSpace/commands#focus
+h = 'move left'
+j = 'move down'
+k = 'move up'
+l = 'move right'
+
+u = 'workspace prev'
+i = 'workspace next'
+
+p = 'focus-monitor prev'
+n = 'focus-monitor next'
+
+# see: https://nikitabobko.github.io/AeroSpace/commands#resize
+minus = 'resize smart -50'
+equal = 'resize smart +50'
+
+# see: https://nikitabobko.github.io/AeroSpace/commands#workspace
+1 = 'workspace 1'
+2 = 'workspace 2'
+3 = 'workspace 3'
+4 = 'workspace 4'
+
+t = 'workspace T'
+b = 'workspace B'
+m = 'workspace M'
+
+# see: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
+shift-1 = 'move-node-to-workspace 1 --focus-follows-window'
+shift-2 = 'move-node-to-workspace 2 --focus-follows-window'
+shift-3 = 'move-node-to-workspace 3 --focus-follows-window'
+shift-4 = 'move-node-to-workspace 4 --focus-follows-window'
+shift-t = 'move-node-to-workspace T --focus-follows-window'
+shift-b = 'move-node-to-workspace B --focus-follows-window'
+shift-m = 'move-node-to-workspace M --focus-follows-window'
+
+tab = 'workspace-back-and-forth'
+shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+# 'service' binding mode declaration
+# see: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
+[mode.service.binding]
+
+esc = ['reload-config', 'mode main']
+ctrl-r = ['flatten-workspace-tree', 'mode main']           # reset layout
+ctrl-f = ['layout floating tiling', 'mode main']           # toggle layout
+backspace = ['close-all-windows-but-current', 'mode main']

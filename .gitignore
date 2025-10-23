@@ -8,7 +8,7 @@ backup/
 !.gitattributes
 
 !.zshrc
-
+!.stowrc
 !.stow-local-ignore
 !.markdownlint.yaml
 !.editorconfig

@@ -22,10 +22,14 @@ fi
 
 eval "$(${brew_cmd} shellenv)"
 
-brew bundle --force cleanup
+brew bundle install --force --cleanup --file="${INSTALL_DIR}/Brewfile"
+
+# always reinstall stow because it dynamically links to the version of perl
+# included in the os, which can change
+brew reinstall stow 1>/dev/null 2>&1
 
 mkdir -p "${HOME}/.config"
-stow --dir="${INSTALL_DIR}" --target="${HOME}" .
+stow --dir="${INSTALL_DIR}" .
 
 ZSH_BIN="$(command -v zsh)"
 
@@ -34,6 +38,8 @@ if [ "${ZSH_BIN:-}" != "${SHELL:-}" ]; then
 	chsh -s "${ZSH_BIN}"
 fi
 
+ln -Ffs "${HOME}/.config/.zshrc" "${HOME}/.zshrc"
+
 # setup wezterm terminfo
 (
 	terminfo=$(mktemp) &&
@@ -41,3 +47,9 @@ fi
 		tic -x -o ~/.terminfo "${terminfo}" &&
 		rm "${terminfo}"
 ) 1>/dev/null 2>&1
+
+defaults write -g NSWindowShouldDragOnGesture -bool true
+defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
+
+# run neofetch
+neofetch

@@ -1,0 +1,208 @@
+version = 3
+final_space = true
+
+[palettes]
+template = 'catppuccin-mocha'
+
+[palettes.list]
+[palettes.list.catppuccin-latte]
+base = '#eff1f5'
+blue = '#1e66f5'
+crust = '#dce0e8'
+flamingo = '#dd7878'
+green = '#40a02b'
+lavender = '#7287fd'
+mantle = '#e6e9ef'
+maroon = '#e64553'
+mauve = '#8839ef'
+overlay_0 = '#9ca0b0'
+overlay_1 = '#8c8fa1'
+overlay_2 = '#7c7f93'
+peach = '#fe640b'
+pink = '#ea76cb'
+red = '#d20f39'
+rosewater = '#dc8a78'
+sapphire = '#209fb5'
+sky = '#04a5e5'
+subtest_0 = '#6c6f85'
+subtext_1 = '#5c5f77'
+surface_0 = '#ccd0da'
+surface_1 = '#bcc0cc'
+surface_2 = '#acb0be'
+teal = '#179299'
+text = '#4c4f69'
+yellow = '#df8e1d'
+
+[palettes.list.catppuccin-mocha]
+base = '#1e1e2e'
+blue = '#89b4fa'
+crust = '#11111b'
+flamingo = '#f2cdcd'
+green = '#a6e3a1'
+lavender = '#b4befe'
+mantle = '#181825'
+maroon = '#eba0ac'
+mauve = '#cba6f7'
+overlay_0 = '#6c7086'
+overlay_1 = '#7f849c'
+overlay_2 = '#9399b2'
+peach = '#fab387'
+pink = '#f5c2e7'
+red = '#f38ba8'
+rosewater = '#f5e0dc'
+sapphire = '#74c7ec'
+sky = '#89dceb'
+subtest_0 = '#a6adc8'
+subtext_1 = '#bac2de'
+surface_0 = '#313244'
+surface_1 = '#45475a'
+surface_2 = '#585b70'
+teal = '#94e2d5'
+text = '#cdd6f4'
+yellow = '#f9e2af'
+
+[secondary_prompt]
+template = '❯❯ '
+foreground = 'p:red'
+background = 'transparent'
+
+[transient_prompt]
+template = '❯ '
+background = 'transparent'
+foreground_templates = [
+    '{{if gt .Code 0}}p:red{{end}}',
+    '{{if eq .Code 0}}p:subtext_1{{end}}',
+]
+
+[[blocks]]
+type = 'prompt'
+alignment = 'left'
+
+[[blocks.segments]]
+leading_diamond = '╭─'
+trailing_diamond = ''
+template = '{{ .Icon }} '
+foreground = 'p:crust'
+background = 'p:blue'
+type = 'os'
+style = 'diamond'
+
+[blocks.segments.properties]
+cache_duration = 'none'
+
+# [[blocks.segments]]
+#   template = ' {{ .UserName }} '
+#   trailing_diamond = ''
+#   foreground = 'p:crust'
+#   background = 'p:blue'
+#   type = 'session'
+#   style = 'diamond'
+#
+#   [blocks.segments.properties]
+#     cache_duration = 'none'
+
+[[blocks.segments]]
+leading_diamond = '<p:crust></>'
+trailing_diamond = ''
+template = '  {{ .Path }} '
+foreground = 'p:crust'
+background = 'p:pink'
+type = 'path'
+style = 'diamond'
+
+[blocks.segments.properties]
+cache_duration = 'none'
+folder_icon = '  '
+home_icon = ''
+style = 'folder'
+
+[[blocks.segments]]
+leading_diamond = '<p:crust></>'
+trailing_diamond = ''
+template = ' {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }} '
+foreground = 'p:crust'
+background = 'p:green'
+type = 'git'
+style = 'diamond'
+
+[blocks.segments.properties]
+branch_icon = ' '
+cache_duration = 'none'
+cherry_pick_icon = ' '
+commit_icon = ' '
+fetch_status = true
+fetch_upstream_icon = false
+merge_icon = ' '
+no_commits_icon = ' '
+rebase_icon = ' '
+revert_icon = ' '
+tag_icon = ' '
+
+[[blocks]]
+type = 'prompt'
+alignment = 'right'
+
+[[blocks.segments]]
+leading_diamond = ''
+template = ' {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} '
+foreground = 'p:crust'
+background = '#7FD5EA'
+type = 'go'
+style = 'diamond'
+
+[blocks.segments.properties]
+cache_duration = 'none'
+extensions = ['go.mod', 'go.work']
+
+[[blocks.segments]]
+leading_diamond = ''
+foreground = 'p:crust'
+background = '#66CC33'
+type = 'node'
+style = 'diamond'
+
+[blocks.segments.properties]
+cache_duration = 'none'
+extensions = ['package.json']
+fetch_package_manager = true
+npm_icon = ''
+yarn_icon = ''
+
+[[blocks.segments]]
+leading_diamond = ''
+trailing_diamond = ''
+template = '  {{.Project}} '
+foreground = 'p:crust'
+background = '#4285F4'
+type = 'gcp'
+style = 'diamond'
+
+[blocks.segments.properties]
+cache_duration = 'none'
+
+[[blocks]]
+type = 'prompt'
+alignment = 'left'
+newline = true
+
+[[blocks.segments]]
+template = '╰─'
+foreground = 'p:blue'
+background = 'transparent'
+type = 'text'
+style = 'plain'
+
+[blocks.segments.properties]
+cache_duration = 'none'
+
+[[blocks.segments]]
+template = ' '
+foreground = 'p:subtext_1'
+background = 'transparent'
+type = 'status'
+style = 'plain'
+foreground_templates = ['{{ if gt .Code 0 }}p:red{{ end }}']
+
+[blocks.segments.properties]
+always_enabled = true
+cache_duration = 'none'
