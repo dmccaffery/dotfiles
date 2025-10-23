@@ -14,9 +14,14 @@ SETUP_DIR="${INSTALL_DIR}/setup"
 . "${SETUP_DIR}/shell.sh"
 . "${SETUP_DIR}/bar.sh"
 
+# start sketchybar and border services
+brew services start sketchybar
+brew services start borders
+
+# open aerospace
 open -a "Aerospace"
 
-info "reloading sketchybar"
+# restart sketchybar in case things have changed between updates
 sketchybar --reload
 
 # run neofetch
