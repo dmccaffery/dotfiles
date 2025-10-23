@@ -11,6 +11,9 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_RUNTIME_DIR="$HOME/.local/runtime"
 
+# set default editor
+export EDITOR=nvim
+
 # ensure that brew is configured
 if command -v brew 1>/dev/null 2>&1; then
 	eval "$(brew shellenv)"
@@ -92,8 +95,7 @@ alias vim='nvim'
 alias vi='nvim'
 alias br='git-town repo'
 
-export EDITOR=nvim
-export POSH_THEME="${HOME}/.config/oh-my-posh/flags.toml"
+POSH_THEME="${HOME}/.config/oh-my-posh/flags.toml"
 
 # enable shell integrations
 eval "$(fzf --zsh)"
