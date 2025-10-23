@@ -22,37 +22,7 @@ fi
 
 eval "$(${brew_cmd} shellenv)"
 
-brew update
-brew install --overwrite \
-	jandedobbeleer/oh-my-posh/oh-my-posh \
-	bat \
-	catimg \
-	chafa \
-	curl \
-	direnv \
-	fzf \
-	git \
-	git-lfs \
-	git-town \
-	gh \
-	go \
-	lazygit \
-	node \
-	nodenv \
-	nvim \
-	ripgrep \
-	stow \
-	tmux \
-	zinit \
-	zoxide \
-	zsh
-
-brew install --cask \
-	git-credential-manager \
-	font-fira-code-nerd-font \
-	wezterm
-
-brew tap homebrew/command-not-found
+brew bundle --force cleanup
 
 mkdir -p "${HOME}/.config"
 stow --dir="${INSTALL_DIR}" --target="${HOME}" .
