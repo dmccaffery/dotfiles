@@ -29,7 +29,7 @@ defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool false
 defaults write com.apple.finder ShowMountedServersOnDesktop -bool false
 
 # hide icons on desktop
-defaults write com.apple.finder CreateDesktop -bool false
+defaults write com.apple.finder CreateDesktop -bool true
 
 # avoid creating .DS_Store files on network volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
@@ -46,10 +46,10 @@ defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 # save screenshots in png format (other options: BMP, GIF, JPG, PDF, TIFF)
 defaults write com.apple.screencapture type -string "png"
 
-# set weekly software update checks
-defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 7
+# set daily software update checks
+defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
 
-# spaces span all displays
+# spaces do not span all displays
 defaults write com.apple.spaces "spans-displays" -bool false
 
 # do not rearrange spaces automatically
