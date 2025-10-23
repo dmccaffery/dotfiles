@@ -1,7 +1,10 @@
 --target=~/.config
 --ignore=.stowrc
---ignore=DS_Store
---ignore=Brewfile*
+--ignore=.gitattributes
+--ignore=.gitignore
+--ignore=.markdownlint.yaml
+--ignore=Brewfile
+--ignore=README.md
 --ignore=install
 --ignore=backup
---ignore=.*
+--ignore=LICENSE

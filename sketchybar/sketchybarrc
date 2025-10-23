@@ -1,62 +1,83 @@
-#!/usr/bin/env sh
+# This is a demo config to showcase some of the most important commands.
+# It is meant to be changed and configured, as it is intentionally kept sparse.
+# For a (much) more advanced configuration example see my dotfiles:
+# https://github.com/FelixKratz/dotfiles
 
-source "$HOME/.config/sketchybar/colors.sh" # Loads all defined colors
-source "$HOME/.config/sketchybar/icons.sh"  # Loads all defined icons
+source "${CONFIG_DIR}/colors.sh"
+source "${CONFIG_DIR}/icons.sh"
 
-ITEM_DIR="$HOME/.config/sketchybar/items"     # Directory where the items are configured
-PLUGIN_DIR="$HOME/.config/sketchybar/plugins" # Directory where all the plugin scripts are stored
+ITEM_DIR="${CONFIG_DIR}/items"
+PLUGIN_DIR="${CONFIG_DIR}/plugins"
 
-FONT="SF Pro"                                                 # Needs to have Regular, Bold, Semibold, Heavy and Black variants
-SPACE_CLICK_SCRIPT="yabai -m space --focus \$SID 2>/dev/null" # The script that is run for clicking on space components
+FONT="FiraCode Nerd Font"
 
-PADDINGS=3 # All paddings use this value (icon, label, background)
+PADDING=3
 
 POPUP_BORDER_WIDTH=2
 POPUP_CORNER_RADIUS=11
 
 SHADOW=on
 
-# Setting up the general bar appearance and default values
-sketchybar --bar height=50 \
-    color=$BAR_COLOR \
-    shadow=$SHADOW \
-    position=right \
-    sticky=on \
-    padding_right=18 \
-    padding_left=18 \
-    corner_radius=9 \
-    y_offset=10 \
-    margin=10 \
-    blur_radius=20 \
-    \
-    --default updates=when_shown \
-    icon.font="$FONT:Bold:14.0" \
-    icon.color=$ICON_COLOR \
-    icon.padding_left=$PADDINGS \
-    icon.padding_right=$PADDINGS \
-    label.font="$FONT:Semibold:13.0" \
-    label.color=$LABEL_COLOR \
-    label.padding_left=$PADDINGS \
-    label.padding_right=$PADDINGS \
-    background.padding_right=$PADDINGS \
-    background.padding_left=$PADDINGS \
-    popup.background.border_width=2 \
-    popup.background.corner_radius=11 \
-    popup.background.border_color=$POPUP_BORDER_COLOR \
-    popup.background.color=$POPUP_BACKGROUND_COLOR \
-    popup.background.shadow.drawing=$SHADOW
+bar=(
+	height=40
+	color="${BAR_COLOR}"
+	shadow="${SHADOW}"
+	position=top
+	sticky=on
+	font_smoothing=on
+	padding_right=18
+	padding_left=18
+	corner_radius=0
+	y_offset=0
+	margin=0
+	blur_radius=20
+)
 
-# Left
-source "$ITEM_DIR/apple.sh"
-source "$ITEM_DIR/spaces.sh"
+default=(
+	updates=when_shown
+	padding_left="${PADDING}"
+	padding_right="${PADDING}"
+	icon.color="${ICON_COLOR}"
+	icon.font="${FONT}:Semibold:14.0"
+	icon.padding_left="${PADDING}"
+	icon.padding_right="${PADDING}"
+	label.color="${LABEL_COLOR}"
+	label.font="${FONT}:Medium:13.0"
+	label.padding_left="${PADDING}"
+	label.padding_right="${PADDING}"
+	background.padding_right="${PADDING}"
+	background.padding_left="${PADDING}"
+	popup.background.border_width=2
+	popup.background.corner_radius=11
+	popup.background.border_color="${POPUP_BORDER_COLOR}"
+	popup.background.color="${POPUP_BACKGROUND_COLOR}"
+	popup.background.shadow.drawing="${SHADOW}"
+)
 
-# Center
-# source "$ITEM_DIR/spotify.sh"
+sketchybar --bar "${bar[@]}" --default "${default[@]}"
 
-# Right
-source "$ITEM_DIR/calendar.sh"
+# left
+source "${ITEM_DIR}/apple.sh"
+source "${ITEM_DIR}/spaces.sh"
 
-############## FINALIZING THE SETUP ##############
+# right
+source "${ITEM_DIR}/battery.sh"
+
+# sketchybar --add item chevron left \
+# 	--set chevron icon= label.drawing=off \
+# 	--add item front_app left \
+# 	--set front_app icon.drawing=off script="${PLUGIN_DIR}/front_app.sh" \
+# 	--subscribe front_app front_app_switched
+#
+# sketchybar --add item clock right \
+# 	--set clock update_freq=10 icon= script="${PLUGIN_DIR}/clock.sh" \
+# 	--add item volume right \
+# 	--set volume script="${PLUGIN_DIR}/volume.sh" \
+# 	--subscribe volume volume_change \
+# 	--add item battery right \
+# 	--set battery update_freq=120 script="${PLUGIN_DIR}/battery.sh" \
+# 	--subscribe battery system_woke power_source_change
+
+##### Force all scripts to run the first time (never do this in a script) #####
+sketchybar --hotload on
 sketchybar --update
-
-echo "sketchybar configuation loaded.."

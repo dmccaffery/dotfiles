@@ -28,6 +28,12 @@ after-startup-command = [
     'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0',
 ]
 
+exec-on-workspace-change = [
+    '/bin/bash',
+    '-c',
+    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+]
+
 # custom app locations
 # [[on-window-detected]]
 # if.app-id = 'com.apple.systempreferences'
@@ -43,6 +49,10 @@ if.app-id = 'com.apple.finder'
 run = 'layout floating'
 
 [[on-window-detected]]
+if.app-id = 'com.apple.Safari'
+run = 'move-node-to-workspace B'
+
+[[on-window-detected]]
 if.app-id = 'com.microsoft.teams2'
 run = 'layout floating'
 
@@ -51,8 +61,8 @@ if.app-id = 'us.zoom.xos'
 run = 'layout floating'
 
 [[on-window-detected]]
-if.app-id = 'com.github.wez.wezterm'
-run = 'move-node-to-workspace T'
+if.app-id = 'com.mitchellh.ghostty'
+run = ['layout tiling', 'move-node-to-workspace T']
 
 # possible values: (qwerty|dvorak)
 # see: https://nikitabobko.github.io/AeroSpace/guide#key-mapping
@@ -71,7 +81,7 @@ inner.horizontal = 10
 inner.vertical = 10
 outer.left = 20
 outer.bottom = 20
-outer.top = 10
+outer.top = 20
 outer.right = 20
 
 # 'main' binding mode declaration
@@ -89,10 +99,10 @@ backtick = ['reload-config', 'mode main']
 
 ctrl-shift-f = 'fullscreen'
 
-ctrl-shift-left = 'join-with left'
-ctrl-shift-down = 'join-with down'
-ctrl-shift-up = 'join-with up'
-ctrl-shift-right = 'join-with right'
+left = 'join-with left'
+down = 'join-with down'
+up = 'join-with up'
+right = 'join-with right'
 
 # see: https://nikitabobko.github.io/AeroSpace/commands#layout
 slash = 'layout horizontal vertical'
@@ -119,10 +129,8 @@ equal = 'resize smart +50'
 2 = 'workspace 2'
 3 = 'workspace 3'
 4 = 'workspace 4'
-
 t = 'workspace T'
 b = 'workspace B'
-m = 'workspace M'
 
 # see: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 shift-1 = 'move-node-to-workspace 1 --focus-follows-window'
@@ -131,7 +139,6 @@ shift-3 = 'move-node-to-workspace 3 --focus-follows-window'
 shift-4 = 'move-node-to-workspace 4 --focus-follows-window'
 shift-t = 'move-node-to-workspace T --focus-follows-window'
 shift-b = 'move-node-to-workspace B --focus-follows-window'
-shift-m = 'move-node-to-workspace M --focus-follows-window'
 
 tab = 'workspace-back-and-forth'
 shift-tab = 'move-workspace-to-monitor --wrap-around next'

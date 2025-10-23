@@ -1,9 +1,11 @@
 -- event: BeforeLazy
 -- defaults: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 
-local g = vim.g
 local opt = vim.opt
 local space = "·"
+
+-- cursor
+opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 
 -- tabs / indentation
 opt.autoindent = true
@@ -27,11 +29,12 @@ vim.lsp.log_level = vim.lsp.log_levels.OFF
 -- show whitespace characters
 opt.list = true
 opt.listchars:append({
-  tab = ">-",
+  tab = ">—",
   multispace = space,
+  extends = ">",
+  precedes = "<",
   lead = space,
   trail = space,
-  nbsp = space,
 })
 
 -- smooth scrolling

@@ -1,0 +1,30 @@
+# platform specific options
+macos-option-as-alt = true
+macos-titlebar-style = hidden
+
+# application
+quit-after-last-window-closed = true
+quit-after-last-window-closed-delay = 5s
+auto-update = download
+
+# theme
+theme = catppuccin-mocha
+font-family = "FiraCode Nerd Font"
+font-size = 15
+
+# mouse
+mouse-hide-while-typing = true
+mouse-shift-capture = true
+focus-follows-mouse = true
+
+# cursor
+cursor-click-to-move = true
+
+# window
+window-padding-x = 5,5
+window-padding-y = 5,5
+window-decoration = true
+window-colorspace = display-p3
+
+# splits
+unfocused-split-opacity = 0.50

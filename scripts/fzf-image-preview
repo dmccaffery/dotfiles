@@ -29,12 +29,7 @@ if [[ $(file --mime "$file") =~ binary ]]; then
 		passthrough="${TMUX:+tmux}"
 		passthrough="${passthrough:-auto}"
 
-		# bug: tmux and/or fzf does some weird crap inside of wezterm with passthrough
-		if [ -z "${TMUX:-}" ]; then
-			chafa --passthrough="${passthrough}" --size="${columns}" "${file}"
-		else
-			catimg -w "$columns" "$file"
-		fi
+		chafa --passthrough="${passthrough}" --size="${columns}" "${file}"
 	else
 		echo "${file} is a binary file"
 	fi
