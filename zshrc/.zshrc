@@ -22,12 +22,6 @@ elif [ -x '/opt/homebrew/bin/brew' ]; then
 fi
 
 if [ -n "${HOMEBREW_PREFIX:-}" ]; then
-	site_functions="${HOMEBREW_PREFIX}/share/zsh/site-functions"
-
-	if [ "${FPATH#*"${site_functions}"}" = "${FPATH}" ]; then
-		fpath=("${site_functions}" "${fpath[@]}")
-	fi
-
 	google_completion="${HOMEBREW_PREFIX:-}/share/zsh/site-functions/_google_cloud_sdk"
 
 	if [ -f "${google_completion:-}" ]; then
