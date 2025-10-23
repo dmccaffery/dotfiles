@@ -3,6 +3,7 @@
 -- defaults: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 
 local util = require("lazyvim.util")
+local o = vim.opt
 
 local function map(mode, lhs, rhs, opts)
   local keys = require("lazy.core.handler").handlers.keys
@@ -23,3 +24,36 @@ else
   map("n", "<S-tab>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
   map("n", "<tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
 end
+
+-- indentation in normal mode
+map("n", "<", "<<", { desc = "Deindent" })
+map("n", ">", ">>", { desc = "Indent" })
+
+-- save without formatting
+map("n", "<A-s>", "<cmd>noautocmd w<CR>", { desc = "Save Without Formatting" })
+
+-- increment / decrement
+map("n", "+", "<C-a>")
+map("n", "-", "<C-x>")
+
+-- status line
+map("n", "<leader>uS", function()
+  if o.laststatus == 0 then
+    o.laststatus = 3
+  else
+    o.laststatus = 0
+  end
+end, { desc = "Toggle Statusline" })
+
+-- redo the right way
+map("n", "U", "<C-r>", { desc = "Redo" })
+
+-- yank buffer
+map("n", "<C-c>", ":%y+<CR>", { desc = "Yank Entire Buffer", silent = true })
+
+-- select all
+map("n", "<C-e>", "gg<S-V>G", { desc = "Select all Text", silent = true, noremap = true })
+
+-- spelling dictionary
+map("n", "<leader>!", "zg", { desc = "Add Word to Dictionary" })
+map("n", "<leader>@", "zug", { desc = "Remove Word from Dictionary" })
