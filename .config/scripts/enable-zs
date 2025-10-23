@@ -1,0 +1,13 @@
+#! /usr/bin/env sh
+
+LAUNCH_DAEMONS=/Library/LaunchDaemons/
+ZSCALER_SERVICE="${LAUNCH_DAEMONS}/com.zscaler.service.plist"
+ZSCALER_TUNNEL="${LAUNCH_DAEMONS}/com.zscaler.tunnel.plist"
+
+if [ -f "${ZSCALER_SERVICE}" ]; then
+    sudo launchctl load "${ZSCALER_SERVICE}"
+fi
+
+if [ -f "${ZSCALER_TUNNEL}" ]; then
+    sudo launchctl load "${ZSCALER_TUNNEL}"
+fi
