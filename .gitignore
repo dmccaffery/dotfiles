@@ -13,3 +13,5 @@ backup/
 !.markdownlint.yaml
 !.editorconfig
 !.prettierignore
+
+!.luarc.json
