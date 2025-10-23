@@ -1,5 +1,9 @@
 #! /usr/bin/env zsh
 
+if [ -n "${ZSHPROFILE:-}" ]; then
+	zmodload zsh/zprof
+fi
+
 # set xdg config home (so lazygit picks it up)
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -129,4 +133,9 @@ fi
 if command -v 'gcloud' 1>/dev/null 2>&1; then
 	GOOGLE_BIN_PATH=$(dirname $(readlink -f $(command -v 'gcloud')))
 	export PATH="${GOOGLE_BIN_PATH}:${PATH}"
+fi
+
+if [ -n "${ZSHPROFILE:-}" ]; then
+	zprof
+	printf '\n\nTIMINGS:\n\n'
 fi
