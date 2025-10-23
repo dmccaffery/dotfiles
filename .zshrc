@@ -64,6 +64,8 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 # add aliases
 alias ls='ls --color'
+alias la='ls -la'
+alias ll='ls -l'
 alias vim='nvim'
 alias vi='nvim'
 
@@ -76,4 +78,10 @@ eval "$(direnv hook zsh)"
 
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
   eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/catppuccin.toml)"
+fi
+
+INSTALLERS_DIR="${XDG_CONFIG_HOME:-${HOME}/config}/installers"
+
+if [ -d "${INSTALLERS_DIR:-}" ]; then
+  export PATH="${PATH}:${INSTALLERS_DIR}"
 fi
