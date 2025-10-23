@@ -23,3 +23,5 @@ ssh-keygen \
 	-O no-touch-required \
 	-O application=ssh:key-touch-required \
 	"$@"
+
+get-sk-ssh

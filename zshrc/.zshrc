@@ -95,6 +95,7 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 eval "$(direnv hook zsh)"
 eval "$(fnm env --use-on-cd)"
+eval "$(ssh-agent -s)" 1>/dev/null
 
 eval "$(oh-my-posh init zsh --config "${POSH_THEME}")"
 

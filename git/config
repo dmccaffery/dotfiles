@@ -1,11 +1,20 @@
 [core]
 	autocrlf = input
 
+[commit]
+	gpgSign = true
+
+[tag]
+	gpgSign = true
+
 [gpg]
 	format = ssh
 
 [checkout]
 	defaultRemote = origin
+
+[push]
+	gpgSign = true
 
 [pull]
 	ff = only
@@ -35,6 +44,9 @@
 	gitHubAccountFiltering = false
 	helper =
 	helper = /usr/local/share/gcm-core/git-credential-manager
+
+[credential "https://dev.azure.com"]
+	useHttpPath = true
 
 [credential "https://github.com"]
 	provider = github
@@ -70,7 +82,9 @@
 	sync-upstream = true
 	share-new-branches = push
 
+[user]
+	signingKey = ~/.ssh/id_default_sk
+
 [include]
 	path = ~/.config/private/git/config
-[credential "https://dev.azure.com"]
-	useHttpPath = true
+
