@@ -3,7 +3,7 @@ local icons = require("icons")
 
 return {
   paddings = 3,
-  group_paddings = 5,
+  group_paddings = 0,
   modes = {
     main = {
       icon = icons.apple,
@@ -21,7 +21,7 @@ return {
   bar = {
     height = 36,
     padding = {
-      x = 10,
+      x = 0,
       y = 0,
     },
     background = colors.bar.bg,
@@ -44,7 +44,7 @@ return {
     colors = {
       background = colors.bg1,
     },
-    corner_radius = 6,
+    corner_radius = 0,
   },
 
   icons = "sketchybar-app-font:Regular:16.0", -- alternatively available: NerdFont

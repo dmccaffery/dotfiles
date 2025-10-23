@@ -14,6 +14,6 @@ SBar.bar({
   position = "top",
   shadow = false,
   y_offset = 5,
-  corner_radius = 10,
+  corner_radius = 0,
   margin = 10,
 })
