@@ -33,6 +33,7 @@ brew install --overwrite \
     git-town \
     gh \
     go \
+    nodenv \
     nvim \
     ripgrep \
     stow \

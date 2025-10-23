@@ -15,13 +15,8 @@ if [ -n "${HOMEBREW_PREFIX:-}" ]; then
 	fi
 fi
 
-# load completion
-autoload -U +X bashcompinit
-bashcompinit
-
 if ! (( $+functions[compdef] )); then
-	autoload -U +X compinit
-	compinit
+	autoload -U +X compinit && compinit
 fi
 
 # set the zinit home
@@ -86,10 +81,9 @@ export POSH_THEME="${HOME}/.config/oh-my-posh/flags.toml"
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 eval "$(direnv hook zsh)"
+eval "$(nodenv init - zsh)"
 
-if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-	eval "$(oh-my-posh init zsh)"
-fi
+eval "$(oh-my-posh init zsh)"
 
 if [ "${TERM_PROGRAM}" = "vscode" ]; then
 	export EDITOR='code --wait'
