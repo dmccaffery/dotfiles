@@ -2,6 +2,7 @@
 -- defaults: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 
 local opt = vim.opt
+local space = "·"
 
 -- tabs / indentation
 opt.autoindent = true
@@ -21,3 +22,13 @@ opt.colorcolumn = "80,120"
 
 -- disable lsp logs -- this will grow infinitely so only enable it if you need it
 vim.lsp.log_level = vim.lsp.log_levels.OFF
+
+-- show whitespace characters
+opt.list = true
+opt.listchars:append({
+  tab = ">-",
+  multispace = space,
+  lead = space,
+  trail = space,
+  nbsp = space,
+})
