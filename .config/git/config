@@ -58,6 +58,7 @@
 	pr = town prepare
 	delete = town delete
 	rename = town rename
+	browse = town repo
 
 [git-town]
 	perennial-regex = ^v([[:digit:]]\\.?)+$
