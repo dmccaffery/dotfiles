@@ -5,8 +5,11 @@
 !.local/
 
 !.gitignore
+!.gitattributes
+
 !.zshrc
 
 !.stow-local-ignore
 !.markdownlint.yaml
 !.editorconfig
+!.prettierignore

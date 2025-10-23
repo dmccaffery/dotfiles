@@ -22,5 +22,8 @@ _darcs
 
 install
 backup
-.backup/
-.markdownlint.yaml
+
+\.backup/
+
+\.markdownlint.yaml
+\.editorconfig
