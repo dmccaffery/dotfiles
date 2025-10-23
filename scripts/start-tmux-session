@@ -1,5 +1,7 @@
 #! /usr/bin/env sh
 
+set -eu
+
 REPOS_DIR="${REPOS_DIR:-${HOME}/Repos}"
 selected="${1:-}"
 
