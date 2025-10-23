@@ -91,6 +91,10 @@ if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
 	eval "$(oh-my-posh init zsh)"
 fi
 
+if [ "${TERM_PROGRAM}" = "vscode" ]; then
+	export EDITOR='code --wait'
+fi
+
 SCRIPTS_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/scripts"
 
 if [ -d "${SCRIPTS_DIR:-}" ]; then
