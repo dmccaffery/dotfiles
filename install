@@ -36,6 +36,7 @@ brew install \
 	stow \
 	tmux \
 	zinit \
+	zoxide \
 	zsh
 
 brew install --cask \
