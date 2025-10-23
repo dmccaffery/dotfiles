@@ -131,6 +131,43 @@ tag_icon = ' '
 
 [[blocks]]
 type = 'prompt'
+alignment = 'right'
+
+[[blocks.segments]]
+type = 'go'
+style = 'diamond'
+leading_diamond = ''
+foreground = 'p:crust'
+background = '#7FD5EA'
+template = ' {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} '
+
+[blocks.segments.properties]
+extensions = ['go.mod', 'go.work']
+
+[[blocks.segments]]
+type = 'node'
+style = 'diamond'
+leading_diamond = ''
+foreground = 'p:crust'
+background = '#66CC33'
+
+[blocks.segments.properties]
+npm_icon = ''
+yarn_icon = ''
+fetch_package_manager = true
+extensions = ['package.json']
+
+[[blocks.segments]]
+type = 'gcp'
+style = 'diamond'
+leading_diamond = ''
+trailing_diamond = ''
+foreground = 'p:crust'
+background = '#4285F4'
+template = '  {{.Project}} '
+
+[[blocks]]
+type = 'prompt'
 alignment = 'left'
 newline = true
 
