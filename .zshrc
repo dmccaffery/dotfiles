@@ -96,10 +96,6 @@ if [ "${TERM_PROGRAM}" = "vscode" ]; then
 	export EDITOR='code --wait'
 fi
 
-if [ "${TERM_PROGRAM}" = "tmux" ]; then
-	export TERM="tmux-256color"
-fi
-
 SCRIPTS_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/scripts"
 
 if [ -d "${SCRIPTS_DIR:-}" ]; then

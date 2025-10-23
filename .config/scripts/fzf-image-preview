@@ -24,12 +24,21 @@ mime=$(file --mime "${file}")
 if [[ $(file --mime "$file") =~ binary ]]; then
 	if [[ $(file --mime "$file") =~ "image/" ]]; then
 		columns=$(tput cols)
-		columns=$(($columns / 2))
-		catimg -w "$columns" "$file"
+		columns=${FZF_PREVIEW_COLUMNS:-$(($(tput cols) / 2))}
+
+		passthrough="${TMUX:+tmux}"
+		passthrough="${passthrough:-auto}"
+
+		# bug: tmux and/or fzf does some weird crap inside of wezterm with passthrough
+		if [ -z "${TMUX:-}" ]; then
+			chafa --passthrough="${passthrough}" --size="${columns}" "${file}"
+		else
+			catimg -w "$columns" "$file"
+		fi
 	else
-		echo "$file is a binary file"
+		echo "${file} is a binary file"
 	fi
 	exit 0
 fi
 
-bat --style=numbers --color=always "$file" 2>/dev/null | head -100
+bat --style=numbers --color=always "${file}" 2>/dev/null | head -100
