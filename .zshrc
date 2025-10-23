@@ -13,6 +13,12 @@ if [ -n "${HOMEBREW_PREFIX:-}" ]; then
 	if [ "${FPATH#*"${site_functions}"}" = "${FPATH}" ]; then
 		fpath=("${site_functions}" "${fpath[@]}")
 	fi
+
+	google_completion="${HOMEBREW_PREFIX:-}/share/zsh/site-functions/_google_cloud_sdk"
+
+	if [ -f "${google_completion:-}" ]; then
+		source "${google_completion:-}"
+	fi
 fi
 
 if ! (( $+functions[compdef] )); then
