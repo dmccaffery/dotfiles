@@ -4,14 +4,14 @@
 
 ## Features
 
--   support for [wezterm][wezterm-url]
--   custom prompt using [oh-my-posh][oh-my-posh-url].
--   neovim configuration based on [LazyVim][lazyvim-url]
--   tmux configuration
--   [catppuccin][catppuccin-url] theme (mocha) everywhere, including terminal prompt, tmux, and neovim
--   simple install script that sets up all dependencies
--   uses [stow][stow-url] to link farm the configuration
--   extensible git configuration
+- support for [ghostty][ghostty-url]
+- custom prompt using [oh-my-posh][oh-my-posh-url].
+- neovim configuration based on [LazyVim][lazyvim-url]
+- tmux configuration
+- [cyberdream][cyberdream-url] theme everywhere, including oh-my-posh, tmux, nvim, yazi, k9s, ghostty, and lazygit
+- simple install script that sets up all dependencies
+- uses [stow][stow-url] to link farm the configuration
+- extensible git configuration
 
 ## Setup
 
@@ -21,17 +21,9 @@
 > that I will not break something at some point for you. Having a fork of your own ensures that one can manage any
 > breaking changes as necessary.
 
-If you have any of the existing in your $HOME directory, you will need to move them out of the way first. The install
-script does not currently perform a backup. It will refuse to overwrite anything that exists, so no worries there, but
-installation will fail as a result.
-
--   $HOME/.config/git
--   $HOME/.config/nvim
--   $HOME/.config/oh-my-posh
--   $HOME/.config/scripts
--   $HOME/.config/tmux
--   $HOME/.config/wezterm
--   $HOME/.zshrc
+If you have any of the existing directories in your $HOME directory, you will need to move them out of the way first.
+The install script does not currently perform a backup. It will refuse to overwrite anything that exists, so no worries
+there, but installation will fail as a result.
 
 A backup script is provided that can perform this backup, which copies the current config / zshrc to a backup folder
 in this repository (ignored by git).
@@ -63,15 +55,15 @@ handle private configuration by using a separate (obviously private) repository 
 
 ## Future Improvements
 
--   add support for linux environments
--   add support for WSL2 environments
--   add support for creating backups
--   add instructions for creating a fork to make your own dotfiles
+- add support for linux environments
+- add support for WSL2 environments
+- add support for creating backups
+- add instructions for creating a fork to make your own dotfiles
 
-[wezterm-url]: https://wezfurlong.org/wezterm/
+[cyberdream-url]: https://github.com/scottmckendry/cyberdream.nvim
+[ghostty-url]: https://ghostty.org/
 [lazyvim-url]: https://www.lazyvim.org
 [oh-my-posh-url]: https://ohmyposh.dev
-[catppuccin-url]: https://catppuccin.com
 [stow-url]: https://www.gnu.org/software/stow/
 [git-config-include]: https://github.com/dmccaffery/dotfiles/blob/main/.config/git/config#L73
 [sts-url]: https://github.com/dmccaffery/dotfiles/blob/main/.config/scripts/start-tmux-session#L3
