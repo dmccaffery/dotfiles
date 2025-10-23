@@ -117,3 +117,9 @@ fi
 if [ -z "${TMUX:-}" ]; then
 	tmux start-server 1>/dev/null 2>&1
 fi
+
+# detect gcloud path
+if [ command -v 'gcloud' 2>/dev/null ]; then
+	GOOGLE_BIN_PATH=$(dirname $(readlink -f $(command -v 'gcloud')))
+	export PATH="${GOOGLE_BIN_PATH}:${PATH}"
+fi
