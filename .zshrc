@@ -66,6 +66,7 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 alias ls='ls --color'
 alias la='ls -la'
 alias ll='ls -l'
+alias sts='start-tmux-session'
 alias vim='nvim'
 alias vi='nvim'
 
