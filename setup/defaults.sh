@@ -66,3 +66,6 @@ defaults write -g NSWindowShouldDragOnGesture -bool true
 
 # disable window animations
 defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
+
+# restart the dock
+killall Dock
