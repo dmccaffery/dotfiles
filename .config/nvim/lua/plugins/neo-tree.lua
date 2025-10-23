@@ -7,6 +7,7 @@ return {
           hide_gitignored = true,
           hide_dotfiles = false,
         },
+        hijack_netrw_behavior = "disabled",
       },
     },
   },
