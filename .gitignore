@@ -1,8 +1,7 @@
 .*
 backup/
 
-!.config/
-!.local/
+!.github/
 
 !.gitignore
 !.gitattributes
@@ -13,5 +12,6 @@ backup/
 !.markdownlint.yaml
 !.editorconfig
 !.prettierignore
+!.release-please-manifest.json
 
 !.luarc.json
