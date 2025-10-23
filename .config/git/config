@@ -54,8 +54,10 @@
 	rename-branch = town rename-branch
 	repo = town repo
 	set-parent = town set-parent
-	ship = town ship
-	sync = town sync
+	sync = town sync --all
+	start = town hack
+	done = town sync --all
+	pr = town prepare
 
 [git-town]
 	perennial-regex = ^v([[:digit:]]\\.?)+$
@@ -63,6 +65,8 @@
 	push-new-branches = true
 	ship-delete-tracking-branch = false
 	sync-feature-strategy = rebase
+	sync-upstream = true
+	sync-tags = true
 
 [include]
 	path = ~/.config/git/private/user.gitconfig
