@@ -73,6 +73,7 @@ alias ll='ls -l'
 alias sts='start-tmux-session'
 alias vim='nvim'
 alias vi='nvim'
+alias br='open-repo-url'
 
 export EDITOR=nvim
 export POSH_THEME="${HOME}/.config/oh-my-posh/flags.toml"
