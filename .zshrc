@@ -71,6 +71,7 @@ alias vim='nvim'
 alias vi='nvim'
 
 export EDITOR=nvim
+export POSH_THEME="${HOME}/.config/oh-my-posh/flags.toml"
 
 # enable shell integrations
 eval "$(fzf --zsh)"
@@ -78,7 +79,7 @@ eval "$(zoxide init --cmd cd zsh)"
 eval "$(direnv hook zsh)"
 
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-  eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/catppuccin.toml)"
+  eval "$(oh-my-posh init zsh)"
 fi
 
 SCRIPTS_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/scripts"

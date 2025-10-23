@@ -3,14 +3,64 @@
 version = 2
 final_space = true
 
-[palette]
-blue = '#8AADF4'
-lavender = '#B7BDF8'
-os = '#ACB0BE'
-pink = '#F5BDE6'
-red = '#ef5350'
-text = '#494D64'
-white = '#FFFFFF'
+[palettes]
+template = "catppuccin-mocha"
+
+[palettes.list.catppuccin-latte]
+rosewater = '#dc8a78'
+flamingo = '#dd7878'
+pink = '#ea76cb'
+mauve = '#8839ef'
+red = '#d20f39'
+maroon = '#e64553'
+peach = '#fe640b'
+yellow = '#df8e1d'
+green = '#40a02b'
+teal = '#179299'
+sky = '#04a5e5'
+sapphire = '#209fb5'
+blue = '#1e66f5'
+lavender = '#7287fd'
+text = '#4c4f69'
+subtext_1 = '#5c5f77'
+subtest_0 = '#6c6f85'
+overlay_2 = '#7c7f93'
+overlay_1 = '#8c8fa1'
+overlay_0 = '#9ca0b0'
+surface_2 = '#acb0be'
+surface_1 = '#bcc0cc'
+surface_0 = '#ccd0da'
+base = '#eff1f5'
+mantle = '#e6e9ef'
+crust = '#dce0e8'
+
+[palettes.list.catppuccin-mocha]
+rosewater = '#f5e0dc'
+flamingo = '#f2cdcd'
+pink = '#f5c2e7'
+mauve = '#cba6f7'
+red = '#f38ba8'
+maroon = '#eba0ac'
+peach = '#fab387'
+yellow = '#f9e2af'
+green = '#a6e3a1'
+teal = '#94e2d5'
+sky = '#89dceb'
+sapphire = '#74c7ec'
+blue = '#89b4fa'
+lavender = '#b4befe'
+text = '#cdd6f4'
+subtext_1 = '#bac2de'
+subtest_0 = '#a6adc8'
+overlay_2 = '#9399b2'
+overlay_1 = '#7f849c'
+overlay_0 = '#6c7086'
+surface_2 = '#585b70'
+surface_1 = '#45475a'
+surface_0 = '#313244'
+base = '#1e1e2e'
+mantle = '#181825'
+crust = '#11111b'
 
 [[blocks]]
 type = 'prompt'
@@ -21,8 +71,8 @@ type = 'os'
 style = 'diamond'
 leading_diamond = '╭─'
 template = '{{.Icon}}'
-background = 'blue'
-foreground = 'black'
+background = 'p:blue'
+foreground = 'transparent'
 Text = ''
 Duration = 0
 NameLength = 0
@@ -32,8 +82,8 @@ type = 'session'
 style = 'diamond'
 trailing_diamond = ''
 template = ' {{ .UserName }} '
-background = 'blue'
-foreground = 'black'
+background = 'p:blue'
+foreground = 'transparent'
 Text = ''
 Duration = 0
 NameLength = 0
@@ -44,7 +94,7 @@ style = 'powerline'
 powerline_symbol = ''
 template = '  {{ .Path }} '
 background = 'p:pink'
-foreground = 'p:text'
+foreground = 'transparent'
 Text = ''
 Duration = 0
 NameLength = 0
@@ -59,15 +109,9 @@ type = 'git'
 style = 'diamond'
 leading_diamond = '<transparent></>'
 trailing_diamond = ''
-# background_templates = [
-#     '{{ if or (.Working.Changed) (.Staging.Changed) }}p:lavender{{ end }}',
-#     '{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:blue{{ end }}',
-#     '{{ if gt .Ahead 0 }}p:pink{{ end }}',
-#     '{{ if gt .Behind 0 }}p:red{{ end }}',
-# ]
-template = ' {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}<#ef5350>  {{ .Staging.String }}</>{{ end }} '
-background = 'p:lavender'
-foreground = 'p:text'
+template = ' {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }} '
+background = 'p:green'
+foreground = 'transparent'
 Text = ''
 Duration = 0
 NameLength = 0
@@ -94,7 +138,7 @@ type = 'text'
 style = 'plain'
 template = '╰─'
 background = 'transparent'
-foreground = 'blue'
+foreground = 'p:blue'
 Text = ''
 Duration = 0
 NameLength = 0
@@ -105,7 +149,7 @@ style = 'plain'
 foreground_templates = ['{{ if gt .Code 0 }}p:red{{ end }}']
 template = ' '
 background = 'transparent'
-foreground = 'p:text'
+foreground = 'p:subtext_1'
 Text = ''
 Duration = 0
 NameLength = 0
@@ -115,13 +159,13 @@ always_enabled = true
 
 [transient_prompt]
 foreground_templates = [
-    "{{if gt .Code 0}}red{{end}}",
-    "{{if eq .Code 0}}magenta{{end}}",
+    "{{if gt .Code 0}}p:red{{end}}",
+    "{{if eq .Code 0}}p:subtext_1{{end}}",
 ]
 background = 'transparent'
 template = '❯ '
 
 [secondary_prompt]
-foreground = 'magenta'
+foreground = 'p:red'
 background = 'transparent'
 template = '❯❯ '
