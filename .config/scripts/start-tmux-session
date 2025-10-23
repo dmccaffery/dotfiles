@@ -1,0 +1,31 @@
+#! /usr/bin/env sh
+
+REPOS_DIR="${REPOS_DIR:-${HOME}/Repos}"
+
+if [ $# -eq 1 ]; then
+	selected="${1:-}"
+elif [ -d "${REPOS_DIR:-}" ]; then
+	selected=$(find "${REPOS_DIR}" -type d -mindepth 1 -maxdepth 3 -exec test -d {}/.git \; -print -prune | fzf)
+else
+	printf 'ERROR: The repository directory does not exist: %s\n\n' "${REPOS_DIR}" >2
+	exit 1
+fi
+
+if [ -z "${selected:-}" ]; then
+	exit 0
+fi
+
+name=$(basename "${selected}" | tr . _)
+
+tmux_pid=$(pgrep tmux)
+
+if [ -z "${TMUX:-}" ] && [ -z "${tmux_pid}" ]; then
+	tmux new-session -s "${name}" -c "${selected}"
+	exit 0
+fi
+
+if ! tmux has-session -t="${name}" 2>/dev/null; then
+	tmux new-session -ds "${name}" -c "${selected}"
+fi
+
+tmux switch-client -t "${name}"
