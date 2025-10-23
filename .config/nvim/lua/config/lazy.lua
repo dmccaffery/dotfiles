@@ -28,14 +28,6 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.dap.core" },
     -- formatting
     { import = "lazyvim.plugins.extras.formatting.prettier" },
-    -- languages
-    { import = "lazyvim.plugins.extras.lang.go" },
-    { import = "lazyvim.plugins.extras.lang.json" },
-    { import = "lazyvim.plugins.extras.lang.markdown" },
-    { import = "lazyvim.plugins.extras.lang.terraform" },
-    { import = "lazyvim.plugins.extras.lang.toml" },
-    { import = "lazyvim.plugins.extras.lang.typescript" },
-    { import = "lazyvim.plugins.extras.lang.yaml" },
     -- linting
     { import = "lazyvim.plugins.extras.linting.eslint" },
     -- testing
@@ -45,6 +37,15 @@ require("lazy").setup({
     -- util
     { import = "lazyvim.plugins.extras.util.octo" },
     { import = "lazyvim.plugins.extras.util.mini-hipatterns" },
+    -- languages
+    { import = "lazyvim.plugins.extras.lang.go" },
+    { import = "lazyvim.plugins.extras.lang.json" },
+    { import = "lazyvim.plugins.extras.lang.markdown" },
+    { import = "lazyvim.plugins.extras.lang.terraform" },
+    { import = "lazyvim.plugins.extras.lang.toml" },
+    { import = "lazyvim.plugins.extras.lang.typescript" },
+    { import = "lazyvim.plugins.extras.lang.yaml" },
+    -- plugins
     { import = "plugins" },
   },
   defaults = {
