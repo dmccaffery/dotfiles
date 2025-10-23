@@ -11,12 +11,12 @@ warning() {
 
 warning "This will reset the current state of ALL remaining background items"
 warning "press any key to continue..."
-read -n 1 -s -r continue
+read -r _
 
 sudo sfltool resetbtm
 
 warning "A reboot is required to complete this task..."
 warning "press any key to reboot now..."
-read -n 1 -s -r continue
+read -r _
 
 sudo reboot

@@ -21,8 +21,8 @@ fi
 
 mime=$(file --mime "${file}")
 
-if [[ $(file --mime "$file") =~ binary ]]; then
-	if [[ $(file --mime "$file") =~ "image/" ]]; then
+if [[ ${mime} =~ binary ]]; then
+	if [[ ${mime} =~ "image/" ]]; then
 		columns=$(tput cols)
 		columns=${FZF_PREVIEW_COLUMNS:-$(($(tput cols) / 2))}
 

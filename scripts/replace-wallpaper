@@ -2,8 +2,6 @@
 
 set -eu
 
-curdir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
-
 WALLPAPER_PATH="${WALLPAPER_PATH:-${HOME}/Documents/Wallpapers}"
 
 if [ ! -d "${WALLPAPER_PATH:-}" ]; then
