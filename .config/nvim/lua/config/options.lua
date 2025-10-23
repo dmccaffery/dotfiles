@@ -1,6 +1,7 @@
 -- event: BeforeLazy
 -- defaults: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 
+local g = vim.g
 local opt = vim.opt
 local space = "·"
 
@@ -32,3 +33,6 @@ opt.listchars:append({
   trail = space,
   nbsp = space,
 })
+
+-- smooth scrolling
+opt.smoothscroll = true
