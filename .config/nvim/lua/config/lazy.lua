@@ -37,6 +37,8 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.yaml" },
     -- linting
     { import = "lazyvim.plugins.extras.linting.eslint" },
+    -- testing
+    { import = "lazyvim.plugins.extras.test.core" },
     -- ui
     { import = "lazyvim.plugins.extras.ui.mini-animate" },
     { import = "plugins" },
