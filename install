@@ -22,7 +22,9 @@ fi
 eval "$(${brew_cmd} shellenv)"
 
 brew update
-brew install \
+brew install --overwrite \
+	awscli \
+	aws-sam-cli \
 	jandedobbeleer/oh-my-posh/oh-my-posh \
 	curl \
 	direnv \
@@ -31,6 +33,7 @@ brew install \
 	git-town \
 	gh \
 	go \
+	google-cloud-sdk \
 	nvim \
 	ripgrep \
 	stow \
@@ -40,21 +43,10 @@ brew install \
 	zsh
 
 brew install --cask \
-	font-meslo-lg-nerd-font \
-	font-fira-code-nerd-font
+	font-fira-code-nerd-font \
+	wezterm
 
 brew tap homebrew/command-not-found
-
-# THEME_DIR="${INSTALL_DIR}/.config/alacritty/themes"
-
-# THEME=${THEME:-catppuccin_mocha}
-# THEME_FILE="${THEME}.toml"
-
-# THEME_URL="https://raw.githubusercontent.com/alacritty/alacritty-theme/master/themes/${THEME_FILE}"
-# THEME_OUT="${THEME_DIR}/${THEME_FILE}"
-
-# mkdir -p "${THEME_DIR}"
-# curl --silent "${THEME_URL}" --output "${THEME_OUT}"
 
 stow --dir="${INSTALL_DIR}" --target="${HOME}" .
 
