@@ -48,3 +48,4 @@ Once this is done, simply run ./install:
 [lazyvim-url]: https://www.lazyvim.org
 [oh-my-posh-url]: https://ohmyposh.dev
 [catppuccin-url]: https://catppuccin.com
+[stow-url]: https://www.gnu.org/software/stow/
