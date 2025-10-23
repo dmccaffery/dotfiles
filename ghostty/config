@@ -28,3 +28,6 @@ window-colorspace = display-p3
 
 # splits
 unfocused-split-opacity = 0.50
+
+# links
+link-url = true

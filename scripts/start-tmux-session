@@ -7,7 +7,12 @@ if [ ! -d "${REPOS_DIR:-}" ]; then
 	REPOS_DIR='.'
 fi
 
-selected=$(find "${REPOS_DIR}" -type d -mindepth 1 -maxdepth 4 -exec test -d {}/.git \; -print -prune | fzf --query "${selected}" --select-1)
+if [ "${selected:-}" = "." ]; then
+	REPOS_DIR="${PWD}"
+	selected=
+fi
+
+selected=$(find "${REPOS_DIR}" -type d -mindepth 0 -maxdepth 4 -exec test -d {}/.git \; -print -prune | fzf --query "${selected}" --select-1)
 
 if [ -z "${selected:-}" ]; then
 	exit 0
