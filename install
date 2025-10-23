@@ -2,6 +2,9 @@
 
 set -euo pipefail
 
+brew services stop borders 2>/dev/null || true
+brew services stop sketchybark 2>/dev/null || true
+
 INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SETUP_DIR="${INSTALL_DIR}/setup"
 
@@ -12,17 +15,6 @@ SETUP_DIR="${INSTALL_DIR}/setup"
 . "${SETUP_DIR}/brews.sh"
 . "${SETUP_DIR}/stow.sh"
 . "${SETUP_DIR}/shell.sh"
-. "${SETUP_DIR}/bar.sh"
-
-# start sketchybar and border services
-brew services start sketchybar
-brew services start borders
-
-# open aerospace
-open -a "Aerospace"
-
-# restart sketchybar in case things have changed between updates
-sketchybar --reload
 
 # run neofetch
 neofetch

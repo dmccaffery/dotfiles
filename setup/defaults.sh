@@ -10,6 +10,18 @@ info "applying macOS system defaults"
 # enable key repeats
 defaults write -g ApplePressAndHoldEnabled -bool false
 
+# show menu bar
+defaults write -g _HIHideMenuBar -bool false
+
+# do not show menu bar in full screen
+defaults write -g AppleMenuBarVisibleInFullscreen -bool false
+
+# new option for menu bar in full screen only
+defaults write com.apple.controlcenter AutoHideMenuBarOption -int 2
+
+# restart UI server for menu bar
+killall SystemUIServer
+
 # enable three finger drag
 defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
 
@@ -28,7 +40,7 @@ defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool false
 # hide mounted servers on desktop
 defaults write com.apple.finder ShowMountedServersOnDesktop -bool false
 
-# hide icons on desktop
+# show icons on desktop
 defaults write com.apple.finder CreateDesktop -bool true
 
 # avoid creating .DS_Store files on network volumes
@@ -37,8 +49,8 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 # show path bar
 defaults write com.apple.finder ShowPathbar -bool true
 
-# hide status bar
-defaults write com.apple.finder "ShowStatusBar" -bool false
+# show status bar
+defaults write com.apple.finder "ShowStatusBar" -bool true
 
 # do not show warning when changing the file extension
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
@@ -56,10 +68,10 @@ defaults write com.apple.spaces "spans-displays" -bool false
 defaults write com.apple.dock "mru-spaces" -bool false
 
 # setup dock to autohide
-defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide -bool false
 defaults write com.apple.dock largesize -float 128
 defaults write com.apple.dock "minimize-to-application" -bool true
-defaults write com.apple.dock tilesize -float 32
+defaults write com.apple.dock tilesize -float 64
 
 # drag windows on gesture
 defaults write -g NSWindowShouldDragOnGesture -bool true
