@@ -1,4 +1,5 @@
 #! /usr/bin/env sh
+set -eu
 
 now=$(date +'%Y-%M-%d-%H%M%S')
 backup_path="backup/${now}"

@@ -18,7 +18,7 @@ if [ ! -d "${MCX_WALLPAPER_DIR:-}" ]; then
 fi
 
 selected="${1:-}"
-selected=$(find "${WALLPAPER_PATH}" -type f -a \( -name '*.jpg' -o -name '*.jpeg' \) | fzf --delimiter / --with-nth -1 --query "${selected}" -select-1)
+selected=$(find "${WALLPAPER_PATH}" -type f -a \( -name '*.jpg' -o -name '*.jpeg' \) | fzf --preview='fzf-image-preview {}' --delimiter / --with-nth -1 --query "${selected}" -select-1)
 
 if [ -z "${selected:-}" ]; then
 	exit 0

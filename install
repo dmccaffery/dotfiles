@@ -1,4 +1,5 @@
 #! /usr/bin/env sh
+set -eu
 
 INSTALL_DIR="$(cd -- "$(dirname -- "$0")" && pwd -P)"
 
@@ -24,6 +25,8 @@ eval "$(${brew_cmd} shellenv)"
 brew update
 brew install --overwrite \
 	jandedobbeleer/oh-my-posh/oh-my-posh \
+	bat \
+	catimg \
 	curl \
 	direnv \
 	fzf \

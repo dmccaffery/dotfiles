@@ -1,0 +1,35 @@
+#! /usr/bin/env bash
+set -euo pipefail
+
+set -eu
+file="${1:-}"
+
+if [ -z "${file:-}" ]; then
+	printf 'usage: fzf-image-preview <FILE_PATH>\n\n'
+	exit 1
+fi
+
+if [ -d "${file}" ]; then
+	ls -la --color "${file}"
+	exit 0
+fi
+
+if [ ! -f "${file:-}" ]; then
+	printf 'file does not exist!\n\n'
+	exit 1
+fi
+
+mime=$(file --mime "${file}")
+
+if [[ $(file --mime "$file") =~ binary ]]; then
+	if [[ $(file --mime "$file") =~ "image/" ]]; then
+		columns=$(tput cols)
+		columns=$(($columns / 2))
+		catimg -w "$columns" "$file"
+	else
+		echo "$file is a binary file"
+	fi
+	exit 0
+fi
+
+bat --style=numbers --color=always "$file" 2>/dev/null | head -100
