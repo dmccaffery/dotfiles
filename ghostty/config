@@ -8,7 +8,7 @@ quit-after-last-window-closed-delay = 5s
 auto-update = download
 
 # theme
-theme = catppuccin-mocha
+theme = dark:cyberdream,light:cyberdream-light
 font-family = "FiraCode Nerd Font"
 font-size = 15
 
