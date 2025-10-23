@@ -22,7 +22,7 @@ name=$(basename "${selected}" | tr . _)
 
 if ! tmux has-session -t "${name}" 2>/dev/null; then
 	tmux -u new-session -d -s "${name}" -c "${selected}" -x - -y - \; \
-		split-window -v -b -l '90%' -c "${selected}" "${EDITOR} ." \; \
+		split-window -v -b -l '90%' -c "${selected}" "${SHELL} -c '${EDITOR} .; exec ${SHELL} -l'" \; \
 		new-window -a -d -c "${selected}"
 fi
 
