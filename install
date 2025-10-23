@@ -43,6 +43,7 @@ brew install --overwrite \
 	zsh
 
 brew install --cask \
+	git-credential-manager \
 	font-fira-code-nerd-font \
 	wezterm
 
