@@ -6,18 +6,10 @@ ZSCALER_SERVICE="${LAUNCH_DAEMONS}/com.zscaler.service.plist"
 ZSCALER_TUNNEL="${LAUNCH_DAEMONS}/com.zscaler.tunnel.plist"
 ZSCALER_UPM_SERVICE="${LAUNCH_DAEMONS}/com.zscaler.UPMServiceController.plist"
 
-if ! sudo launchctl list | grep zscaler >/dev/null; then
-	exit 0
-fi
-
-if [ -f "${ZSCALER_UPM_SERVICE}" ]; then
-	sudo launchctl unload "${ZSCALER_UPM_SERVICE}"
-fi
-
-if [ -f "${ZSCALER_TUNNEL}" ]; then
+if [ -f "${ZSCALER_TUNNEL}" ] && sudo launchctl list | grep 'com.zscaler.tunnel' >/dev/null; then
 	sudo launchctl unload "${ZSCALER_TUNNEL}"
 fi
 
-if [ -f "${ZSCALER_SERVICE}" ]; then
+if [ -f "${ZSCALER_SERVICE}" ] && sudo launchctl list | grep 'com.zscaler.service' >/dev/null; then
 	sudo launchctl unload "${ZSCALER_SERVICE}"
 fi
