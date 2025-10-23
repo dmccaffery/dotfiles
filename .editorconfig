@@ -20,5 +20,5 @@ indent_size = 2
 indent_size = 4
 max_line_length = 120
 
-[{Makefile,config,*.config}]
+[{Makefile,config,*.config,.zshrc}]
 indent_style = tab
