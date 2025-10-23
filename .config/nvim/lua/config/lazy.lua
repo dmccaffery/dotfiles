@@ -29,7 +29,6 @@ require("lazy").setup({
     -- formatting
     { import = "lazyvim.plugins.extras.formatting.prettier" },
     -- languages
-    { import = "lazyvim.plugins.extras.lang.git" },
     { import = "lazyvim.plugins.extras.lang.go" },
     { import = "lazyvim.plugins.extras.lang.json" },
     { import = "lazyvim.plugins.extras.lang.markdown" },
@@ -42,6 +41,8 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.test.core" },
     -- ui
     { import = "lazyvim.plugins.extras.ui.mini-animate" },
+    -- util
+    { import = "lazyvim.plugins.extras.util.octo" },
     { import = "plugins" },
   },
   defaults = {

@@ -61,8 +61,6 @@
 	sync = town sync
 
 [git-town]
-	main-branch = main
-	perennial-branches = 
 	perennial-regex = ^v([[:digit:]]\\.?)+$
 	push-hook = false
 	push-new-branches = true
