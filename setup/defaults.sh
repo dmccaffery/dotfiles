@@ -40,8 +40,8 @@ defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool false
 # hide mounted servers on desktop
 defaults write com.apple.finder ShowMountedServersOnDesktop -bool false
 
-# show icons on desktop
-defaults write com.apple.finder CreateDesktop -bool true
+# hide icons on desktop
+defaults write com.apple.finder CreateDesktop -bool false
 
 # avoid creating .DS_Store files on network volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
