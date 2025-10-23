@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
 default_color=$(tput sgr 0)
 red="$(tput setaf 1)"
