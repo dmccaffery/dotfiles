@@ -23,8 +23,6 @@ eval "$(${brew_cmd} shellenv)"
 
 brew update
 brew install --overwrite \
-	awscli \
-	aws-sam-cli \
 	jandedobbeleer/oh-my-posh/oh-my-posh \
 	curl \
 	direnv \
@@ -34,6 +32,7 @@ brew install --overwrite \
 	gh \
 	go \
 	lazygit \
+	node \
 	nodenv \
 	nvim \
 	ripgrep \
@@ -44,7 +43,6 @@ brew install --overwrite \
 	zsh
 
 brew install --cask \
-	google-cloud-sdk \
 	git-credential-manager \
 	font-fira-code-nerd-font \
 	wezterm
