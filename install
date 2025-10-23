@@ -25,6 +25,7 @@ brew update
 brew install \
 	jandedobbeleer/oh-my-posh/oh-my-posh \
 	curl \
+	direnv \
 	fzf \
 	git \
 	git-town \
