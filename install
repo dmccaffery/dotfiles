@@ -16,6 +16,7 @@ SCRIPT_DIR="${INSTALL_DIR}/scripts"
 . "${SETUP_DIR}/brews.sh"
 . "${SETUP_DIR}/stow.sh"
 . "${SETUP_DIR}/shell.sh"
+. "${SETUP_DIR}/hammerspoon.sh"
 
 "${SCRIPT_DIR}/enable-zs"
 
