@@ -69,9 +69,9 @@ defaults write com.apple.dock "mru-spaces" -bool false
 
 # setup dock to autohide
 defaults write com.apple.dock autohide -bool false
-defaults write com.apple.dock largesize -float 128
+defaults write com.apple.dock largesize -float 96
 defaults write com.apple.dock "minimize-to-application" -bool true
-defaults write com.apple.dock tilesize -float 64
+defaults write com.apple.dock tilesize -float 48
 
 # drag windows on gesture
 defaults write -g NSWindowShouldDragOnGesture -bool true
