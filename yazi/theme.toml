@@ -1,4 +1,4 @@
-[manager]
+[mgr]
 syntect_theme = "bat.tmTheme"
 border_style = { fg = "#3c4048" }
 cwd = { fg = "#5ef1ff" }
