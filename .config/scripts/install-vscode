@@ -1,4 +1,0 @@
-#! /usr/bin/env sh
-
-install-with-brew --cask \
-	visual-studio-code
