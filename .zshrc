@@ -80,8 +80,8 @@ if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
   eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/catppuccin.toml)"
 fi
 
-INSTALLERS_DIR="${XDG_CONFIG_HOME:-${HOME}/config}/installers"
+SCRIPTS_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/scripts"
 
-if [ -d "${INSTALLERS_DIR:-}" ]; then
-  export PATH="${PATH}:${INSTALLERS_DIR}"
+if [ -d "${SCRIPTS_DIR:-}" ]; then
+  export PATH="${PATH}:${SCRIPTS_DIR}"
 fi

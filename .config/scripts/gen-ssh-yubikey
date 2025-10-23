@@ -1,0 +1,23 @@
+#! /usr/bin/env sh
+
+comment="${1:-}"
+
+if [ -n "${comment:-}" ]; then
+	set -- -C "${comment}"
+fi
+
+ssh-keygen \
+	-t ecdsa-sk \
+	-O resident \
+	-O verify-required \
+	-O no-touch-required \
+	-O application=ssh:key-touch-required \
+	"$@"
+
+ssh-keygen \
+	-t ed25519-sk \
+	-O resident \
+	-O verify-required \
+	-O no-touch-required \
+	-O application=ssh:key-touch-required \
+	"$@"
