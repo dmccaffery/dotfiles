@@ -44,7 +44,7 @@ return {
     colors = {
       background = colors.bg1,
     },
-    corner_radius = 0,
+    corner_radius = 10,
   },
 
   icons = "sketchybar-app-font:Regular:16.0", -- alternatively available: NerdFont
