@@ -25,13 +25,14 @@ on-focus-changed = ['move-mouse window-lazy-center']
 automatically-unhide-macos-hidden-apps = false
 
 after-startup-command = [
+    'exec-and-forget sketchybar >> $HOME/.local/share/sketchybar/service.log 2>&1',
     'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0',
 ]
 
 exec-on-workspace-change = [
     '/bin/bash',
     '-c',
-    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE FOCUSED_DISPLAY=$(aerospace list-monitors --focused | awk "{print $1}")',
 ]
 
 # custom app locations
@@ -50,15 +51,21 @@ run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Safari'
-run = 'move-node-to-workspace B'
+run = ['layout tiling', 'move-node-to-workspace B']
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Outlook'
+run = ['layout tiling', 'move-node-to-workspace C']
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.teams2'
-run = 'layout floating'
+run = ['layout tiling', 'move-node-to-workspace M']
+# run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'us.zoom.xos'
-run = 'layout floating'
+run = ['layout tiling', 'move-node-to-workspace M']
+# run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
@@ -79,24 +86,39 @@ preset = 'qwerty'
 [gaps]
 inner.horizontal = 10
 inner.vertical = 10
-outer.left = 20
-outer.bottom = 20
-outer.top = 20
-outer.right = 20
+outer.left = 10
+outer.bottom = 10
+outer.top = [{ monitor."main" = 45 }, { monitor."secondary" = 45 }, 10]
+outer.right = 10
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # 'main' binding mode must be always presented
 # Fallback value (if you omit the key): mode.main.binding = {}
 [mode.main.binding]
-ctrl-alt-cmd-space = ['mode alt']
-ctrl-alt-cmd-backtick = ['mode service']
+ctrl-alt-cmd-space = [
+    'mode alt',
+    'exec-and-forget sketchybar --trigger aerospace_mode_change MODE=alt',
+]
+ctrl-alt-cmd-backtick = [
+    'mode service',
+    'exec-and-forget sketchybar --trigger aerospace_mode_change MODE=service',
+]
 
 [mode.alt.binding]
-space = ['mode main']
-esc = ['mode main']
-backtick = ['reload-config', 'mode main']
-
+space = [
+    'mode main',
+    'exec-and-forget sketchybar --trigger aerospace_mode_change MODE=main',
+]
+esc = [
+    'mode main',
+    'exec-and-forget sketchybar --trigger aerospace_mode_change MODE=main',
+]
+backtick = [
+    'reload-config',
+    'mode main',
+    'exec-and-forget sketchybar --trigger aerospace_mode_change MODE=main',
+]
 ctrl-shift-f = 'fullscreen'
 
 left = 'join-with left'
@@ -126,19 +148,17 @@ equal = 'resize smart +50'
 
 # see: https://nikitabobko.github.io/AeroSpace/commands#workspace
 1 = 'workspace 1'
-2 = 'workspace 2'
-3 = 'workspace 3'
-4 = 'workspace 4'
 t = 'workspace T'
 b = 'workspace B'
+m = 'workspace M'
+c = 'workspace C'
 
 # see: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 shift-1 = 'move-node-to-workspace 1 --focus-follows-window'
-shift-2 = 'move-node-to-workspace 2 --focus-follows-window'
-shift-3 = 'move-node-to-workspace 3 --focus-follows-window'
-shift-4 = 'move-node-to-workspace 4 --focus-follows-window'
 shift-t = 'move-node-to-workspace T --focus-follows-window'
 shift-b = 'move-node-to-workspace B --focus-follows-window'
+shift-m = 'move-node-to-workspace M --focus-follows-window'
+shift-c = 'move-node-to-workspace C --focus-follows-window'
 
 tab = 'workspace-back-and-forth'
 shift-tab = 'move-workspace-to-monitor --wrap-around next'
@@ -146,8 +166,23 @@ shift-tab = 'move-workspace-to-monitor --wrap-around next'
 # 'service' binding mode declaration
 # see: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
-
-esc = ['reload-config', 'mode main']
-ctrl-r = ['flatten-workspace-tree', 'mode main']           # reset layout
-ctrl-f = ['layout floating tiling', 'mode main']           # toggle layout
-backspace = ['close-all-windows-but-current', 'mode main']
+esc = [
+    'reload-config',
+    'mode main',
+    'exec-and-forget sketchybar --trigger aerospace_mode_change MODE=main',
+]
+ctrl-r = [
+    'flatten-workspace-tree',
+    'mode main',
+    'exec-and-forget sketchybar --trigger aerospace_mode_change MODE=main',
+]
+ctrl-f = [
+    'layout floating tiling',
+    'mode main',
+    'exec-and-forget sketchybar --trigger aerospace_mode_change MODE=main',
+]
+backspace = [
+    'close-all-windows-but-current',
+    'mode main',
+    'exec-and-forget sketchybar --trigger aerospace_mode_change MODE=main',
+]

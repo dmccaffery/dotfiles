@@ -33,7 +33,7 @@
 	gitHubAuthModes = oauth
 	gitlabAuthModes = browser
 	gitHubAccountFiltering = false
-	helper =
+	helper = 
 	helper = /usr/local/share/gcm-core/git-credential-manager
 
 [credential "https://github.com"]
@@ -71,3 +71,5 @@
 
 [include]
 	path = ~/.config/private/git/config
+[credential "https://dev.azure.com"]
+	useHttpPath = true

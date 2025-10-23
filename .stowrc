@@ -6,5 +6,6 @@
 --ignore=Brewfile
 --ignore=README.md
 --ignore=install
+--ignore=setup
 --ignore=backup
 --ignore=LICENSE
