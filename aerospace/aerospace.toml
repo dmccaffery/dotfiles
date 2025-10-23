@@ -35,16 +35,6 @@ exec-on-workspace-change = [
     'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE FOCUSED_DISPLAY=$(aerospace list-monitors --focused | awk "{print $1}")',
 ]
 
-# custom app locations
-# [[on-window-detected]]
-# if.app-id = 'com.apple.systempreferences'
-# if.app-name-regex-substring = 'settings'
-# if.window-title-regex-substring = 'substring'
-# if.workspace = 'workspace-name'
-# if.during-aerospace-startup = true
-# check-further-callbacks = true
-# run = ['layout floating', 'move-node-to-workspace S']
-
 [[on-window-detected]]
 if.app-id = 'com.apple.finder'
 run = 'layout floating'
@@ -93,6 +83,9 @@ run = ['layout tiling', 'move-node-to-workspace M']
 if.app-id = 'com.mitchellh.ghostty'
 run = ['layout tiling', 'move-node-to-workspace T']
 
+[workspace-to-monitor-force-assignment]
+M = ['secondary', 'main']
+
 # possible values: (qwerty|dvorak)
 # see: https://nikitabobko.github.io/AeroSpace/guide#key-mapping
 [key-mapping]
@@ -110,7 +103,7 @@ inner.horizontal = 10
 inner.vertical = 10
 outer.left = 10
 outer.bottom = 10
-outer.top = [{ monitor."main" = 20 }, 20]
+outer.top = [{ monitor."built-in" = 15 }, 45]
 outer.right = 10
 
 # 'main' binding mode declaration
