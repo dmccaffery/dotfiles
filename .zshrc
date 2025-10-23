@@ -7,6 +7,23 @@ elif [ -x '/opt/homebrew/bin/brew' ]; then
 	eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+if [ -n "${HOMEBREW_PREFIX:-}" ]; then
+	site_functions="${HOMEBREW_PREFIX}/share/zsh/site-functions"
+
+	if [ "${FPATH#*"${site_functions}"}" = "${FPATH}" ]; then
+		fpath=("${site_functions}" "${fpath[@]}")
+	fi
+fi
+
+# load completion
+autoload -U +X bashcompinit
+bashcompinit
+
+if ! (( $+functions[compdef] )); then
+	autoload -U +X compinit
+	compinit
+fi
+
 # set the zinit home
 if [ -n "${HOMEBREW_PREFIX:-}" ]; then
 	ZINIT_HOME="${HOMEBREW_PREFIX}/opt/zinit"
@@ -25,14 +42,6 @@ zinit light Aloxaf/fzf-tab
 # add in some snippets
 zinit snippet OMZP::sudo
 zinit snippet OMZP::command-not-found
-
-if [ -n "${HOMEBREW_PREFIX:-}" ]; then
-  FPATH="${HOMEBREW_PREFIX}/share/zsh/site-functions:${FPATH}"
-fi
-
-# load completions
-autoload -Uz compinit
-compinit
 
 zinit cdreplay -q
 
@@ -79,11 +88,11 @@ eval "$(zoxide init --cmd cd zsh)"
 eval "$(direnv hook zsh)"
 
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-  eval "$(oh-my-posh init zsh)"
+	eval "$(oh-my-posh init zsh)"
 fi
 
 SCRIPTS_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/scripts"
 
 if [ -d "${SCRIPTS_DIR:-}" ]; then
-  export PATH="${PATH}:${SCRIPTS_DIR}"
+	export PATH="${PATH}:${SCRIPTS_DIR}"
 fi
