@@ -25,3 +25,11 @@ else
 	# included in the os, which can change
 	brew reinstall stow 1>/dev/null 2>&1
 fi
+
+if ! command -v oh-my-posh 1>/dev/null; then
+	brew reinstall "jandedobbeleer/oh-my-posh/oh-my-posh"
+fi
+
+# cleanup services
+info "cleaning up brew services"
+brew services cleanup
