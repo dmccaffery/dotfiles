@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.1.0](https://github.com/dmccaffery/dotfiles/compare/v1.0.0...v1.1.0) (2025-10-27)
+
+
+### Features
+
+* **install:** add bun to brews ([35e21f6](https://github.com/dmccaffery/dotfiles/commit/35e21f64d1f0a559d3325d9c7bb6448bb896b4ab))
+* **install:** add figlet ([034dc50](https://github.com/dmccaffery/dotfiles/commit/034dc50c38cca53470bfa4683e74038e1381c40e))
+* **nvim:** add custom header for the dashboard ([d9368ad](https://github.com/dmccaffery/dotfiles/commit/d9368ad08e0c3c54fa8d08b9de11ad5c71fc95c9))
+* **wm:** add warp mouse to allow paperwm to work with multiple monitors ([6141b57](https://github.com/dmccaffery/dotfiles/commit/6141b5766dab55cdb77e8c4d4c967243ec9a891f))
+
+
+### Bug Fixes
+
+* **install:** install oh-my-posh as a formula ([96de2f9](https://github.com/dmccaffery/dotfiles/commit/96de2f9db11449ec42ab01f9cfce6cf6e23024e0))
+* **scripts:** find sk keys even when git ignored ([d6dd630](https://github.com/dmccaffery/dotfiles/commit/d6dd63055d76409e096214aeb39ee945732f11e5))
+
 ## 1.0.0 (2025-10-23)
 
 
