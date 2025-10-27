@@ -57,7 +57,7 @@ brew "zsh"
 brew "bufbuild/buf/buf"
 brew "derailed/k9s/k9s"
 brew "hashicorp/tap/terraform"
-brew "jandedobbeleer/oh-my-posh/oh-my-posh"
+brew "jandedobbeleer/oh-my-posh/oh-my-posh", args: ["formula"]
 brew "oven-sh/bun/bun"
 cask "font-fira-code-nerd-font"
 cask "font-symbols-only-nerd-font"
