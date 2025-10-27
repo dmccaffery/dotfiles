@@ -6,6 +6,11 @@ default_color=$(tput sgr 0)
 red="$(tput setaf 1)"
 yellow="$(tput setaf 3)"
 green="$(tput setaf 2)"
+blue="$(tput setaf 4)"
+
+info() {
+	printf "%s==> %s%s\n" "$blue" "$1" "$default_color"
+}
 
 success() {
 	printf "%s==> %s%s\n" "$green" "$1" "$default_color"
@@ -43,7 +48,7 @@ warning "selected key with serial: ${serial}; make sure you touch this key when 
 	find . -type f -not -name '*.pub' -exec ssh-add {} \;
 
 	success 'selecting default ssh key'
-	selected=$(fd --exclude '*.pub' | fzf --header='select default key' --height=20% --select-1)
+	selected=$(fd --unrestricted --exclude '*.pub' | fzf --header='select default key' --height=20% --select-1)
 
 	success "updating default security key to: ${selected}"
 	ln -fs "$(readlink -f "${keydir}"/"${selected}")" ~/.ssh/id_default_sk
@@ -53,4 +58,5 @@ warning "selected key with serial: ${serial}; make sure you touch this key when 
 public_key=$(cat ~/.ssh/id_default_sk.pub)
 
 info "adding default key to allowed signers file"
+touch ~/.ssh/.git_allowed_signers
 grep -q "${public_key}" ~/.ssh/.git_allowed_signers || echo "${public_key}" >>~/.ssh/.git_allowed_signers
