@@ -8,10 +8,13 @@ SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
 
 warning "shutting down hammerspoon"
-killall Hammerspoon
+killall Hammerspoon 2>/dev/null || true
 
 info "setting hammerspoon configuration path to use xdg config"
 defaults write org.hammerspoon.Hammerspoon MJConfigFile "${XDG_CONFIG_HOME}/hammerspoon/init.lua"
+
+spoons="${XDG_CONFIG_HOME}"/hammerspoon/spoons
+mkdir -p "${spoons}"
 
 info "downloading spoon install"
 temp=$(mktemp)
@@ -20,11 +23,23 @@ curl -fsSL \
 	-o "${temp}"
 
 info "unzipping spoon install"
-spoons="${XDG_CONFIG_HOME}"/hammerspoon/spoons
+spoon="${spoons}/SpoonInstall.spoon"
+rm -rf "${spoon}" 1>/dev/null 2>&1
+mkdir -p "${spoon}"
+tar -xvf "${temp}" --strip-components=1 -C "${spoon}"
+rm -f "${temp}"
 
-mkdir -p "${spoons}"
-rm -rf "${spoons}"/SpoonInstall.spoon
-unzip "${temp}" -d "${XDG_CONFIG_HOME}"/hammerspoon/spoons
+info "downloading warp mouse"
+temp=$(mktemp)
+curl -fsSL \
+	https://github.com/mogenson/WarpMouse.spoon/archive/refs/heads/main.zip \
+	-o "${temp}"
+
+info "unzipping warp mouse"
+spoon="${spoons}/WarpMouse.spoon"
+rm -rf "${spoon}" 1>/dev/null 2>&1
+mkdir -p "${spoon}"
+tar -xvf "${temp}" --strip-components=1 -C "${spoon}"
 rm -f "${temp}"
 
 info "launching hammerspoon"
