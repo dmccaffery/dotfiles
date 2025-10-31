@@ -42,7 +42,7 @@
 
 [alias]
 	append = town append
-	browse = town repo
+	browse = "!f() { git-town repo upstream 1>/dev/null 2>&1 || git-town repo 1>/dev/null 2>&1; }; f"
 	compress = town compress
 	contribute = town contribute
 	delete = town delete
