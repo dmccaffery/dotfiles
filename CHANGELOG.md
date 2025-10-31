@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.2.0](https://github.com/dmccaffery/dotfiles/compare/v1.1.0...v1.2.0) (2025-10-31)
+
+
+### Features
+
+* change font to iosevka ([eb4c66c](https://github.com/dmccaffery/dotfiles/commit/eb4c66c8d36b922e07b7625ef4283e1e19475e4e))
+* **git:** use upstream by default in browse alias ([0fcf7a4](https://github.com/dmccaffery/dotfiles/commit/0fcf7a45eaaf57ee5b131df218559642a10b940a))
+* **nvim:** add linting to protobuf using buf ([25e6a5c](https://github.com/dmccaffery/dotfiles/commit/25e6a5c693e448c425500b668976a89614ef04ff))
+* **nvim:** add trivy to tofu/terraform ([1c68281](https://github.com/dmccaffery/dotfiles/commit/1c6828142a8d2fa4bcc3c736b09b81ce36929130))
+* **nvim:** update lazy and all dependencies ([9c613bc](https://github.com/dmccaffery/dotfiles/commit/9c613bc9a4f80aef05a352ced9e2f709f3243af5))
+* replace eza with lsd ([9824c04](https://github.com/dmccaffery/dotfiles/commit/9824c04ce2ef620e031cca94154d5b57e98d3de3))
+
+
+### Bug Fixes
+
+* **tmux:** do not set default terminal ([efd0e62](https://github.com/dmccaffery/dotfiles/commit/efd0e62b29355800b2babd2f075325c048a0614e))
+* **wm:** correctly handle changing displays ([d161229](https://github.com/dmccaffery/dotfiles/commit/d1612297e46adbe25b0ef64660f3d6847ad49cea))
+
 ## [1.1.0](https://github.com/dmccaffery/dotfiles/compare/v1.0.0...v1.1.0) (2025-10-27)
 
 
