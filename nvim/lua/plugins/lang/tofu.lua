@@ -1,16 +1,14 @@
 return {
   {
     "mason-org/mason.nvim",
-    opts = function(_, opts)
-      opts.ensure_installed = opts.ensure_installed or {}
-      table.insert(opts.ensure_installed, "tofu-ls")
-    end,
+    opts = { ensure_installed = { "tofu-ls", "trivy" } },
   },
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
         tofu_ls = {},
+        tflint = {},
       },
     },
   },
@@ -19,9 +17,9 @@ return {
     optional = true,
     opts = {
       linters_by_ft = {
-        tofu = { "tofu" },
-        opentofu = { "tofu" },
-        ["opentofu-vars"] = { "tofu" },
+        tofu = { "tofu", "trivy" },
+        opentofu = { "tofu", "trivy" },
+        ["opentofu-vars"] = { "tofu", "trivy" },
       },
     },
   },
@@ -30,8 +28,7 @@ return {
     optional = true,
     opts = {
       formatters_by_ft = {
-        hcl = { "packer_fmt" },
-        tofu = { "tofu" },
+        tofu = { "tofu_fmt" },
         opentofu = { "tofu_fmt" },
         ["opentofu-vars"] = { "tofu_fmt" },
       },
