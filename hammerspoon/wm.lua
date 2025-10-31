@@ -1,39 +1,36 @@
 local function setDisplays(PaperWM)
   local allScreens = hs.screen.allScreens()
-  local wmScreens = nil
 
   if #allScreens == 1 then
-    wmScreens = allScreens
-  else
-    wmScreens = {}
-    for _, screen in ipairs(allScreens) do
-      local name = screen:name()
-      local builtIn = name:find("^Built%-in") ~= nil
+    PaperWM.window_filter:setDefaultFilter()
+    return
+  end
 
-      if not builtIn then
-        table.insert(wmScreens, screen:id())
-        print("using screen: " .. name)
-      else
-        print("skipping: " .. name)
-      end
-    end
+  local screens = {}
 
-    for key, screen in ipairs(wmScreens) do
-      print("screen", key, screen)
+  for _, screen in ipairs(allScreens) do
+    local name = screen:name()
+    local builtIn = name:find("^Built%-in") ~= nil
+
+    if not builtIn then
+      table.insert(screens, screen:id())
+      print("using screen: " .. name)
+    else
+      print("skipping: " .. name)
     end
   end
 
-  PaperWM.window_filter:setScreens(wmScreens)
+  PaperWM.window_filter:setScreens(screens)
 end
 
--- local function watchDisplays()
---   local PaperWM = hs.loadSpoon("PaperWM")
---   setDisplays(PaperWM)
---   PaperWM:start()
--- end
---
--- local screenWatcher = hs.screen.watcher.new(watchDisplays)
--- screenWatcher:start()
+local function watchDisplays()
+  local PaperWM = hs.loadSpoon("PaperWM")
+  setDisplays(PaperWM)
+  PaperWM:start()
+end
+
+local screenWatcher = hs.screen.watcher.new(watchDisplays)
+screenWatcher:start()
 
 spoon.SpoonInstall.repos.PaperWM = {
   url = "https://github.com/mogenson/PaperWM.spoon",
