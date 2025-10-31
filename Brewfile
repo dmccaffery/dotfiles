@@ -61,6 +61,7 @@ brew "hashicorp/tap/terraform"
 brew "jandedobbeleer/oh-my-posh/oh-my-posh", args: ["formula"]
 brew "oven-sh/bun/bun"
 cask "font-fira-code-nerd-font"
+cask "font-iosevka-nerd-font"
 cask "font-symbols-only-nerd-font"
 cask "ghostty"
 cask "git-credential-manager"

@@ -9,8 +9,8 @@ auto-update = download
 
 # theme
 theme = dark:cyberdream,light:cyberdream-light
-font-family = "FiraCode Nerd Font"
-font-size = 15
+font-family = "Iosevka NF"
+font-size = 20
 
 # mouse
 mouse-hide-while-typing = true

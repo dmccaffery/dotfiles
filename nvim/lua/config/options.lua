@@ -20,9 +20,10 @@ g.autoformat = true
 g.editorconfig = true
 
 -- ui
-g.gui_font_default_size = 10
-g.gui_font_fize = g.gui_font_default_size
-g.gui_font_face = "FiraCode Nerd Font"
+g.gui_font_fize = 16
+g.gui_font_face = "Iosevka NF"
+o.guifont = "Iosevka NF:h16"
+o.guifont = string.format("%s:h%s", g.gui_font_face, g.gui_font_size)
 
 -- cursor
 o.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
@@ -70,7 +71,4 @@ o.breakindent = true
 o.smoothscroll = true
 
 -- disable lsp logs -- this will grow infinitely so only enable it if you need it
-vim.lsp.log.set_level("off")
-
--- enable tofu ls
-vim.lsp.enable("tofu_ls")
+-- vim.lsp.log.set_level("off")
