@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+set -eu
+
+selected="${1:-}"
+
+if [ ! -d "${REPOS_DIR:-}" ]; then
+	REPOS_DIR='.'
+fi
+
+if [ "${selected:-}" = "." ]; then
+	REPOS_DIR="${PWD}"
+	selected=
+fi
+
+selected=$(tmux list-session -F '#S' | fzf --query "${selected}" --select-1)
+
+if [ -z "${selected:-}" ]; then
+	exit 0
+fi
+
+name=$(basename "${selected}" | tr . _)
+
+tmux -u attach-session -t "${name}" 2> /dev/null || tmux switch-client -t "${name}"
