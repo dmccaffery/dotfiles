@@ -14,12 +14,12 @@ LAUNCH_DAEMONS=/Library/LaunchDaemons/
 ZSCALER_SERVICE="${LAUNCH_DAEMONS}/com.zscaler.service.plist"
 ZSCALER_TUNNEL="${LAUNCH_DAEMONS}/com.zscaler.tunnel.plist"
 
-if [ -f "${ZSCALER_TUNNEL}" ] && sudo launchctl list | grep 'com.zscaler.tunnel' >/dev/null; then
+if [ -f "${ZSCALER_TUNNEL}" ] && sudo launchctl list | grep 'com.zscaler.tunnel' > /dev/null; then
 	warning "disabling zscaler tunnel..."
 	sudo launchctl unload "${ZSCALER_TUNNEL}"
 fi
 
-if [ -f "${ZSCALER_SERVICE}" ] && sudo launchctl list | grep 'com.zscaler.service' >/dev/null; then
+if [ -f "${ZSCALER_SERVICE}" ] && sudo launchctl list | grep 'com.zscaler.service' > /dev/null; then
 	warning "disabling zscaler service..."
 	sudo launchctl unload "${ZSCALER_SERVICE}"
 fi

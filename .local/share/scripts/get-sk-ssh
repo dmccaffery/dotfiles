@@ -37,7 +37,7 @@ warning "selected key with serial: ${serial}; make sure you touch this key when 
 (
 	keydir=~/.ssh/sk/"${serial}"
 
-	rm -rf "${keydir}" 1>/dev/null 2>&1 || true
+	rm -rf "${keydir}" 1> /dev/null 2>&1 || true
 	mkdir -p "${keydir}"
 	cd "${keydir}"
 
@@ -59,4 +59,4 @@ public_key=$(cat ~/.ssh/id_default_sk.pub)
 
 info "adding default key to allowed signers file"
 touch ~/.ssh/.git_allowed_signers
-grep -q "${public_key}" ~/.ssh/.git_allowed_signers || echo "${public_key}" >>~/.ssh/.git_allowed_signers
+grep -q "${public_key}" ~/.ssh/.git_allowed_signers || echo "$(git config --get user.email) namespaces=\"git\" ${public_key}" >> ~/.ssh/.git_allowed_signers

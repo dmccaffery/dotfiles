@@ -20,12 +20,14 @@ indent_size = 2
 indent_size = 4
 max_line_length = 120
 
-[{Makefile,config,install,backup,.zshrc,sketchybarrc}]
+[{Makefile,config,install,backup,.zshrc,rc}]
 indent_style = tab
 
-[*.{sh,config}]
+[{.local/share/scripts/*,*.sh}]
 indent_style = tab
+language_dialect = posix
+space_redirects = true
 
-[scripts/*]
+[*.{plist,xml}]
 indent_style = tab
 

@@ -4,7 +4,7 @@ set -euo pipefail
 
 INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SETUP_DIR="${INSTALL_DIR}/setup"
-SCRIPT_DIR="${INSTALL_DIR}/scripts"
+SCRIPT_DIR="${INSTALL_DIR}/.local/share/scripts"
 
 . "${SETUP_DIR}/printing.sh"
 
