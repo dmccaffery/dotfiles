@@ -7,7 +7,9 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        tofu_ls = {},
+        tofu_ls = {
+          filetypes = { "opentofu", "opentofu-vars" },
+        },
         tflint = {},
       },
     },

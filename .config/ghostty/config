@@ -10,7 +10,7 @@ auto-update = download
 # theme
 theme = dark:cyberdream,light:cyberdream-light
 font-family = "Iosevka NF"
-font-size = 20
+font-size = 15
 
 # mouse
 mouse-hide-while-typing = true

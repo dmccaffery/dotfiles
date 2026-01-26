@@ -47,6 +47,7 @@ source "${ZINIT_HOME}/zinit.zsh"
 # add some zinit plugins
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-autosuggestions
+# zinit light spaceship-prompt/spaceship-prompt
 zinit light Aloxaf/fzf-tab
 
 # add in some snippets
@@ -89,6 +90,7 @@ alias ll='ls -l'
 alias lt='ls --tree'
 
 alias sts='start-tmux-session'
+alias ats='attach-tmux-session'
 
 alias vim='nvim'
 alias vi='nvim'
@@ -99,11 +101,6 @@ eval "$(zoxide init --cmd cd zsh)"
 eval "$(direnv hook zsh)"
 eval "$(fnm env --use-on-cd)"
 
-# setup the ssh-agent if not already available
-if [ -z "${SSH_AGENT_SOCK:-}" ]; then
-	eval "$(ssh-agent -s)" 1>/dev/null
-fi
-
 # setup the prompt
 POSH_THEME="${HOME}/.config/oh-my-posh/flags.toml"
 eval "$(oh-my-posh init zsh --config "${POSH_THEME}")"
@@ -113,7 +110,7 @@ if [ "${TERM_PROGRAM}" = "vscode" ]; then
 fi
 
 # add scripts to path
-SCRIPTS_DIR="${XDG_CONFIG_HOME}/scripts"
+SCRIPTS_DIR="${XDG_DATA_HOME}/scripts"
 if [ -d "${SCRIPTS_DIR:-}" ]; then
 	export PATH="${PATH}:${SCRIPTS_DIR}"
 fi

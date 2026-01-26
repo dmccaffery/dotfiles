@@ -26,6 +26,13 @@
 	process = git-lfs filter-process
 	required = true
 
+[gpg]
+	format = ssh
+
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/.git_allowed_signers
+	defaultKeyCommand = "ssh-add -L"
+
 [credential]
 	gitHubAuthModes = oauth
 	gitlabAuthModes = browser

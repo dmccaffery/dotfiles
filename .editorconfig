@@ -30,4 +30,3 @@ space_redirects = true
 
 [*.{plist,xml}]
 indent_style = tab
-

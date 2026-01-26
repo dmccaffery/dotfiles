@@ -2,6 +2,9 @@
 backup/
 
 !.github/
+!.config/
+!.local/
+!.ssh/
 
 !.gitignore
 !.gitattributes
