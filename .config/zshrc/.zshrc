@@ -102,7 +102,7 @@ eval "$(direnv hook zsh)"
 eval "$(fnm env --use-on-cd)"
 
 # setup the prompt
-POSH_THEME="${HOME}/.config/oh-my-posh/flags.toml"
+POSH_THEME="${HOME}/.config/oh-my-posh/prompt.toml"
 eval "$(oh-my-posh init zsh --config "${POSH_THEME}")"
 
 if [ "${TERM_PROGRAM}" = "vscode" ]; then
