@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+if [[ "$1" == "Confirm user presence"* ]]; then
+	echo
+else
+	HASHTYPE=$(echo $1 | awk -F':' '{print $1}')
+	if [[ "$HASHTYPE" == *"SHA256" ]]; then
+		SHA256=$(echo $1 | awk -F':' '{print $2}')
+		PROMPT="SETDESC $1\nOPTION allow-external-password-cache\nSETKEYINFO $SHA256\nGETPIN"
+	else
+		PROMPT="SETDESC $1\nGETPIN"
+	fi
+
+	PIN=$(echo -e $PROMPT | /opt/homebrew/bin/pinentry-mac | grep D | tr -d '\n')
+	echo "${PIN:2}"
+fi

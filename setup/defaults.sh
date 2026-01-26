@@ -81,3 +81,7 @@ defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
 
 # restart the dock
 killall Dock
+
+# use keychain for pins
+defaults write org.gpgtools.common UseKeychain -bool yes
+defaults write org.gpgtools.common DisableKeychain -bool no
