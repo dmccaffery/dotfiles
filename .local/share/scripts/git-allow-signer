@@ -1,0 +1,51 @@
+#!/usr/bin/env sh
+
+set -eux
+
+default_color=$(tput sgr 0)
+red="$(tput setaf 1)"
+yellow="$(tput setaf 3)"
+blue="$(tput setaf 4)"
+
+info() {
+	printf "%s==> %s%s\n" "$blue" "$1" "$default_color"
+}
+
+error() {
+	printf "%s==> %s%s\n" "$red" "$1" "$default_color"
+}
+
+warning() {
+	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color"
+}
+
+allowed_signers=${1:-allowed_signers}
+
+user=$(git config --get user.email)
+key=$(git config --get user.signingkey)
+
+if [ -z "${user:-}" ]; then
+	error "user email is not set"
+	exit 1
+fi
+
+if [ -z "${key:-}" ]; then
+	error "user signing key is not set"
+	exit 1
+fi
+
+if [ ! -r "${key:-}" ]; then
+	error "user signing key at: ${key} does not exist or is not readable"
+	exit 1
+fi
+
+publc_key=$(cat "${key}")
+
+touch "${allowed_signers}"
+if [ $(grep -q "${public_key}") "${allowed_signers}" ] 1> /dev/null 2>&1; then
+	warning "signing key already exists in allowed signers file"
+	exit 1
+fi
+
+info "adding ${user}: ${public_key} to ${allowed_signers}"
+echo "${user} namespace=\"git\" ${public_key}" >> "${allowed_signers}"
