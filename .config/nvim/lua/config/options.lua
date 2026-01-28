@@ -10,7 +10,7 @@ vim.loader.enable()
 
 -- defaults
 g.lualine_info_extras = false
-g.lazyvim_cmp = "blink"
+g.lazyvim_cmp = "auto"
 g.lazyvim_picker = "snacks"
 
 -- formatting
