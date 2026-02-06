@@ -6,7 +6,7 @@ SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "${SETUP_DIR}/printing.sh"
 
 info "installing cli tools"
-if xcode-select -p >/dev/null; then
+if xcode-select -p > /dev/null; then
 	warning "cli tools are already installed"
 else
 	xcode-select --install
@@ -16,7 +16,7 @@ fi
 info "installing homebrew"
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
-if hash brew &>/dev/null; then
+if hash brew &> /dev/null; then
 	warning "homebrew already installed"
 else
 	sudo --validate
