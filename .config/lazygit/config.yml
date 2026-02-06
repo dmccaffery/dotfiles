@@ -23,5 +23,6 @@ quitOnTopLevelReturn: true
 git:
   pagers:
     - pager: delta --dark --paging=never --diff-so-fancy --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+  overrideGpg: true
 os:
   editPreset: "nvim-remote"
