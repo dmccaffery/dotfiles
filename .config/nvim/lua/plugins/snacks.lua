@@ -1,6 +1,7 @@
 return {
   "folke/snacks.nvim",
   opts = {
+    image = {},
     picker = {
       sources = {
         explorer = {
