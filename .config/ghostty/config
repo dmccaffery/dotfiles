@@ -11,6 +11,8 @@ auto-update = download
 theme = dark:cyberdream,light:cyberdream-light
 font-family = "Iosevka NF"
 font-size = 15
+background-opacity = 0.9
+background-blur = 5
 
 # mouse
 mouse-hide-while-typing = true
@@ -26,6 +28,10 @@ window-padding-y = 5,5
 window-decoration = true
 window-colorspace = display-p3
 window-save-state = always
+
+# positioning (fill by default)
+window-height = 5000
+window-width = 5000
 
 # splits
 unfocused-split-opacity = 0.50
