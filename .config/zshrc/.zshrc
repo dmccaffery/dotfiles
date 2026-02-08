@@ -128,8 +128,18 @@ if command -v 'gcloud' 1>/dev/null 2>&1; then
 	export PATH="${GOOGLE_BIN_PATH}:${PATH}"
 fi
 
+# yazi cd
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
 # end zsh profiling if enabled
 if [ -n "${ZSHPROFILE:-}" ]; then
 	zprof
 	printf '\n\nTIMINGS:\n\n'
 fi
+
