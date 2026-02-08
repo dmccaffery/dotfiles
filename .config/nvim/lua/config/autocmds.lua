@@ -16,7 +16,6 @@ local auto_close_filetype = {
   "mason",
   "lspinfo",
   "toggleterm",
-  "null-ls-info",
   "notify",
 }
 
@@ -42,8 +41,6 @@ autocmd("FileType", {
     "mason",
     "lspinfo",
     "toggleterm",
-    "null-ls-info",
-    "neo-tree-popup",
     "notify",
     "floaterm",
   },
