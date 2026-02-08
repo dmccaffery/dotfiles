@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+set -eu
+
+ALLOWED=$(gh ssh-key list | grep signing | cut -f 2)
+
+if [ -z "${ALLOWED:-}" ]; then
+	echo "No signing keys are available for the currently authenticated user." >&2
+	exit 1
+fi
+
+AVAILABLE=$(ssh-add -L)
+
+if [ -z "${AVAILABLE:-}" ]; then
+	echo "No keys found in local ssh agent." >&2
+	exit 1
+fi
+
+MATCH=$(echo "$AVAILABLE" | while IFS= read -r line; do
+	key_blob=$(echo "${line}" | cut -d ' ' -f 2)
+
+	if echo "$ALLOWED" | grep -F -q "${key_blob}"; then
+		echo "$line"
+		break
+	fi
+done)
+
+if [ -z "${MATCH:-}" ]; then
+	echo "No local agent key matches the allowed signing keys." >&2
+	exit 1
+fi
+
+echo "key::${MATCH}"
