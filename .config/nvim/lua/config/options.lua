@@ -3,10 +3,13 @@
 
 local g = vim.g
 local o = vim.opt
-local space = "·"
 
 -- optimise startup
 vim.loader.enable()
+g.loaded_python3_provider = 0
+g.loaded_perl_provider = 0
+g.loaded_ruby_provider = 0
+g.loaded_node_provider = 0
 
 -- defaults
 g.lualine_info_extras = false
@@ -44,6 +47,8 @@ o.splitbelow = true
 o.colorcolumn = "80,120"
 
 -- show whitespace characters
+local space = "·"
+
 o.list = true
 o.listchars:append({
   tab = ">—",
@@ -71,4 +76,4 @@ o.breakindent = true
 o.smoothscroll = true
 
 -- disable lsp logs -- this will grow infinitely so only enable it if you need it
--- vim.lsp.log.set_level("off")
+vim.lsp.log.set_level("off")

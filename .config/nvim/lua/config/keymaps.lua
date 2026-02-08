@@ -36,15 +36,6 @@ map("n", "<A-s>", "<cmd>noautocmd w<CR>", { desc = "Save Without Formatting" })
 map("n", "+", "<C-a>")
 map("n", "-", "<C-x>")
 
--- status line
-map("n", "<leader>uS", function()
-  if o.laststatus == 0 then
-    o.laststatus = 3
-  else
-    o.laststatus = 0
-  end
-end, { desc = "Toggle Statusline" })
-
 -- redo the right way
 map("n", "U", "<C-r>", { desc = "Redo" })
 
