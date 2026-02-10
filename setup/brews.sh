@@ -5,6 +5,8 @@ set -euo pipefail
 SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "${SETUP_DIR}/printing.sh"
 
+info "setting up homebrew..."
+
 INSTALL_DIR="${INSTALL_DIR:-${SETUP_DIR}/..}"
 
 brew_cmd=$(command -v brew 2>&1)

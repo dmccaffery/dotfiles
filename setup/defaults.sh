@@ -5,7 +5,7 @@ set -euo pipefail
 SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "${SETUP_DIR}/printing.sh"
 
-info "applying macOS system defaults"
+info "applying macOS system defaults..."
 
 # enable key repeats
 defaults write -g ApplePressAndHoldEnabled -bool false

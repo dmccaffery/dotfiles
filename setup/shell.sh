@@ -3,11 +3,11 @@
 set -euo pipefail
 
 SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SCRIPT_DIR="${SETUP_DIR}/../.local/share/scripts"
-
 . "${SETUP_DIR}/printing.sh"
 
-XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
+info "setting up default shell..."
+
+XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 
 ZSH_BIN="$(command -v zsh)"
 
@@ -33,8 +33,10 @@ fi
 touch "${HOME}/.hushlogin"
 
 # setup ssh ask pass (for pinentry)
-sudo cp -f "${SCRIPT_DIR}/ssh-askpass" /usr/local/bin
-sudo chmod u=rwx,go=rx "/usr/local/bin/ssh-askpass"
+if [ ! -f /usr/local/bin/ssh-askpass ]; then
+	warning "linking ssh-askpass to /usr/local/bin"
+	sudo ln -fs "${HOME}/.local/share/scripts/ssh-askpass" /usr/local/bin
+fi
 
 # disable agents
 launchctl disable gui/${UID}/com.openssh.ssh-agent 2> /dev/null || true
