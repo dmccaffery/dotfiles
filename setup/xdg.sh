@@ -5,6 +5,8 @@ set -euo pipefail
 SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "${SETUP_DIR}/printing.sh"
 
+info "setting up xdg paths..."
+
 XDG_CONFIG_HOME="$HOME/.config"
 
 if [ ! -d "${XDG_CONFIG_HOME}" ]; then

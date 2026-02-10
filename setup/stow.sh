@@ -5,6 +5,8 @@ set -euo pipefail
 SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "${SETUP_DIR}/printing.sh"
 
+info "stowing config..."
+
 INSTALL_DIR="${INSTALL_DIR:-${SETUP_DIR}/..}"
 
 if ! command -v stow 1> /dev/null 2>&1; then
