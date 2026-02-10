@@ -16,6 +16,9 @@ SCRIPT_DIR="${INSTALL_DIR}/.local/share/scripts"
 . "${SETUP_DIR}/brews.sh"
 . "${SETUP_DIR}/stow.sh"
 . "${SETUP_DIR}/shell.sh"
+. "${SETUP_DIR}/github-auth.sh"
+
+"${SCRIPT_DIR}/get-sk-ssh"
 
 "${SCRIPT_DIR}/enable-zs"
 

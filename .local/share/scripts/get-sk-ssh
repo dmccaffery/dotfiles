@@ -16,47 +16,41 @@ success() {
 	printf "%s==> %s%s\n" "$green" "$1" "$default_color"
 }
 
-error() {
-	printf "%s==> %s%s\n" "$red" "$1" "$default_color"
-}
-
 warning() {
 	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color"
 }
 
-success 'selecting security key'
-serial=$(ykman list -s | fzf --header='select security key' --height=20% --select-1)
+info "setting up ssh agent..."
 
-if [ -z "${serial:-}" ]; then
-	error 'no security key available'
+if ! ssh-add -L 1> /dev/null 2>&1; then
+	warning "adding resident keys from security key to agent..."
+	ssh-add -K
+	success "keys successfully added to agent!"
+fi
+
+info "updating git allowed signers..."
+
+allowed_signers="${HOME}/.ssh/.git_allowed_signers"
+user=$(git config --get user.email)
+key=$(git-sk)
+
+if [ -z "${user:-}" ]; then
+	error "user email is not set"
 	exit 1
 fi
 
-warning "selected key with serial: ${serial}; make sure you touch this key when extracting resident keys"
+if [ -z "${key:-}" ]; then
+	error "user signing key is not set"
+	exit 1
+fi
 
-(
-	keydir=~/.ssh/sk/"${serial}"
+public_key="${key#key::}"
 
-	rm -rf "${keydir}" 1> /dev/null 2>&1 || true
-	mkdir -p "${keydir}"
-	cd "${keydir}"
+touch "${allowed_signers}"
+if [ $(echo "${public_key}" | grep -F -q "${public_key}") ] 1> /dev/null 2>&1; then
+	warning "signing key already exists in allowed signers file"
+	exit 1
+fi
 
-	warning 'extracting resident public keys from yubikey, pin will be required'
-	ssh-keygen -K
-
-	success 'registering keys with ssh agent'
-	find . -type f -not -name '*.pub' -exec ssh-add {} \;
-
-	success 'selecting default ssh key'
-	selected=$(fd --unrestricted --exclude '*.pub' | fzf --header='select default key' --height=20% --select-1)
-
-	success "updating default security key to: ${selected}"
-	ln -fs "$(readlink -f "${keydir}"/"${selected}")" ~/.ssh/id_default_sk
-	ln -fs "$(readlink -f "${keydir}"/"${selected}".pub)" ~/.ssh/id_default_sk.pub
-)
-
-public_key=$(cat ~/.ssh/id_default_sk.pub)
-
-info "adding default key to allowed signers file"
-touch ~/.ssh/.git_allowed_signers
-grep -q "${public_key}" ~/.ssh/.git_allowed_signers || echo "$(git config --get user.email) namespaces=\"git\" ${public_key}" >> ~/.ssh/.git_allowed_signers
+info "adding ${user}: ${public_key} to ${allowed_signers}"
+echo "${user} namespaces=\"git\" ${public_key}" >> "${allowed_signers}"
