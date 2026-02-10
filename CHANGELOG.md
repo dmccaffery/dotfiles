@@ -1,5 +1,64 @@
 # Changelog
 
+## [2.0.0](https://github.com/dmccaffery/dotfiles/compare/v1.1.0...v2.0.0) (2026-02-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* move config to its own path
+* remove hammerspoon and karabiner
+
+### Features
+
+* **brew:** add docker-buildx ([e29ffbe](https://github.com/dmccaffery/dotfiles/commit/e29ffbef18fb118c576761bf7cf4bd72cab44044))
+* **brew:** add gemini-cli ([5cd772b](https://github.com/dmccaffery/dotfiles/commit/5cd772b2e6c152faf87027fe6e357e8dda445f82))
+* **brew:** add git-filter-repo because i am stupid ([405929f](https://github.com/dmccaffery/dotfiles/commit/405929f2c4e132ffa83a63052a8ea8eeb8f017bd))
+* **brew:** add kubectl for colima ([cd900d1](https://github.com/dmccaffery/dotfiles/commit/cd900d1e7e5491e14e5b3bea1f6f69dc8044a81c))
+* **brew:** add opencode ([52734da](https://github.com/dmccaffery/dotfiles/commit/52734daa4cb0e41a0a897bbccb712d2a328ddd85))
+* **brew:** add uv for python development ([334ccec](https://github.com/dmccaffery/dotfiles/commit/334ccec0938442c8a3ea436867b87ce3d78025f8))
+* **brew:** replace unifi identity enterprise with endpoint ([b6ce754](https://github.com/dmccaffery/dotfiles/commit/b6ce75475a441ad463c3543963e1cc34324ee625))
+* **btop:** add cyberdream theme ([c839e6b](https://github.com/dmccaffery/dotfiles/commit/c839e6b4cc75176100105756671fb2f8a59056b9))
+* change font to iosevka ([eb4c66c](https://github.com/dmccaffery/dotfiles/commit/eb4c66c8d36b922e07b7625ef4283e1e19475e4e))
+* **fastfetch:** add config for custom theme ([3520695](https://github.com/dmccaffery/dotfiles/commit/3520695f7c0e8899cc4819283ee48f65e6e3c458))
+* **ghostty:** maximize by default and set transparency ([35961d3](https://github.com/dmccaffery/dotfiles/commit/35961d3247af272b8bd70b7063cc42694ef87b25))
+* **git:** add custom ssh key command to detect sk ([0b48d5a](https://github.com/dmccaffery/dotfiles/commit/0b48d5ae452115b40d0db52a7ce840e80a4232e7))
+* **git:** use upstream by default in browse alias ([0fcf7a4](https://github.com/dmccaffery/dotfiles/commit/0fcf7a45eaaf57ee5b131df218559642a10b940a))
+* **lazygit:** override gpg now that we are using ssh-agent ([ebf7cab](https://github.com/dmccaffery/dotfiles/commit/ebf7cabf741232fdc18d81328e329f840f36352a))
+* **nvim:** add auto-save for buffers ([885ff57](https://github.com/dmccaffery/dotfiles/commit/885ff574419492d4900bc774de27837823b33004))
+* **nvim:** add ghostty config file completion ([4dcc3f7](https://github.com/dmccaffery/dotfiles/commit/4dcc3f77bf7e1af936a305e11d4612bb10fcd14a))
+* **nvim:** add image preview support to snacks ([189673b](https://github.com/dmccaffery/dotfiles/commit/189673b1f5d1755e1ce21f7f0b8d3684d138ad63))
+* **nvim:** add linting to protobuf using buf ([25e6a5c](https://github.com/dmccaffery/dotfiles/commit/25e6a5c693e448c425500b668976a89614ef04ff))
+* **nvim:** add trivy to tofu/terraform ([1c68281](https://github.com/dmccaffery/dotfiles/commit/1c6828142a8d2fa4bcc3c736b09b81ce36929130))
+* **nvim:** explicitly use blink for completion ([e805e9a](https://github.com/dmccaffery/dotfiles/commit/e805e9a4b586f16b44f8da8d393268cc8a0cc172))
+* **nvim:** only auto-save when leaving insert mode ([ee5c7b0](https://github.com/dmccaffery/dotfiles/commit/ee5c7b0e900354a31b18e35ab881addc223ac164))
+* **nvim:** remove config that is no longer necessary ([38d5ed2](https://github.com/dmccaffery/dotfiles/commit/38d5ed2972dfbce4b38336a845b11acf71c75774))
+* **nvim:** update all dependencies ([6ce408a](https://github.com/dmccaffery/dotfiles/commit/6ce408ad85155281e1368c7212ab9ee5a188e4a5))
+* **nvim:** update all lazy dependencies ([8421125](https://github.com/dmccaffery/dotfiles/commit/84211255a79cdcf480097b93305f1ae43381a367))
+* **nvim:** update lazy and all dependencies ([9c613bc](https://github.com/dmccaffery/dotfiles/commit/9c613bc9a4f80aef05a352ced9e2f709f3243af5))
+* **nvim:** update spelling dictionary ([32266da](https://github.com/dmccaffery/dotfiles/commit/32266dadaf96d7cf4072c477751fa5cb3677aa20))
+* replace eza with lsd ([9824c04](https://github.com/dmccaffery/dotfiles/commit/9824c04ce2ef620e031cca94154d5b57e98d3de3))
+* **scripts:** add a script for attaching to a tmux session ([f433ae2](https://github.com/dmccaffery/dotfiles/commit/f433ae272d6b8cf8e2b18efa7d69ffe47a7e606f))
+* **scripts:** add a script to update allowed git signers ([6017429](https://github.com/dmccaffery/dotfiles/commit/60174293db3ba2088e86ca8cb72541d7ee850e36))
+* **setup:** add more output for clarity ([f628575](https://github.com/dmccaffery/dotfiles/commit/f62857543285bd2af0f9cf7a6f38be715f711a9d))
+* **ssh:** add a new way to detect resident ssh keys ([eb12c6f](https://github.com/dmccaffery/dotfiles/commit/eb12c6f6494c15280cc67a9a439660c65edfbb1c))
+* **ssh:** add support for ssh-agent for resident security keys ([edffb45](https://github.com/dmccaffery/dotfiles/commit/edffb4585c50335914d88b9a4963b804b92ff445))
+* **tmux:** add additional keybind for killing the session ([86219bd](https://github.com/dmccaffery/dotfiles/commit/86219bd8834d95a35be574f6219bb689326b3f19))
+* **wallpapers:** add all ai generated custom wallpapers ([29993a9](https://github.com/dmccaffery/dotfiles/commit/29993a9ae81ad9b3f6ca09cabc71bd8ba4fd3f40))
+* **zsh:** add alias for tmux list-session and kill-server ([220ea93](https://github.com/dmccaffery/dotfiles/commit/220ea936a99d205a9c266a67c37e415bfd5b83d5))
+* **zsh:** add yazi alias function to cd to selected dir on exit ([f493e8e](https://github.com/dmccaffery/dotfiles/commit/f493e8ed2908806a6dac624cf6dab1c28fb2c8b6))
+
+
+### Bug Fixes
+
+* **tmux:** do not set default terminal ([efd0e62](https://github.com/dmccaffery/dotfiles/commit/efd0e62b29355800b2babd2f075325c048a0614e))
+* **wm:** correctly handle changing displays ([d161229](https://github.com/dmccaffery/dotfiles/commit/d1612297e46adbe25b0ef64660f3d6847ad49cea))
+
+
+### Code Refactoring
+
+* move config to its own path ([58643a3](https://github.com/dmccaffery/dotfiles/commit/58643a3ff7c6c644a523a716d321748b0a5eb3d8))
+* remove hammerspoon and karabiner ([c05c96e](https://github.com/dmccaffery/dotfiles/commit/c05c96ea459b3ae176ab7ca13bd0e6d91b29700a))
+
 ## [1.1.0](https://github.com/dmccaffery/dotfiles/compare/v1.0.0...v1.1.0) (2025-10-27)
 
 
