@@ -17,16 +17,22 @@ fi
 
 if [ ! -x "${brew_cmd:-}" ]; then
 	warn "brew could not be found; please ensure homebrew is installed"
-else
-	eval "$(${brew_cmd} shellenv)"
-
-	info "installing brews"
-	brew bundle install --force --cleanup --file="${INSTALL_DIR}/Brewfile"
-
-	# always reinstall stow because it dynamically links to the version of perl
-	# included in the os, which can change
-	brew reinstall stow 1> /dev/null 2>&1
+	return 0
 fi
+
+eval "$(${brew_cmd} shellenv)"
+
+info "installing common brews..."
+brew bundle install --force --cleanup --file="${INSTALL_DIR}/Brewfile"
+
+if uname -n | grep -F -q "bitwisemedia.uk" 1> /dev/null 2>&1; then
+	info "install bitwise brews..."
+	brew bundle install --force --file="${INSTALL_DIR}/Brewfile.bitwise"
+fi
+
+# always reinstall stow because it dynamically links to the version of perl
+# included in the os, which can change
+brew reinstall stow 1> /dev/null 2>&1
 
 if ! command -v oh-my-posh 1> /dev/null; then
 	brew reinstall "jandedobbeleer/oh-my-posh/oh-my-posh"
