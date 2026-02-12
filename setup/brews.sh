@@ -34,10 +34,6 @@ fi
 # included in the os, which can change
 brew reinstall stow 1> /dev/null 2>&1
 
-if ! command -v oh-my-posh 1> /dev/null; then
-	brew reinstall "jandedobbeleer/oh-my-posh/oh-my-posh"
-fi
-
 # setup buildx
 if command -v docker-buildx 1> /dev/null 2>&1; then
 	mkdir -p "${HOME}/.docker/cli-plugins"
