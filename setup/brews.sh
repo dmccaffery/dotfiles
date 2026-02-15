@@ -22,13 +22,17 @@ fi
 
 eval "$(${brew_cmd} shellenv)"
 
-info "installing common brews..."
-brew bundle install --force --cleanup --file="${INSTALL_DIR}/Brewfile"
+tmp=$(mktemp)
+cp "${INSTALL_DIR}/Brewfile" "${tmp}"
 
 if uname -n | grep -F -q "bitwisemedia.uk" 1> /dev/null 2>&1; then
-	info "install bitwise brews..."
-	brew bundle install --force --file="${INSTALL_DIR}/Brewfile.bitwise"
+	cat "${INSTALL_DIR}/Brewfile.bitwise" >> "${tmp}"
+	info "adding bitwise brews..."
 fi
+
+# install the brews
+brew bundle install --force --cleanup --file="${tmp}"
+rm -f "${tmp}"
 
 # always reinstall stow because it dynamically links to the version of perl
 # included in the os, which can change
