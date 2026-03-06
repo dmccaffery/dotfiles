@@ -25,9 +25,9 @@ eval "$(${brew_cmd} shellenv)"
 tmp=$(mktemp)
 cp "${INSTALL_DIR}/Brewfile" "${tmp}"
 
-if uname -n | grep -F -q "bitwisemedia.uk" 1> /dev/null 2>&1; then
-	cat "${INSTALL_DIR}/Brewfile.bitwise" >> "${tmp}"
-	info "adding bitwise brews..."
+if uname -n | grep -F -q "dm-mac" 1> /dev/null 2>&1; then
+	cat "${INSTALL_DIR}/Brewfile.personal" >> "${tmp}"
+	info "adding personal brews..."
 fi
 
 # install the brews
