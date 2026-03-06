@@ -72,6 +72,8 @@
 	sync-tags = false
 	sync-upstream = true
 	share-new-branches = push
+	github-connector = api
+	dev-remote = origin
 
 [include]
 	path = ~/.config/private/git/config
