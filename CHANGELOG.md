@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.1.0](https://github.com/dmccaffery/dotfiles/compare/v2.0.0...v2.1.0) (2026-03-06)
+
+
+### Features
+
+* add custom brewfiles for specific machines ([e8045cd](https://github.com/dmccaffery/dotfiles/commit/e8045cd35304298c121c26b13f94e72e23071900))
+* **brew:** add antigravity and vscode ([1f34272](https://github.com/dmccaffery/dotfiles/commit/1f34272dfd9f03bdfb049f6cf9e8ad1307fd804b))
+* **brew:** merge brews to avoid unnecessary reinstalls ([9ee4000](https://github.com/dmccaffery/dotfiles/commit/9ee4000a5fb804a03dc7fd4f9ed7b49a4c7a39dd))
+* **brew:** rename bitwise to personal ([c317c0a](https://github.com/dmccaffery/dotfiles/commit/c317c0ad0502a4517635acfef3aff7391cae5aab))
+* **brew:** use cask for oh-my-posh ([f5f417d](https://github.com/dmccaffery/dotfiles/commit/f5f417d4b6b1d72a3def73790e72bfd75b5fc997))
+* **gemini:** add cli configuration ([ed955de](https://github.com/dmccaffery/dotfiles/commit/ed955de1ac59d64447a26abbfb3c0db14153188e))
+* **git:** add additional git-town options ([d3a490d](https://github.com/dmccaffery/dotfiles/commit/d3a490d46aa4a3fbb3590ad2b5b404135343c37e))
+* **nvim:** add luasnip and helm extras ([6b4fecf](https://github.com/dmccaffery/dotfiles/commit/6b4fecf2793217114267c8e00d8fe897d2e7acd9))
+* **nvim:** add picker for snippets and update tmux picker ([d978e84](https://github.com/dmccaffery/dotfiles/commit/d978e848af67515321027e161edc54657215d6aa))
+* **nvim:** update all dependencies ([0ad6ff7](https://github.com/dmccaffery/dotfiles/commit/0ad6ff70d9531652e9632e80045f9d1d15fc4fbb))
+* **nvim:** update dependencies ([016c2ee](https://github.com/dmccaffery/dotfiles/commit/016c2ee8cf03383801e892fc212bcc0e9c44d5c6))
+* **nvim:** update spelling dictionary ([b86ea3a](https://github.com/dmccaffery/dotfiles/commit/b86ea3a00435e50e2bb4ce4c89aefbf6afbbc975))
+
 ## [2.0.0](https://github.com/dmccaffery/dotfiles/compare/v1.1.0...v2.0.0) (2026-02-10)
 
 
