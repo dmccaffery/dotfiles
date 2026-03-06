@@ -5,6 +5,7 @@ backup/
 !.config/
 !.local/
 !.ssh/
+!.gemini/
 
 !.gitignore
 !.gitattributes
