@@ -15,6 +15,7 @@ else
 	info "linking config symlinks to repository"
 	mkdir -p "${HOME}/.config"
 	mkdir -p "${HOME}/.ssh"
+	mkdir -p "${HOME}/.gemini"
 
 	stow --dir="${INSTALL_DIR}" .
 fi

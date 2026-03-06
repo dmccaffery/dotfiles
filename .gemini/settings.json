@@ -1,0 +1,25 @@
+{
+  "ui": {
+    "theme": "$HOME/.gemini/themes/cyberdream.json",
+    "hideBanner": true,
+    "dynamicWindowTitle": true,
+    "hideWindowTitle": true
+  },
+  "privacy": {
+    "usageStatisticsEnabled": false
+  },
+  "tools": {
+    "sandbox": true
+  },
+  "general": {
+    "sessionRetention": {
+      "enabled": true,
+      "maxAge": "14d"
+    }
+  },
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  }
+}
