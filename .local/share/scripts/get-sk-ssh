@@ -3,7 +3,6 @@
 set -eu
 
 default_color=$(tput sgr 0)
-red="$(tput setaf 1)"
 yellow="$(tput setaf 3)"
 green="$(tput setaf 2)"
 blue="$(tput setaf 4)"
@@ -47,7 +46,7 @@ fi
 public_key="${key#key::}"
 
 touch "${allowed_signers}"
-if [ $(echo "${public_key}" | grep -F -q "${public_key}") ] 1> /dev/null 2>&1; then
+if echo "${public_key}" | grep -F -q "${public_key}" 1> /dev/null 2>&1; then
 	warning "signing key already exists in allowed signers file"
 	exit 1
 fi

@@ -23,10 +23,9 @@ fi
 name=$(basename "${selected}" | tr . _)
 
 if ! tmux has-session -t "${name}" 2> /dev/null; then
-	tmux -u new-session -d -s "${name}" -n ' nvim' -c "${selected}" -x - -y - ${EDITOR} . \; \
+	tmux -u new-session -d -s "${name}" -n ' nvim' -c "${selected}" -x - -y - "${EDITOR}" . \; \
 		split-window -v -l '10%' -c "${selected}" \; \
 		new-window -a -d -c "${selected}" -n ' gemini (agent)' gemini \; \
-		new-window -a -d -c "${selected}" -n ' gemini (planning)' gemini --approval-mode=plan \; \
 		new-window -a -d -c "${selected}"
 fi
 
