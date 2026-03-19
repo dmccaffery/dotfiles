@@ -1,7 +1,4 @@
 return {
-  recommended = {
-    ft = { "xml", "plist" },
-  },
   {
     "nvim-treesitter/nvim-treesitter",
     opts = { ensure_installed = { "xml" } },
