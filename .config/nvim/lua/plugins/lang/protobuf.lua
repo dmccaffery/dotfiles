@@ -16,7 +16,7 @@ return {
     optional = true,
     opts = {
       linters_by_ft = {
-        proto = { "buf_lint" },
+        ["proto"] = { "buf_lint" },
       },
     },
   },
@@ -25,7 +25,7 @@ return {
     optional = true,
     opts = {
       formatters_by_ft = {
-        proto = { "buf" },
+        ["proto"] = { "buf" },
       },
     },
   },
