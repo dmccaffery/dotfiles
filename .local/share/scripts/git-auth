@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+default_color=$(tput sgr 0)
+yellow="$(tput setaf 3)"
+green="$(tput setaf 2)"
+blue="$(tput setaf 4)"
+
+info() {
+	printf "%s==> %s%s\n" "$blue" "$1" "$default_color"
+}
+
+success() {
+	printf "%s==> %s%s\n" "$green" "$1" "$default_color"
+}
+
+warning() {
+	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color"
+}
+
+info "checking github auth..."
+
+function join_by {
+	local d=${1-} f=${2-}
+	if shift 2; then
+		printf %s "$f" "${@/#/$d}"
+	fi
+}
+
+required_scopes=('gist' 'workflow' 'repo' 'user' 'read:org' 'read:public_key' 'read:ssh_signing_key' 'delete_repo')
+
+if ! gh auth status 1> /dev/null 2>&1; then
+	warning "not logged into github, will login now..."
+	gh auth login \
+		--git-protocol https \
+		--hostname github.com \
+		--scopes "$(join_by ',' "${required_scopes[@]}")" \
+		--web \
+		--clipboard
+
+	exit 0
+fi
+
+scopes=$(gh auth status --json 'hosts' --jq '.hosts."github.com".[].scopes' 2> /dev/null)
+
+for scope in "${required_scopes[@]}"; do
+	if ! echo "${scopes:-}" | grep -F -q "${scope}" 1> /dev/null 2>&1; then
+		warning "not logged into github with the read:public_key and read:ssh_signing_key scopes..."
+		gh auth refresh \
+			--hostname github.com \
+			--scopes "$(join_by ',' "${required_scopes[@]}")" \
+			--clipboard
+		break
+	fi
+done
+
+success "logged into github with the appropriate scopes"
