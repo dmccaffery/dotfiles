@@ -1,25 +1,63 @@
 {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "ui": {
     "theme": "$HOME/.gemini/themes/cyberdream.json",
     "hideBanner": true,
     "dynamicWindowTitle": true,
-    "hideWindowTitle": true
+    "hideWindowTitle": true,
+    "autoThemeSwitching": false,
+    "inlineThinkingMode": "full",
+    "hideTips": true,
+    "showShortcutsHint": false,
+    "footer": {
+      "hideContextPercentage": false
+    },
+    "showMemoryUsage": true,
+    "showCitations": true,
+    "showModelInfoInChat": true,
+    "loadingPhrases": "witty",
+    "useAlternateBuffer": true
   },
   "privacy": {
     "usageStatisticsEnabled": false
   },
   "tools": {
-    "sandbox": true
+    "sandbox": true,
+    "shell": {
+      "showColor": true
+    }
   },
   "general": {
     "sessionRetention": {
       "enabled": true,
       "maxAge": "14d"
-    }
+    },
+    "vimMode": true,
+    "enableNotifications": true,
+    "maxAttempts": 3
   },
   "security": {
     "auth": {
       "selectedType": "oauth-personal"
-    }
+    },
+    "enablePermanentToolApproval": false,
+    "disableYoloMode": true,
+    "environmentVariableRedaction": {
+      "enabled": true
+    },
+    "enableConseca": true,
+    "toolSandboxing": true
+  },
+  "billing": {
+    "overageStrategy": "never"
+  },
+  "experimental": {
+    "useOSC52Paste": true,
+    "useOSC52Copy": true,
+    "modelSteering": true,
+    "directWebFetch": true
+  },
+  "advanced": {
+    "autoConfigureMemory": true
   }
 }
