@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -euo pipefail
 
@@ -36,4 +36,4 @@ if [[ ${mime} =~ binary ]]; then
 	exit 0
 fi
 
-bat --style=numbers --color=always "${file}" 2>/dev/null | head -100
+bat --style=numbers --color=always "${file}" 2> /dev/null | head -100
