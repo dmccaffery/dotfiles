@@ -1,4 +1,4 @@
-brew "opencode"
+brew "anomalyco/tap/opencode"
 cask "google-drive"
 cask "protonvpn"
 cask "unifi-identity-endpoint"

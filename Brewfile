@@ -49,7 +49,6 @@ brew "zinit"
 brew "zoxide"
 brew "zsh"
 
-brew "anomalyco/tap/opencode"
 brew "bufbuild/buf/buf"
 brew "derailed/k9s/k9s"
 brew "fluxcd/tap/flux"
