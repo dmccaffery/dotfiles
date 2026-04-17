@@ -85,3 +85,8 @@ killall Dock
 # use keychain for pins
 defaults write org.gpgtools.common UseKeychain -bool yes
 defaults write org.gpgtools.common DisableKeychain -bool no
+
+if uname -n | grep -F -q "dm-mac" 1> /dev/null 2>&1; then
+	info "setting personal defaults..."
+	"${SETUP_DIR}/defaults.personal.sh"
+fi
