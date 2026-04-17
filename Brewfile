@@ -51,8 +51,8 @@ brew "zsh"
 brew "anomalyco/tap/opencode"
 brew "bufbuild/buf/buf"
 brew "derailed/k9s/k9s"
-brew "jandedobbeleer/oh-my-posh/oh-my-posh", args: ["formula"]
 brew "hashicorp/tap/terraform"
+brew "jandedobbeleer/oh-my-posh/oh-my-posh", args: ["formula"]
 brew "oven-sh/bun/bun"
 cask "antigravity"
 cask "font-fira-code-nerd-font"
