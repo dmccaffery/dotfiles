@@ -13,7 +13,7 @@ backup/
 !.zshrc
 !.stowrc
 !.stow-local-ignore
-!.markdownlint.yaml
+!.markdownlint-cli2.yaml
 !.editorconfig
 !.prettierignore
 !.release-please-manifest.json
