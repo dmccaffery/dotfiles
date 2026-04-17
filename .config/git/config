@@ -4,6 +4,9 @@
 [checkout]
 	defaultRemote = origin
 
+[log]
+	showSignature = true
+
 [pull]
 	ff = only
 	rebase = true
