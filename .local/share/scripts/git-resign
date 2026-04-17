@@ -1,0 +1,18 @@
+#! /usr/bin/env sh
+
+set -eu
+
+default_color=$(tput sgr 0)
+red="$(tput setaf 1)"
+
+error() {
+	printf "%s==> %s%s\n" "$red" "$1" "$default_color"
+}
+
+target="${1:-}"
+if [ -z "${target:-}" ]; then
+	error "a target must be set; exiting..."
+	exit 1
+fi
+
+git rebase --exec 'git commit --amend --no-edit -n -S' -i "${target}"
