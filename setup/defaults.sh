@@ -86,7 +86,11 @@ killall Dock
 defaults write org.gpgtools.common UseKeychain -bool yes
 defaults write org.gpgtools.common DisableKeychain -bool no
 
-if uname -n | grep -F -q "dm-mac" 1> /dev/null 2>&1; then
+# require smartcard
+sudo defaults write /Library/Preferences/com.apple.security.smartcard enforceSmartCard -bool true
+sudo defaults write /Library/Preferences/com.apple.security.smartcard allowUnmappedUsers -int 1
+
+if uname -n | grep -F -q "dm-" 1> /dev/null 2>&1; then
 	info "setting personal defaults..."
 	"${SETUP_DIR}/defaults.personal.sh"
 fi
