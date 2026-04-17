@@ -33,8 +33,6 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.linting.eslint" },
     -- testing
     { import = "lazyvim.plugins.extras.test.core" },
-    -- ui
-    { import = "lazyvim.plugins.extras.ui.mini-animate" },
     -- util
     { import = "lazyvim.plugins.extras.util.octo" },
     { import = "lazyvim.plugins.extras.util.mini-hipatterns" },

@@ -73,7 +73,7 @@ o.backspace = { "start", "eol", "indent" }
 o.breakindent = true
 
 -- smooth scrolling
-o.smoothscroll = true
+o.smoothscroll = false
 
 -- disable lsp logs -- this will grow infinitely so only enable it if you need it
 vim.lsp.log.set_level("off")
