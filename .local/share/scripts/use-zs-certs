@@ -1,0 +1,44 @@
+#! /usr/bin/env sh
+
+set -eu
+
+default_color=$(tput sgr 0)
+
+blue="$(tput setaf 4)"
+info() {
+	printf "%s==> %s%s\n" "$blue" "$1" "$default_color"
+}
+
+yellow="$(tput setaf 3)"
+warn() {
+	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color"
+}
+
+skip="${1:-}"
+
+if [ "${skip}" != "--" ]; then
+	error "Command line arguments could not be parsed"
+	info "USAGE: use-zs-certs -- <command> [arguments]"
+	exit 1
+fi
+shift
+
+cert_temp=$(mktemp)
+
+ZSCALER_CERTIFICATE="${HOME}/.local/share/certificates/zscaler.pem"
+
+if [ -f "${ZSCALER_CERTIFICATE:-}" ]; then
+	info "found existing certificate at: ${ZSCALER_CERTIFICATE}..."
+elif security find-certificate -c "Zscaler Root CA" -p /Library/Keychains/System.keychain 1> "${cert_temp}" 2>&1; then
+	mkdir -p "${HOME}/.local/share/certificates"
+	mv "${cert_temp}" "${HOME}/.local/share/certificates/"
+else
+	warn "no certificate could be found in keychain; running command without certificates..."
+	exec "$@"
+	exit $?
+fi
+
+export ZSCALER_CERTIFICATE
+export NODE_EXTRA_CA_CERTS="${ZSCALER_CERTIFICATE}"
+
+exec "$@"
