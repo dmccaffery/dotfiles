@@ -3,8 +3,8 @@
 set -eu
 
 default_color=$(tput sgr 0)
-red="$(tput setaf 1)"
 
+red="$(tput setaf 1)"
 error() {
 	printf "%s==> %s%s\n" "$red" "$1" "$default_color"
 }

@@ -3,19 +3,19 @@
 set -euo pipefail
 
 default_color=$(tput sgr 0)
-yellow="$(tput setaf 3)"
-green="$(tput setaf 2)"
-blue="$(tput setaf 4)"
 
+blue="$(tput setaf 4)"
 info() {
 	printf "%s==> %s%s\n" "$blue" "$1" "$default_color"
 }
 
+green="$(tput setaf 2)"
 success() {
 	printf "%s==> %s%s\n" "$green" "$1" "$default_color"
 }
 
-warning() {
+yellow="$(tput setaf 3)"
+warn() {
 	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color"
 }
 

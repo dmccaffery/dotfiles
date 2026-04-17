@@ -3,20 +3,20 @@
 set -eu
 
 default_color=$(tput sgr 0)
-yellow="$(tput setaf 3)"
 
-warning() {
+yellow="$(tput setaf 3)"
+warn() {
 	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color"
 }
 
-warning "This will reset the current state of ALL remaining background items"
-warning "press any key to continue..."
+warn "This will reset the current state of ALL remaining background items"
+warn "press any key to continue..."
 read -r _
 
 sudo sfltool resetbtm
 
-warning "A reboot is required to complete this task..."
-warning "press any key to reboot now..."
+warn "A reboot is required to complete this task..."
+warn "press any key to reboot now..."
 read -r _
 
 sudo reboot

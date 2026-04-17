@@ -3,26 +3,26 @@
 set -eu
 
 default_color=$(tput sgr 0)
-yellow="$(tput setaf 3)"
-green="$(tput setaf 2)"
-blue="$(tput setaf 4)"
 
+blue="$(tput setaf 4)"
 info() {
 	printf "%s==> %s%s\n" "$blue" "$1" "$default_color"
 }
 
+green="$(tput setaf 2)"
 success() {
 	printf "%s==> %s%s\n" "$green" "$1" "$default_color"
 }
 
-warning() {
+yellow="$(tput setaf 3)"
+warn() {
 	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color"
 }
 
 info "setting up ssh agent..."
 
 if ! ssh-add -L 1> /dev/null 2>&1; then
-	warning "adding resident keys from security key to agent..."
+	warn "adding resident keys from security key to agent..."
 	ssh-add -K
 	success "keys successfully added to agent!"
 fi
@@ -47,7 +47,7 @@ public_key="${key#key::}"
 
 touch "${allowed_signers}"
 if echo "${public_key}" | grep -F -q "${public_key}" 1> /dev/null 2>&1; then
-	warning "signing key already exists in allowed signers file"
+	warn "signing key already exists in allowed signers file"
 	exit 1
 fi
 
