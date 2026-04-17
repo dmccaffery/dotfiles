@@ -143,3 +143,4 @@ if [ -n "${ZSHPROFILE:-}" ]; then
 	printf '\n\nTIMINGS:\n\n'
 fi
 
+export PATH="${HOME}/.antigravity/antigravity/bin:$PATH"
