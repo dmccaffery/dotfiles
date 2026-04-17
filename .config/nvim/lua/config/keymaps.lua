@@ -3,7 +3,6 @@
 -- defaults: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 
 local util = require("lazyvim.util")
-local o = vim.opt
 
 local function map(mode, lhs, rhs, opts)
   local keys = require("lazy.core.handler").handlers.keys
