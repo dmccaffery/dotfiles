@@ -1,3 +1,4 @@
+brew "opencode"
 cask "google-drive"
 cask "protonvpn"
 cask "unifi-identity-endpoint"
