@@ -11,7 +11,11 @@
 --ignore=.markdownlint.yaml
 --ignore=.release-please-manifest.json
 --ignore=.stowrc
+--ignore .*.yaml
+--ignore .*.json
+--ignore .*ignore
 --ignore=Brewfile
+--ignore=Brewfile.personal
 --ignore=CHANGELOG.md
 --ignore=README.md
 --ignore=backup
