@@ -38,6 +38,13 @@ if [ ! -f /usr/local/bin/ssh-askpass ]; then
 	sudo ln -fs "${HOME}/.local/share/scripts/ssh-askpass" /usr/local/bin
 fi
 
+# setup completions
+COMPLETION_DIR=$(${ZSH_BIN} -lc 'echo "${fpath// /\n}" | grep -i completion')
+
+if command -v "flux" 1> /dev/null 2>&1; then
+	flux completion zsh > "${COMPLETION_DIR}/_flux"
+fi
+
 # disable agents
 launchctl disable gui/${UID}/com.openssh.ssh-agent 2> /dev/null || true
 launchctl bootout gui/${UID}/org.homebrew.ssh-agent 2> /dev/null || true
