@@ -53,9 +53,9 @@ return {
           end,
           confirm = function(picker, item)
             picker:close()
-            local session = item.text
+            local session = item.name
             if session then
-              vim.fn.system(string.format("tmux switch-client -t '%s'", session.name))
+              vim.fn.system(string.format("tmux switch-client -t '%s'", session))
             end
           end,
           preview = function(ctx)
@@ -151,14 +151,14 @@ return {
     {
       "<leader>fs",
       function()
-        Snacks.picker.sessions()
+        Snacks.picker.pick("sessions")
       end,
       desc = "Find Sessions (tmux)",
     },
     {
       "<leader>fx",
       function()
-        Snacks.picker.snippets()
+        Snacks.picker.pick("snippets")
       end,
       desc = "Find Snippets",
     },
