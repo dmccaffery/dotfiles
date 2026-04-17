@@ -27,6 +27,7 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.coding.mini-surround" },
     -- debugging
     { import = "lazyvim.plugins.extras.dap.core" },
+    { import = "lazyvim.plugins.extras.dap.nlua" },
     -- formatting
     { import = "lazyvim.plugins.extras.formatting.prettier" },
     -- linting
