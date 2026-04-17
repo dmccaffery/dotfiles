@@ -54,6 +54,7 @@ brew "derailed/k9s/k9s"
 brew "hashicorp/tap/terraform"
 brew "jandedobbeleer/oh-my-posh/oh-my-posh", args: ["formula"]
 brew "oven-sh/bun/bun"
+cask "1password-cli@beta"
 cask "antigravity"
 cask "font-fira-code-nerd-font"
 cask "font-iosevka-nerd-font"
