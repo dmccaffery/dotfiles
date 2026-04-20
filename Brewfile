@@ -55,6 +55,7 @@ brew "zoxide"
 brew "zsh"
 
 brew "bufbuild/buf/buf"
+brew "controlplaneio-fluxcd/tap/flux-operator"
 brew "derailed/k9s/k9s"
 brew "fluxcd/tap/flux"
 brew "hashicorp/tap/terraform"
