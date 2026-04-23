@@ -1,5 +1,58 @@
 # Changelog
 
+## [2.1.0](https://github.com/dmccaffery/dotfiles/compare/v2.0.0...v2.1.0) (2026-04-23)
+
+
+### Features
+
+* add custom brewfiles for specific machines ([e8045cd](https://github.com/dmccaffery/dotfiles/commit/e8045cd35304298c121c26b13f94e72e23071900))
+* **brew:** add 1password cli ([ce39647](https://github.com/dmccaffery/dotfiles/commit/ce3964785819010f6ccc45b01f5c9ea730dd7d3e))
+* **brew:** add antigravity and vscode ([a322812](https://github.com/dmccaffery/dotfiles/commit/a322812b80857999ac614757b446e91038c7bf94))
+* **brew:** add claude-code and t3-code to personal profile ([8b6fa70](https://github.com/dmccaffery/dotfiles/commit/8b6fa70a1fb1d2518cd40ce2c599baf26d628cff))
+* **brew:** add cosign, crane, and oras ([56891b4](https://github.com/dmccaffery/dotfiles/commit/56891b480bfb620e7b7e87721835d3ac0071ade5))
+* **brew:** add flux cli ([8940628](https://github.com/dmccaffery/dotfiles/commit/8940628b79fb91703334e3113189d8c5ed4a1080))
+* **brew:** add flux operator ([4c9b65c](https://github.com/dmccaffery/dotfiles/commit/4c9b65c7a251391d44735bc896f359872ae221b4))
+* **brew:** add helm ([63bec19](https://github.com/dmccaffery/dotfiles/commit/63bec19f4dbf067bc3529e8aff826bc8ebef2285))
+* **brew:** add hyperkey app ([f440dfa](https://github.com/dmccaffery/dotfiles/commit/f440dfa0369f3e6344d72b9b91bcd70296dc47ca))
+* **brew:** add sops cli ([267e830](https://github.com/dmccaffery/dotfiles/commit/267e83024c7f697e188523de98d45cb4534c1beb))
+* **brew:** merge brews to avoid unnecessary reinstalls ([9ee4000](https://github.com/dmccaffery/dotfiles/commit/9ee4000a5fb804a03dc7fd4f9ed7b49a4c7a39dd))
+* **brew:** rename bitwise to personal ([7a8499c](https://github.com/dmccaffery/dotfiles/commit/7a8499ccbd793f94bda95c8247de2d8a14ac18f4))
+* **brews:** add opencode on personal devices ([28c3159](https://github.com/dmccaffery/dotfiles/commit/28c3159acda61d4599e5f70b6b51e7f413a518d1))
+* **brew:** use cask for oh-my-posh ([f5f417d](https://github.com/dmccaffery/dotfiles/commit/f5f417d4b6b1d72a3def73790e72bfd75b5fc997))
+* **gemini:** add cli configuration ([346f1e5](https://github.com/dmccaffery/dotfiles/commit/346f1e5a9a1d86c12ea0537207c7cc66102238d5))
+* **gemini:** improve security posture by default ([08eb243](https://github.com/dmccaffery/dotfiles/commit/08eb2436cb8e371df722eed32c2f7bf9822b9719))
+* **git:** add additional git-town options ([0d38cdb](https://github.com/dmccaffery/dotfiles/commit/0d38cdb6582027e153e9938948e7a1571dc5fd1f))
+* **git:** always show signatures in git logs ([197592e](https://github.com/dmccaffery/dotfiles/commit/197592e8b2b6fc6b235d1a024eb30416cae188e6))
+* **install:** move github auth to reusable script ([10bf421](https://github.com/dmccaffery/dotfiles/commit/10bf4211075b37385762d2907a02bf62260b0791))
+* **nvim:** add debugging for lua ([1ca5b56](https://github.com/dmccaffery/dotfiles/commit/1ca5b56392ad52e6da0a54812144f10548316806))
+* **nvim:** add jinja template support ([19e40ef](https://github.com/dmccaffery/dotfiles/commit/19e40ef90103b2f98053665078ef2f4cef7be129))
+* **nvim:** add lazy dotfiles util extra ([292e11f](https://github.com/dmccaffery/dotfiles/commit/292e11fcc7f425a25790e9c14bd41e6a759bc282))
+* **nvim:** add luasnip and helm extras ([6b4fecf](https://github.com/dmccaffery/dotfiles/commit/6b4fecf2793217114267c8e00d8fe897d2e7acd9))
+* **nvim:** add picker for snippets and update tmux picker ([d978e84](https://github.com/dmccaffery/dotfiles/commit/d978e848af67515321027e161edc54657215d6aa))
+* **nvim:** update all dependencies ([0ad6ff7](https://github.com/dmccaffery/dotfiles/commit/0ad6ff70d9531652e9632e80045f9d1d15fc4fbb))
+* **nvim:** update all lazy dependencies ([ddf00ce](https://github.com/dmccaffery/dotfiles/commit/ddf00ce1ff728cc95d4c35bdc559ded6ce3e808d))
+* **nvim:** update dependencies ([016c2ee](https://github.com/dmccaffery/dotfiles/commit/016c2ee8cf03383801e892fc212bcc0e9c44d5c6))
+* **nvim:** update spelling dictionary ([b86ea3a](https://github.com/dmccaffery/dotfiles/commit/b86ea3a00435e50e2bb4ce4c89aefbf6afbbc975))
+* **opencode:** add theme for opencode tui ([8eaeb29](https://github.com/dmccaffery/dotfiles/commit/8eaeb29d3897810dcab2cd03af159f2380c245a1))
+* **scripts:** add a script to resign git commits ([5c32b37](https://github.com/dmccaffery/dotfiles/commit/5c32b37e3e4f4e62a010ee5aa84837719f08cfff))
+* **scripts:** add a script to use zscaler certificates ([6da97f2](https://github.com/dmccaffery/dotfiles/commit/6da97f20e5fdb0d9e17591056bf3a499886705b9))
+* **setup:** add flux completion to install (for now) ([dc49dcd](https://github.com/dmccaffery/dotfiles/commit/dc49dcd5fff0136713a26e47a913ba51eb5b1f58))
+* **setup:** enable smartcard auth by default everywhere ([e8c7b58](https://github.com/dmccaffery/dotfiles/commit/e8c7b58e3de40b5c4d7d09fc88e55e9e1a45762d))
+* **setup:** enforce smartcard authentication on personal devices ([a6f3361](https://github.com/dmccaffery/dotfiles/commit/a6f3361565a86a13c8315e01f4a6703d369ba703))
+
+
+### Bug Fixes
+
+* disable smooth scroll and mini-animate ([7436373](https://github.com/dmccaffery/dotfiles/commit/7436373f351581d8695e23b7dc769173125a2ba0))
+* **install:** resolve shellcheck warnings ([e925f6f](https://github.com/dmccaffery/dotfiles/commit/e925f6ff2bd43ffdf917288d11332f5a7d9b6f7d))
+* **nvim:** remove invalid config for xml ([af7e111](https://github.com/dmccaffery/dotfiles/commit/af7e1115c31242bedc463f03e6b4bdb29b30222b))
+* **nvim:** update custom snacks pickers ([3ccca32](https://github.com/dmccaffery/dotfiles/commit/3ccca323203cbcd810bbc3e2bdd02cb8db858b93))
+* save backups correctly ([aee5848](https://github.com/dmccaffery/dotfiles/commit/aee584820c257dc07892ef89f01b5ca53f57b34e))
+* **scripts:** protect against word splitting ([42ba49c](https://github.com/dmccaffery/dotfiles/commit/42ba49c9715154643856d8cd3a280c9656babd8e))
+* **scripts:** use bash for regex match in fzf-image-preview ([b383ff8](https://github.com/dmccaffery/dotfiles/commit/b383ff8e2a092242f358432c6a8f548371c428cb))
+* **setup:** protect against word splitting ([41e1e76](https://github.com/dmccaffery/dotfiles/commit/41e1e76952f8c523eff63ece7ce6ddf68b5bda8b))
+* **tmux:** ensure shift+enter works in ai lab clis ([99797b3](https://github.com/dmccaffery/dotfiles/commit/99797b371d88ba40049f687b239ff7bf08b78885))
+
 ## [2.0.0](https://github.com/dmccaffery/dotfiles/compare/v1.1.0...v2.0.0) (2026-02-10)
 
 
