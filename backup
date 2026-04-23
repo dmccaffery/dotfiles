@@ -2,7 +2,7 @@
 set -eu
 
 now=$(date +'%Y-%M-%d-%H%M%S')
-backup_path="backup/${now}"
+backup_path="backups/${now}"
 
 mkdir -p "${backup_path}" 1>/dev/null 2>&1 || true
 
@@ -15,11 +15,15 @@ __backup() {
 
 	path="${HOME}/${name}"
 
-	if [ -f "${path:-}" ] && [ ! -h "${path:-}" ]; then
+	if [ -d "${path:-}" ] && [ ! -h "${path:-}" ]; then
 		printf 'backing up %s to %s\n' "${name}" "${backup_path}"
 		mv "${path}" "${backup_path}"
 	fi
 }
 
+__backup .gemini
+__backup .local
+__backup .ssh
+__backup .terminfo
 __backup .config
 __backup .zshrc

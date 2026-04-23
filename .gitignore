@@ -1,11 +1,15 @@
 .*
-backup/
+backups/
 
 !.github/
 !.config/
 !.local/
 !.ssh/
 !.gemini/
+!.terminfo/
+
+!.env
+
 
 !.gitignore
 !.gitattributes
