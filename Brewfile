@@ -65,6 +65,7 @@ brew "oven-sh/bun/bun"
 
 cask "1password-cli@beta"
 cask "antigravity"
+cask "claude-code"
 cask "font-fira-code-nerd-font"
 cask "font-iosevka-nerd-font"
 cask "font-symbols-only-nerd-font"
