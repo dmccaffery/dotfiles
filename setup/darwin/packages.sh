@@ -1,8 +1,10 @@
-#!/usr/bin/env bash
+#! /usr/bin/env bash
 
 set -euo pipefail
 
-SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR=$(realpath "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")
+SETUP_DIR=$(realpath "${SCRIPT_DIR}/../")
+# shellcheck source=./../printing.sh
 . "${SETUP_DIR}/printing.sh"
 
 info "setting up homebrew..."

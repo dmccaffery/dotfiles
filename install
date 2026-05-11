@@ -14,7 +14,7 @@ SCRIPT_DIR="${INSTALL_DIR}/.local/share/scripts"
 "${SETUP_DIR}/prerequisites.sh"
 "${SETUP_DIR}/defaults.sh"
 "${SETUP_DIR}/xdg.sh"
-"${SETUP_DIR}/brews.sh"
+"${SETUP_DIR}/packages.sh"
 "${SETUP_DIR}/stow.sh"
 "${SETUP_DIR}/shell.sh"
 

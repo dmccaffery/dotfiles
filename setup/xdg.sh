@@ -1,8 +1,9 @@
-#!/usr/bin/env bash
+#! /usr/bin/env bash
 
 set -euo pipefail
 
-SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SETUP_DIR="${SCRIPT_DIR}"
 . "${SETUP_DIR}/printing.sh"
 
 info "setting up xdg paths..."

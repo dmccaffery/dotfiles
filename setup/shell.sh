@@ -1,8 +1,9 @@
-#!/usr/bin/env bash
+#! /usr/bin/env bash
 
 set -euo pipefail
 
-SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SETUP_DIR="${SCRIPT_DIR}"
 . "${SETUP_DIR}/printing.sh"
 
 info "setting up default shell..."
@@ -45,9 +46,9 @@ if command -v "flux" 1> /dev/null 2>&1; then
 	flux completion zsh > "${COMPLETION_DIR}/_flux"
 fi
 
-# disable agents
-launchctl disable gui/${UID}/com.openssh.ssh-agent 2> /dev/null || true
-launchctl bootout gui/${UID}/org.homebrew.ssh-agent 2> /dev/null || true
+PLATFORM_DIR=$(uname -s | tr '[:upper:]' '[:lower:]')
+PLATFORM_SCRIPT="${SETUP_DIR}/${PLATFORM_DIR}/shell.sh"
 
-# bootstrap homebrew ssh agent
-launchctl bootstrap gui/${UID} ~/Library/LaunchAgents/org.homebrew.ssh-agent.plist
+if [ -x "${PLATFORM_SCRIPT}" ]; then
+	"${PLATFORM_SCRIPT}"
+fi

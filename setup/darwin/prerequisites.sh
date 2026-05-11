@@ -1,0 +1,27 @@
+#! /usr/bin/env bash
+
+set -euo pipefail
+
+SCRIPT_DIR=$(realpath "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")
+SETUP_DIR=$(realpath "${SCRIPT_DIR}/../")
+# shellcheck source=./../printing.sh
+. "${SETUP_DIR}/printing.sh"
+
+info "installing cli tools..."
+
+if xcode-select -p > /dev/null; then
+	warn "cli tools are already installed"
+else
+	xcode-select --install
+	sudo xcodebuild -license accept
+fi
+
+info "installing homebrew"
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
+if hash brew &> /dev/null; then
+	warn "homebrew already installed"
+else
+	sudo --validate
+	NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+fi
