@@ -11,6 +11,7 @@ brew "curl"
 brew "direnv"
 brew "docker", args: ["formula"]
 brew "docker-buildx"
+brew "dotnet"
 brew "fastfetch"
 brew "fd"
 brew "ffmpeg"
