@@ -30,6 +30,9 @@ cp "${INSTALL_DIR}/Brewfile" "${tmp}"
 if uname -n | grep -F -q "dm-mac" 1> /dev/null 2>&1; then
 	cat "${INSTALL_DIR}/Brewfile.personal" >> "${tmp}"
 	info "adding personal brews..."
+else
+	cat "${INSTALL_DIR}/Brewfile.work" >> "${tmp}"
+	info "adding work brews..."
 fi
 
 # install the brews
@@ -46,6 +49,8 @@ if command -v docker-buildx 1> /dev/null 2>&1; then
 	ln -fns "$(command -v docker-buildx 2> /dev/null)" "${HOME}/.docker/cli-plugins"
 fi
 
-# cleanup services
 info "cleaning up brew services"
 brew services cleanup
+
+info "cleaning up brew cache"
+brew cleanup

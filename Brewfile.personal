@@ -1,6 +1,7 @@
 brew "anomalyco/tap/opencode"
+brew "forgejo-cli"
+brew "yt-dlp"
 
-cask "claude-code"
 cask "google-drive"
 cask "protonvpn"
 cask "t3-code"

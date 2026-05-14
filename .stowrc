@@ -15,7 +15,7 @@
 --ignore .*.json
 --ignore .*ignore
 --ignore=Brewfile
---ignore=Brewfile.personal
+--ignore=Brewfile.*
 --ignore=CHANGELOG.md
 --ignore=README.md
 --ignore=backup

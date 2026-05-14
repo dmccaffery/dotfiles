@@ -1,0 +1,8 @@
+brew "awscli"
+brew "aws-sam-cli"
+brew "dotnet"
+cask "wizcli"
+
+cask "visual-studio-code"
+cask "1password-cli@beta"
+
