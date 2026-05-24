@@ -1,0 +1,175 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+version: 4
+final_space: true
+streaming: 100
+
+palette:
+  base: "#16181A"
+  blue: "#5EA1FF"
+  crust: "#1E2124"
+  diff_add: "#24462A"
+  diff_rem: "#442927"
+  flamingo: "#FFACF6"
+  green: "#5EFF6C"
+  lavender: "#BD5EFF"
+  mantle: "#1E2124"
+  maroon: "#A12400"
+  mauve: "#FF5EA0"
+  overlay_0: "#3C4048"
+  overlay_1: "#3C4048"
+  overlay_2: "#1E2124"
+  peach: "#FFBD5E"
+  pink: "#FF5EF1"
+  red: "#FF6E5E"
+  rosewater: "#FFEAFC"
+  sapphire: "#007CDE"
+  sky: "#ABC7FF"
+  subtext_0: "#7B8496"
+  subtext_1: "#7B8496"
+  surface_0: "#3C4048"
+  surface_1: "#1E2124"
+  surface_2: "#1E2124"
+  teal: "#5EF1FF"
+  text: "#FFFFFF"
+  yellow: "#F1FF5E"
+
+secondary_prompt:
+  template: "❯❯ "
+  foreground: p:red
+  background: transparent
+
+transient_prompt:
+  template: "❯ "
+  background: transparent
+  foreground_templates:
+    - "{{if gt .Code 0}}p:red{{end}}"
+    - "{{if eq .Code 0}}p:subtext_1{{end}}"
+
+upgrade:
+  source: cdn
+  interval: 168h
+  auto: false
+  notice: false
+
+blocks:
+  - type: prompt
+    alignment: left
+    segments:
+      - type: os
+        template: "{{ .Icon }} "
+        foreground: p:crust
+        background: p:blue
+        style: diamond
+        leading_diamond: ╭─
+        trailing_diamond: 
+
+      - type: path
+        template: "  {{ .Path }} "
+        foreground: p:crust
+        background: p:pink
+        style: diamond
+        leading_diamond: <p:crust></>
+        trailing_diamond: 
+        cache:
+          duration: none
+        options:
+          folder_icon: "  "
+          home_icon: 
+          style: folder
+
+      - type: git
+        template: " {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }} "
+        foreground: p:crust
+        background: p:green
+        style: diamond
+        leading_diamond: <p:crust></>
+        trailing_diamond: 
+        cache:
+          duration: none
+        options:
+          branch_icon: " "
+          cherry_pick_icon: " "
+          commit_icon: " "
+          fetch_status: true
+          fetch_upstream_icon: false
+          merge_icon: " "
+          no_commits_icon: " "
+          rebase_icon: " "
+          revert_icon: " "
+          tag_icon: " "
+
+  - type: prompt
+    alignment: right
+    segments:
+      - type: go
+        style: diamond
+        leading_diamond: 
+        foreground: p:crust
+        background: "#7FD5EA"
+        template: " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} "
+        options:
+          extensions:
+            - go.mod
+            - go.work
+        cache:
+          duration: none
+
+      - type: lua
+        style: diamond
+        leading_diamond: 
+        foreground: p:crust
+        background: p:blue
+        template: "  {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} "
+
+      - type: python
+        style: diamond
+        leading_diamond: 
+        foreground: p:crust
+        background: "#306998"
+        template: "  {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }} "
+
+      - type: node
+        style: diamond
+        leading_diamond: 
+        foreground: p:crust
+        background: "#66CC33"
+        cache:
+          duration: none
+        options:
+          extensions:
+            - package.json
+          fetch_package_manager: true
+          npm_icon: 
+          yarn_icon: 
+
+      - type: gcp
+        style: diamond
+        leading_diamond: 
+        trailing_diamond: 
+        foreground: p:crust
+        background: "#4285F4"
+        template: "  {{.Project}} "
+        cache:
+          duration: none
+
+  - type: prompt
+    alignment: left
+    newline: true
+    segments:
+      - type: text
+        style: plain
+        foreground: p:blue
+        background: transparent
+        template: ╰─
+        cache:
+          duration: none
+
+      - type: status
+        style: plain
+        foreground: p:subtext_1
+        background: transparent
+        template: " "
+        foreground_templates:
+          - "{{ if gt .Code 0 }}p:red{{ end }}"
+        options:
+          always_enabled: true
