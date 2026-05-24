@@ -2,23 +2,23 @@ gui:
   border: rounded
   theme:
     activeBorderColor:
-      - "#5ef1ff"
+      - "#5EF1FF"
     inactiveBorderColor:
-      - "#7b8496"
+      - "#7B8496"
     searchingActiveBorderColor:
-      - "#ff5ef1"
+      - "#FF5EF1"
     optionsTextColor:
-      - "#3c4048"
+      - "#3C4048"
     selectedLineBgColor:
-      - "#3c4048"
+      - "#3C4048"
     cherryPickedCommitBgColor:
-      - "#3c4048"
+      - "#3C4048"
     cherryPickedCommitFgColor:
-      - "#ff5ea0"
+      - "#FF5EA0"
     unstagedChangesColor:
-      - "#ffbd5e"
+      - "#FFBD5E"
     defaultFgColor:
-      - "#ffffff"
+      - "#FFFFFF"
 quitOnTopLevelReturn: true
 git:
   pagers:
