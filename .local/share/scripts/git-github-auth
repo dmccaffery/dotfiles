@@ -42,11 +42,18 @@ if ! gh auth status 1> /dev/null 2>&1; then
 	exit 0
 fi
 
-scopes=$(gh auth status --json 'hosts' --jq '.hosts."github.com".[].scopes' 2> /dev/null)
+account="${1:-}"
+
+if [ -z "${account:-}" ]; then
+	account=$(gh auth status --json 'hosts' --jq '.hosts."github.com".[].login' | fzf --header='select github account' --select-1)
+	gh auth switch --user "${account}"
+fi
+
+scopes=$(gh auth status --json 'hosts' --jq ".hosts.\"github.com\".[] | select(.login == \"${account}\") | .scopes" 2> /dev/null)
 
 for scope in "${required_scopes[@]}"; do
 	if ! echo "${scopes:-}" | grep -F -q "${scope}" 1> /dev/null 2>&1; then
-		warning "not logged into github with the read:public_key and read:ssh_signing_key scopes..."
+		warn "not logged into github with the read:public_key and read:ssh_signing_key scopes..."
 		gh auth refresh \
 			--hostname github.com \
 			--scopes "$(join_by ',' "${required_scopes[@]}")" \
