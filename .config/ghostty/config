@@ -12,7 +12,10 @@ theme = dark:cyberdream,light:cyberdream-light
 font-family = "Iosevka NF"
 font-size = 15
 background-opacity = 0.9
-background-blur = 5
+background-blur = 16
+font-thicken=true
+font-thicken-strength=1
+adjust-cell-height=1
 
 # mouse
 mouse-hide-while-typing = true
