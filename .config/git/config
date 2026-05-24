@@ -40,11 +40,24 @@
 	gitHubAuthModes = oauth
 	gitlabAuthModes = browser
 	gitHubAccountFiltering = false
+	namespace = personal
 	helper =
 	helper = /usr/local/share/gcm-core/git-credential-manager
+
 [credential "https://github.com"]
 	provider = github
-	namespace = personal
+
+[credential "https://codeberg.org"]
+	oauthClientId = a4792ccc-144e-407e-86c9-5e7d8d9c3269
+	oauthAuthURL = /login/oauth/authorize
+	oauthTokenURL = /login/oauth/access_token
+	provider = generic
+
+[credential "https://code.forgejo.org"]
+	oauthClientId = a4792ccc-144e-407e-86c9-5e7d8d9c3269
+	oauthAuthURL = /login/oauth/authorize
+	oauthTokenURL = /login/oauth/access_token
+	provider = generic
 
 [alias]
 	append = town append
@@ -75,11 +88,17 @@
 	sync-tags = false
 	sync-upstream = true
 	share-new-branches = push
-	github-connector = api
+	github-connector = gh
 	dev-remote = origin
+	main-branch = main
 
+[includeIf "hasconfig:remote.*.url:https://github.com/**"]
+	path = ~/.config/git/git-town-github.gitconfig
+
+[includeIf "hasconfig:remote.*.url:https://codeberg.org/**"]
+	path = ~/.config/git/git-town-forgejo.gitconfig
+
+# we recommend setting user and email in a private repository
+# that uses stow to symlink to here
 [include]
 	path = ~/.config/private/git/config
-
-[credential "https://dev.azure.com"]
-	useHttpPath = true

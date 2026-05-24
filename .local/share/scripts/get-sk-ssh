@@ -28,9 +28,8 @@ if ! ssh-add -L 1> /dev/null 2>&1; then
 fi
 
 info "updating git allowed signers..."
-
-allowed_signers="${HOME}/.ssh/.git_allowed_signers"
 user=$(git config --get user.email)
+allowed_signers="${HOME}/.ssh/.git_allowed_signers"
 key=$(git-sk)
 
 if [ -z "${user:-}" ]; then

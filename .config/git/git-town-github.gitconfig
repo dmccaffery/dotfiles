@@ -1,0 +1,3 @@
+[git-town]
+	github-connector = gh
+    forge-type = github
