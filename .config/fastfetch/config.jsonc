@@ -1,20 +1,18 @@
 {
     "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
-    "logo": {
-        "type": "chafa",
-        "width": 60,
-        "printRemaining": false,
-        "source": "~/.local/share/wallpaper.png",
-        // "recache": true,
-        "chafa": {
-            "symbols": "-block-border-space+vhalf",
-        },
-        "padding": {
-            "top": 1,
-            "left": 2,
-            "right": 2,
-        },
-    },
+    // TODO: enable when tmux supports kitty, see: https://github.com/tmux/tmux/issues/4902
+    // "logo": {
+    //     "type": "kitty",
+    //     "width": 60,
+    //     "printRemaining": false,
+    //     "recache": true,
+    //     "source": "~/.local/share/wallpapers/london-night.png",
+    //     "padding": {
+    //         "top": 1,
+    //         "left": 2,
+    //         "right": 2,
+    //     },
+    // },
     "display": {
         "separator": "",
         "key": { "width": 15 },
@@ -29,7 +27,6 @@
             "type": "custom",
         },
         {
-            // draw borders first to make colors of left and right border consistent
             "key": "│           │\u001b[11D{#31}  \u001b[{#37}user",
             "type": "title",
             "format": "{1}",
