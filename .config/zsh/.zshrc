@@ -7,7 +7,7 @@ fi
 
 # set default editor
 export EDITOR=nvim
-export LS_COLORS="$(vivid generate cyberdream)"
+export LS_COLORS="$(vivid generate ${VIVID_THEME:-cyberdream})"
 
 # ensure that brew is configured
 if hash brew &> /dev/null; then
@@ -32,7 +32,7 @@ fi
 if [ -n "${HOMEBREW_PREFIX:-}" ]; then
 	ZINIT_HOME="${HOMEBREW_PREFIX}/opt/zinit"
 else
-	ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit"
+	ZINIT_HOME="${XDG_DATA_HOME}/zinit"
 fi
 
 # load zinit
@@ -98,8 +98,7 @@ eval "$(direnv hook zsh)"
 eval "$(fnm env --use-on-cd)"
 
 # setup the prompt
-POSH_THEME="${HOME}/.config/oh-my-posh/prompt.yaml"
-eval "$(oh-my-posh init zsh --config "${POSH_THEME}")"
+eval "$(oh-my-posh init zsh --config "${POSH_THEME:-${XDG_CONFIG_HOME}/oh-my-posh/prompt.yaml}")"
 
 if [ "${TERM_PROGRAM}" = "vscode" ]; then
 	export EDITOR='code --wait'
