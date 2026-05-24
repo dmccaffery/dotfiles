@@ -1,9 +1,10 @@
-#! /usr/bin/env bash
+#! /usr/bin/env sh
 
-set -euo pipefail
+set -eu
 
-SCRIPT_DIR=$(realpath "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")
+SCRIPT_DIR=$(dirname "$(readlink -f -- "$0")")
 SETUP_DIR=$(realpath "${SCRIPT_DIR}/../")
+
 # shellcheck source=./../printing.sh
 . "${SETUP_DIR}/printing.sh"
 
@@ -91,8 +92,3 @@ defaults write org.gpgtools.common DisableKeychain -bool no
 # require smartcard
 sudo defaults write /Library/Preferences/com.apple.security.smartcard enforceSmartCard -bool true
 sudo defaults write /Library/Preferences/com.apple.security.smartcard allowUnmappedUsers -int 1
-
-if uname -n | grep -F -q "dm-" 1> /dev/null 2>&1; then
-	info "setting personal defaults..."
-	"${SCRIPT_DIR}/defaults.personal.sh"
-fi

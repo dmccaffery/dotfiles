@@ -1,8 +1,0 @@
-brew "anomalyco/tap/opencode"
-brew "forgejo-cli"
-brew "yt-dlp"
-
-cask "google-drive"
-cask "protonvpn"
-cask "t3-code"
-cask "unifi-identity-endpoint"

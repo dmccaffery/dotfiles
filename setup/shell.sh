@@ -1,9 +1,8 @@
-#! /usr/bin/env bash
+#! /usr/bin/env sh
 
-set -euo pipefail
+set -eu
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SETUP_DIR="${SCRIPT_DIR}"
+SETUP_DIR=$(dirname "$(readlink -f -- "$0")")
 . "${SETUP_DIR}/printing.sh"
 
 info "setting up default shell..."
@@ -12,7 +11,7 @@ XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 
 ZSH_BIN="$(command -v zsh)"
 
-if [ "${ZSH_BIN:-}" == "${SHELL:-}" ]; then
+if [ "${ZSH_BIN:-}" = "${SHELL:-}" ]; then
 	warn "zsh is already the default shell"
 else
 	info "setting default shell to zsh for current user"
@@ -20,14 +19,22 @@ else
 	chsh -s "${ZSH_BIN}"
 fi
 
-ZSHRC_CONFIG="${XDG_CONFIG_HOME}/zshrc/.zshrc"
+ZSH_CONFIG="${XDG_CONFIG_HOME}/zsh"
 
+ZSHRC_CONFIG="${ZSH_CONFIG}/.zshrc"
 if [ -f "${ZSHRC_CONFIG:-}" ]; then
 	info "linking zshrc to config"
-	ln -Ffs "${XDG_CONFIG_HOME}/zshrc/.zshrc" "${HOME}/.zshrc"
+	ln -Ffs "${ZSHRC_CONFIG}" "${HOME}/.zshrc"
 else
-	warn "zshrc config is not present and cannot be symlinked; did you forget to
-	stow?"
+	warn "zshrc config is not present and cannot be symlinked; did you forget to stow?"
+fi
+
+ZSHENV_CONFIG="${ZSH_CONFIG}/.zshenv"
+if [ -f "${ZSHENV_CONFIG:-}" ]; then
+	info "linking zshenv to config"
+	ln -Ffs "${ZSHENV_CONFIG}" "${HOME}/.zshenv"
+else
+	warn "zshenv config is not present and cannot be symlinked; did you forget to stow?"
 fi
 
 # hush the last login prompt in tty
@@ -40,15 +47,9 @@ if [ ! -f /usr/local/bin/ssh-askpass ]; then
 fi
 
 # setup completions
+# shellcheck disable=SC2016
 COMPLETION_DIR=$(${ZSH_BIN} -lc 'echo "${fpath// /\n}" | grep -i completion')
 
-if command -v "flux" 1> /dev/null 2>&1; then
+if hash flux 1> /dev/null 2>&1; then
 	flux completion zsh > "${COMPLETION_DIR}/_flux"
-fi
-
-PLATFORM_DIR=$(uname -s | tr '[:upper:]' '[:lower:]')
-PLATFORM_SCRIPT="${SETUP_DIR}/${PLATFORM_DIR}/shell.sh"
-
-if [ -x "${PLATFORM_SCRIPT}" ]; then
-	"${PLATFORM_SCRIPT}"
 fi

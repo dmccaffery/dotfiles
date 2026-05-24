@@ -5,18 +5,12 @@ if [ -n "${ZSHPROFILE:-}" ]; then
 	zmodload zsh/zprof
 fi
 
-# set xdg config home (so lazygit picks it up)
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_STATE_HOME="$HOME/.local/state"
-export XDG_RUNTIME_DIR="$HOME/.local/runtime"
-
 # set default editor
 export EDITOR=nvim
+export LS_COLORS="$(vivid generate cyberdream)"
 
 # ensure that brew is configured
-if command -v brew 1>/dev/null 2>&1; then
+if hash brew &> /dev/null; then
 	eval "$(brew shellenv)"
 elif [ -x '/opt/homebrew/bin/brew' ]; then
 	eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -104,22 +98,11 @@ eval "$(direnv hook zsh)"
 eval "$(fnm env --use-on-cd)"
 
 # setup the prompt
-POSH_THEME="${HOME}/.config/oh-my-posh/prompt.toml"
+POSH_THEME="${HOME}/.config/oh-my-posh/prompt.yaml"
 eval "$(oh-my-posh init zsh --config "${POSH_THEME}")"
 
 if [ "${TERM_PROGRAM}" = "vscode" ]; then
 	export EDITOR='code --wait'
-fi
-
-# add scripts to path
-SCRIPTS_DIR="${XDG_DATA_HOME}/scripts"
-if [ -d "${SCRIPTS_DIR:-}" ]; then
-	export PATH="${PATH}:${SCRIPTS_DIR}"
-fi
-
-# start tmux if not already running
-if [ -z "${TMUX:-}" ]; then
-	tmux start-server 1>/dev/null 2>&1
 fi
 
 # detect gcloud path
@@ -142,5 +125,3 @@ if [ -n "${ZSHPROFILE:-}" ]; then
 	zprof
 	printf '\n\nTIMINGS:\n\n'
 fi
-
-export PATH="${HOME}/.antigravity/antigravity/bin:$PATH"

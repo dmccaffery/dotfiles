@@ -4,7 +4,7 @@ set -eu
 now=$(date +'%Y-%M-%d-%H%M%S')
 backup_path="backups/${now}"
 
-mkdir -p "${backup_path}" 1>/dev/null 2>&1 || true
+mkdir -p "${backup_path}" 1> /dev/null 2>&1 || true
 
 __backup() {
 	name="${1:-}"
@@ -21,7 +21,7 @@ __backup() {
 	fi
 }
 
-__backup .gemini
+__backup .claude
 __backup .local
 __backup .ssh
 __backup .terminfo

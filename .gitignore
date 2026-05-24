@@ -3,6 +3,7 @@ backups/
 
 !.claude/
 !.config/
+!.github/
 !.local/
 !.ssh/
 !.terminfo/
@@ -11,8 +12,10 @@ backups/
 
 !.gitignore
 !.gitattributes
+!.gitkeep
 
 !.zshrc
+!.zshenv
 !.stowrc
 !.stow-local-ignore
 !.markdownlint-cli2.yaml
