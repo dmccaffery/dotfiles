@@ -1,15 +1,13 @@
 .*
 backups/
 
-!.github/
+!.claude/
 !.config/
 !.local/
 !.ssh/
-!.gemini/
 !.terminfo/
 
 !.env
-
 
 !.gitignore
 !.gitattributes

@@ -1,0 +1,30 @@
+{
+  "theme": "custom:cyberdream",
+  "autoMemoryEnabled": true,
+  "cleanupPeriodDays": 7,
+  "editorMode": "vim",
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "autoUpdatesChannel": "stable",
+  "includeGitInstructions": false,
+  "plansDirectory": ".claude/plans",
+  "respectGitignore": true,
+  "feedbackSurveyRate": 0,
+  "sandbox": {
+    "enabled": true,
+    "filesystem": {
+      "allowRead": ["~/Repos"],
+      "allowWrite": ["~/Repos"]
+    },
+    "autoAllowBashIfSandboxed": false,
+    "allowUnsandboxedCommands": false,
+    "enableWeakerNetworkIsolation": false,
+    "enableWeakerNestedSandbox": false
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "oh-my-posh claude --config ~/.config/oh-my-posh/claude.yaml"
+  }
+}
