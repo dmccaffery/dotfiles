@@ -36,6 +36,22 @@ packages: ## Install all packages, including those in a selected profile
 shell: ## Set Zsh from Homebrew as the default login shell
 	./install.sh shell
 
+.PHONY: docs-serve
+docs-serve: ## Sync deps and serve the docs site at http://localhost:8000
+	uv sync
+	uv run zensical serve
+
+.PHONY: docs-build
+docs-build: ## Sync deps and build the docs site into ./site
+	uv sync
+	npx prettier --write docs/**/*.md
+	npx markdownlint-cli2 docs/**/*.md
+	uv run zensical build --clean
+
+.PHONY: docs-upgrade
+docs-upgrade: ## Upgrade all uv dependencies (refreshes uv.lock)
+	uv sync --upgrade
+
 .PHONY: help
 help: ## Print this help
 	@awk 'BEGIN { FS = ":.*?## "; printf "\nUsage: make \033[36m<target>\033[0m\n\nTargets:\n" } /^[a-zA-Z_-]+:.*?## / { printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)

@@ -2,6 +2,8 @@
 
 > Configuration for macOS terminal environments
 
+📖 **Full documentation:** <https://dmccaffery.github.io/dotfiles/>
+
 ## Features
 
 - support for [ghostty][ghostty-url]

@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/refs/heads/main/schema/markdownlint-cli2-config-schema.json
+
+config:
+  extends: ../.markdownlint-cli2.yaml
+
+  no-inline-html:
+    allowed_elements:
+      - span
+      - div
+      - br
+      - p
+
+  # Inline code with intentional whitespace (e.g. ` nvim`, `D `) is needed when
+  # documenting things like tmux window names with nerd-font prefixes.
+  no-space-in-code: false
+
+  # attr_list IDs (`## Heading { #anchor }`) render correctly in zensical but
+  # markdownlint can't follow them.
+  link-fragments: false

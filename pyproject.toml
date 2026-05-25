@@ -1,0 +1,10 @@
+[project]
+name = "dotfiles-docs"
+version = "0"
+description = "Zensical documentation site for dmccaffery/dotfiles"
+requires-python = ">=3.10"
+
+[dependency-groups]
+dev = [
+  "zensical>=0.0.43",
+]

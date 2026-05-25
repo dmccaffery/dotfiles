@@ -1,14 +1,16 @@
 .*
 backups/
 
+# zensical docs site
+site/
+__pycache__/
+
 !.claude/
 !.config/
 !.github/
 !.local/
 !.ssh/
 !.terminfo/
-
-!.env
 
 !.gitignore
 !.gitattributes

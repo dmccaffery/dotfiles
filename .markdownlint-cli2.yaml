@@ -7,8 +7,18 @@ config:
     line_length: 120
     heading_line_length: 120
     code_block_line_length: 120
+    tables: false
 
   list-marker-space: false
+
+  table-column-style:
+    style: aligned
+
+  code-block-style:
+    style: fenced
+
+  code-fence-style:
+    style: backtick
 
 ignores:
   - CHANGELOG.md
