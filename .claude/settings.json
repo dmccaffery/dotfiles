@@ -15,8 +15,8 @@
   "sandbox": {
     "enabled": true,
     "filesystem": {
-      "allowRead": ["~/Repos"],
-      "allowWrite": ["~/Repos"]
+      "allowRead": ["~/Repos", "~/.cache", "~/.local/share", "/tmp"],
+      "allowWrite": ["~/Repos", "~/.cache", "~/.local/share", "/tmp"]
     },
     "autoAllowBashIfSandboxed": false,
     "allowUnsandboxedCommands": false,
