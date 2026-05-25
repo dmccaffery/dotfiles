@@ -8,7 +8,7 @@ INSTALL_DIR=$(dirname "$(readlink -f -- "$0")")
 if [ -n "${1:-}" ]; then
 	warn "custom stages defined: ${*}"
 else
-	set -- xdg requirements defaults stow packages shell
+	set -- xdg requirements config stow packages shell
 fi
 
 "${INSTALL_DIR}/setup/stage.sh" "$@"

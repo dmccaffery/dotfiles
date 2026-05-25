@@ -25,4 +25,4 @@ else
 fi
 
 info "installing required packages..."
-brew bundle check --file="${SCRIPT_DIR}/Brewfile.requirements"
+brew bundle install --upgrade --jobs=auto --file="${SCRIPT_DIR}/Brewfile.requirements"
