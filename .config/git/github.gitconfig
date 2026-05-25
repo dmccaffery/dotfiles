@@ -1,0 +1,13 @@
+[credential]
+	gitHubAuthModes = oauth
+	gitHubAccountFiltering = false
+
+[credential "https://github.com"]
+	provider = github
+
+[gpg "ssh"]
+	defaultKeyCommand = "git-github-sk"
+
+[git-town]
+	github-connector = gh
+    forge-type = github

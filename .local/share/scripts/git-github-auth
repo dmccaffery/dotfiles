@@ -31,7 +31,7 @@ function join_by {
 required_scopes=('gist' 'workflow' 'repo' 'user' 'read:org' 'read:public_key' 'read:ssh_signing_key' 'delete_repo')
 
 if ! gh auth status 1> /dev/null 2>&1; then
-	warning "not logged into github, will login now..."
+	warn "not logged into github, will login now..."
 	gh auth login \
 		--git-protocol https \
 		--hostname github.com \

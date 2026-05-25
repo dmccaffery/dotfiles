@@ -28,11 +28,11 @@ if ! ssh-add -L 1> /dev/null 2>&1; then
 fi
 
 info "updating git allowed signers..."
-user=$(git config --get user.email)
-allowed_signers="${HOME}/.ssh/.git_allowed_signers"
-key=$(git-sk)
+email=$(git config --get user.email)
+allowed_signers="${XDG_CONFIG_HOME}/private/git/allowed_signers"
+key=$(git-github-sk 2> /dev/null || git-forgejo-sk 2> /dev/null)
 
-if [ -z "${user:-}" ]; then
+if [ -z "${email:-}" ]; then
 	error "user email is not set"
 	exit 1
 fi
@@ -44,11 +44,14 @@ fi
 
 public_key="${key#key::}"
 
+mkdir -p "$(dirname "${allowed_signers}")"
 touch "${allowed_signers}"
-if echo "${public_key}" | grep -F -q "${public_key}" 1> /dev/null 2>&1; then
-	warn "signing key already exists in allowed signers file"
-	exit 1
-fi
 
-info "adding ${user}: ${public_key} to ${allowed_signers}"
-echo "${user} namespaces=\"git\" ${public_key}" >> "${allowed_signers}"
+signer_line="${email} namespaces=\"git\" ${public_key}"
+
+if grep -qxF "${signer_line}" "${allowed_signers}"; then
+	info "${email}: ${public_key} already present in ${allowed_signers}"
+else
+	info "adding ${email}: ${public_key} to ${allowed_signers}"
+	echo "${signer_line}" >> "${allowed_signers}"
+fi

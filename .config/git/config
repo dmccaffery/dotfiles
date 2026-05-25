@@ -33,31 +33,17 @@
 	format = ssh
 
 [gpg "ssh"]
-	allowedSignersFile = ~/.ssh/.git_allowed_signers
-	defaultKeyCommand = "git-sk"
+	# this is assumed to be maintained in a private repository that symlinks to this location
+	# although it will work if you use the `get-sk-ssh` command to load resident keys into the ssh agent
+	allowedSignersFile = ~/.config/private/git/allowed_signers
 
 [credential]
-	gitHubAuthModes = oauth
-	gitlabAuthModes = browser
-	gitHubAccountFiltering = false
+	# this is the default namespace when not specified elsewhere and is used to override which git credential
+	# is used as this namespace is used as a prefix in the credential store
+	# for example, you can use an include to change this based on a remote URL for work credentials
 	namespace = personal
 	helper =
 	helper = /usr/local/share/gcm-core/git-credential-manager
-
-[credential "https://github.com"]
-	provider = github
-
-[credential "https://codeberg.org"]
-	oauthClientId = a4792ccc-144e-407e-86c9-5e7d8d9c3269
-	oauthAuthURL = /login/oauth/authorize
-	oauthTokenURL = /login/oauth/access_token
-	provider = generic
-
-[credential "https://code.forgejo.org"]
-	oauthClientId = a4792ccc-144e-407e-86c9-5e7d8d9c3269
-	oauthAuthURL = /login/oauth/authorize
-	oauthTokenURL = /login/oauth/access_token
-	provider = generic
 
 [alias]
 	append = town append
@@ -93,10 +79,13 @@
 	main-branch = main
 
 [includeIf "hasconfig:remote.*.url:https://github.com/**"]
-	path = ~/.config/git/git-town-github.gitconfig
+	path = ~/.config/git/github.gitconfig
 
 [includeIf "hasconfig:remote.*.url:https://codeberg.org/**"]
-	path = ~/.config/git/git-town-forgejo.gitconfig
+	path = ~/.config/git/forgejo.gitconfig
+
+[includeIf "hasconfig:remote.*.url:https://code.forgejo.org/**"]
+	path = ~/.config/git/forgejo.gitconfig
 
 # we recommend setting user and email in a private repository
 # that uses stow to symlink to here

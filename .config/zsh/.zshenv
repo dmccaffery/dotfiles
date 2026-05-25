@@ -8,13 +8,20 @@ export REPO_DIR="${HOME}/Repos"
 
 export CLAUDE_CODE_NO_FLICKER=1
 
-export HOMEBREW_BUNDLE_FILE="${XDG_DATA_HOME}/homebrew/Brewfile"
+export HOMEBREW_BUNDLE_FILE_GLOBAL="${XDG_DATA_HOME}/homebrew/Brewfile"
 export HOMEBREW_BUNDLE_INSTALL_CLEANUP=1
 
 export POSH_THEME="${XDG_CONFIG_HOME}/oh-my-posh/prompt.yaml"
 export VIVID_THEME="${XDG_CONFIG_HOME}/vivid/themes/cyberdream.yaml"
 
+export EDITOR=nvim
+if [ "${TERM_PROGRAM}" = "vscode" ]; then
+	export EDITOR='code --wait'
+fi
+
 SCRIPTS_DIR="${XDG_DATA_HOME}/scripts"
 if [ -d "${SCRIPTS_DIR:-}" ]; then
 	export PATH="${PATH}:${SCRIPTS_DIR}"
+    export SSH_ASKPASS="${SCRIPTS_DIR}/ssh-askpass"
+    export DISPLAY=":0"
 fi
