@@ -19,23 +19,34 @@ stage() {
 
 	info "running stage: ${STAGE_NAME}"
 
+	FOUND=0
+
 	if [ -x "${PLATFORM_BEFORE:-}" ]; then
 		"${PLATFORM_BEFORE}"
-	fi
-
-	if [ -x "${STAGE_SCRIPT:-}" ]; then
-		"${STAGE_SCRIPT}"
+		FOUND=1
 	fi
 
 	if [ -x "${PLATFORM_SCRIPT:-}" ]; then
 		"${PLATFORM_SCRIPT}"
+		FOUND=1
 	elif [ -x "${PLATFORM_DIR}/stage.sh" ]; then
 		"${PLATFORM_DIR}/stage.sh"
+		FOUND=1
 	fi
 
-	PLATFORM_AFTER="${PLATFORM_DIR}/after.sh"
+	if [ -x "${STAGE_SCRIPT:-}" ]; then
+		"${STAGE_SCRIPT}"
+		FOUND=1
+	fi
+
 	if [ -x "${PLATFORM_AFTER:-}" ]; then
 		"${PLATFORM_AFTER}"
+		FOUND=1
+	fi
+
+	if [ "${FOUND}" -eq 0 ]; then
+		error "no scripts found for stage: ${STAGE_NAME}"
+		return 1
 	fi
 }
 
