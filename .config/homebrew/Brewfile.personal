@@ -105,3 +105,4 @@ mas "Speedtest", id: 1153157709
 mas "Xcode", id: 497799835
 brew "wallpaper"
 brew "actions-up"
+brew "asciinema"
