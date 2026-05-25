@@ -20,7 +20,10 @@ indent_size = 2
 indent_size = 4
 max_line_length = 120
 
-[{Makefile,config,install,backup,.zshrc,rc}]
+[{Makefile,.zshrc,.zshenv}]
+indent_style = tab
+
+[*.config]
 indent_style = tab
 
 [.local/share/scripts/*]

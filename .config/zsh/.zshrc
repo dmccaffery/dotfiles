@@ -6,7 +6,6 @@ if [ -n "${ZSHPROFILE:-}" ]; then
 fi
 
 # set default editor
-export EDITOR=nvim
 export LS_COLORS="$(vivid generate ${VIVID_THEME:-cyberdream})"
 
 # ensure that brew is configured
@@ -41,7 +40,6 @@ source "${ZINIT_HOME}/zinit.zsh"
 # add some zinit plugins
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-autosuggestions
-# zinit light spaceship-prompt/spaceship-prompt
 zinit light Aloxaf/fzf-tab
 
 # add in some snippets
@@ -91,18 +89,14 @@ alias kts='tmux kill-server'
 alias vim='nvim'
 alias vi='nvim'
 
+# setup the prompt
+eval "$(oh-my-posh init zsh --config "${POSH_THEME:-${XDG_CONFIG_HOME}/oh-my-posh/prompt.yaml}")"
+
 # enable shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 eval "$(direnv hook zsh)"
 eval "$(fnm env --use-on-cd)"
-
-# setup the prompt
-eval "$(oh-my-posh init zsh --config "${POSH_THEME:-${XDG_CONFIG_HOME}/oh-my-posh/prompt.yaml}")"
-
-if [ "${TERM_PROGRAM}" = "vscode" ]; then
-	export EDITOR='code --wait'
-fi
 
 # detect gcloud path
 if command -v 'gcloud' 1>/dev/null 2>&1; then

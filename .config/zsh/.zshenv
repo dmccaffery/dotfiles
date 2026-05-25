@@ -22,6 +22,6 @@ fi
 SCRIPTS_DIR="${XDG_DATA_HOME}/scripts"
 if [ -d "${SCRIPTS_DIR:-}" ]; then
 	export PATH="${PATH}:${SCRIPTS_DIR}"
-    export SSH_ASKPASS="${SCRIPTS_DIR}/ssh-askpass"
-    export DISPLAY=":0"
+	export SSH_ASKPASS="${SCRIPTS_DIR}/ssh-askpass"
+	export DISPLAY=":0"
 fi

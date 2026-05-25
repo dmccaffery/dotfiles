@@ -19,24 +19,6 @@ else
 	chsh -s "${ZSH_BIN}"
 fi
 
-ZSH_CONFIG="${XDG_CONFIG_HOME}/zsh"
-
-ZSHRC_CONFIG="${ZSH_CONFIG}/.zshrc"
-if [ -f "${ZSHRC_CONFIG:-}" ]; then
-	info "linking zshrc to config"
-	ln -Ffs "${ZSHRC_CONFIG}" "${HOME}/.zshrc"
-else
-	warn "zshrc config is not present and cannot be symlinked; did you forget to stow?"
-fi
-
-ZSHENV_CONFIG="${ZSH_CONFIG}/.zshenv"
-if [ -f "${ZSHENV_CONFIG:-}" ]; then
-	info "linking zshenv to config"
-	ln -Ffs "${ZSHENV_CONFIG}" "${HOME}/.zshenv"
-else
-	warn "zshenv config is not present and cannot be symlinked; did you forget to stow?"
-fi
-
 # hush the last login prompt in tty
 touch "${HOME}/.hushlogin"
 
