@@ -105,7 +105,7 @@ blocks:
         style: diamond
         leading_diamond: 
         foreground: p:crust
-        background: "#7FD5EA"
+        background: p:sky
         template: " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} "
         options:
           extensions:
@@ -119,28 +119,32 @@ blocks:
         leading_diamond: 
         foreground: p:crust
         background: p:blue
-        template: "  {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} "
+        template: "   {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} "
 
       - type: python
         style: diamond
         leading_diamond: 
         foreground: p:crust
-        background: "#306998"
-        template: "  {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }} "
+        background: p:yellow
+        template: "   {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }} "
+        options:
+          tooling:
+            - uv
 
       - type: node
         style: diamond
         leading_diamond: 
         foreground: p:crust
-        background: "#66CC33"
+        background: p:red
         cache:
           duration: none
         options:
           extensions:
             - package.json
           fetch_package_manager: true
-          npm_icon: 
-          yarn_icon: 
+          npm_icon: " "
+          yarn_icon: " "
+          pnpm_icon: " "
 
       - type: gcp
         style: diamond
