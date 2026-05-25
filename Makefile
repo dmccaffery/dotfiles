@@ -42,7 +42,7 @@ docs-serve: ## Sync deps and serve the docs site at http://localhost:8000
 	uv run zensical serve
 
 .PHONY: docs-build
-docs-build: ## Sync deps and build the docs site into ./site
+docs-build: ## Sync deps, format with prettier, lint with markdownlint-cli2, then build the docs site into ./site
 	uv sync
 	npx prettier --write docs/**/*.md
 	npx markdownlint-cli2 docs/**/*.md

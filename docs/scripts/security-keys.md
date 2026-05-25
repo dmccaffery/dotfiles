@@ -4,7 +4,7 @@ icon: lucide/shield-check
 
 # Security key scripts
 
-Five scripts cover the YubiKey-resident SSH workflow end-to-end, plus one helper for
+Six scripts cover the YubiKey-resident SSH workflow end-to-end, plus one helper for
 re-signing committed history.
 
 ## `gen-sk-ssh` { #gen-sk-ssh }
@@ -40,7 +40,8 @@ get-sk-ssh
 
 1. If `ssh-add -L` shows no keys, runs `ssh-add -K` to extract resident keys from the
    YubiKey into the running agent.
-2. Resolves the user's signing key via [`git-github-sk`](#git-github-sk).
+2. Resolves the user's signing key by trying [`git-github-sk`](#git-github-sk) first and
+   falling back to [`git-forgejo-sk`](#git-forgejo-sk).
 3. Appends the public key to `~/.ssh/.git_allowed_signers` in the
    `<email> namespaces="git" <pubkey>` format git expects, skipping the write if an
    identical line is already present.
@@ -59,6 +60,24 @@ Used as `git.gpg.ssh.defaultKeyCommand` for github.com remotes. The flow:
    `signing`-type keys.
 2. `ssh-add -L` → all public keys currently in the local ssh-agent.
 3. Find the first agent key whose public key blob also appears in the GitHub list.
+4. Emit it as `key::<line>` for git to consume.
+
+Exits non-zero with a useful error if either set is empty or there's no match.
+
+## `git-forgejo-sk` { #git-forgejo-sk }
+
+```sh
+git-forgejo-sk        # prints `key::<pubkey>` on stdout
+```
+
+The Forgejo counterpart to [`git-github-sk`](#git-github-sk) — used as
+`git.gpg.ssh.defaultKeyCommand` for Forgejo remotes. The flow:
+
+1. `fj user key list --verbose` → all SSH keys associated with the current Forgejo user,
+   filtered to entries whose key blob starts with `sk-ssh-` (i.e. security-key-backed keys).
+2. `ssh-add -L` → all public keys currently in the local ssh-agent. If the agent is empty,
+   tries `ssh-add -K` once to pull resident keys off the YubiKey.
+3. Find the first agent key whose public key blob also appears in the Forgejo list.
 4. Emit it as `key::<line>` for git to consume.
 
 Exits non-zero with a useful error if either set is empty or there's no match.

@@ -16,6 +16,7 @@ All scripts live in `.local/share/scripts/`. The directory is added to `PATH` by
 | [`gen-sk-ssh`](security-keys.md#gen-sk-ssh)                | Generate ecdsa-sk + ed25519-sk resident keys on a YubiKey.                |
 | [`get-sk-ssh`](security-keys.md#get-sk-ssh)                | Load resident keys into ssh-agent and update allowed_signers.             |
 | [`git-github-sk`](security-keys.md#git-github-sk)          | Resolve the matching GitHub signing key from the loaded agent keys.       |
+| [`git-forgejo-sk`](security-keys.md#git-forgejo-sk)        | Resolve the matching Forgejo signing key from the loaded agent keys.      |
 | [`git-github-auth`](security-keys.md#git-github-auth)      | Ensure `gh` is authenticated with the required scopes.                    |
 | [`git-resign`](security-keys.md#git-resign)                | Re-sign every commit in a range with the current signing key.             |
 | [`ssh-askpass`](security-keys.md#ssh-askpass)              | pinentry-mac wrapper used by the launch-managed ssh-agent.                |
