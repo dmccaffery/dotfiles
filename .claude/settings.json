@@ -10,7 +10,7 @@
   },
   "autoUpdatesChannel": "stable",
   "includeGitInstructions": false,
-  "plansDirectory": ".claude/plans",
+  "plansDirectory": "./.claude/plans",
   "respectGitignore": true,
   "feedbackSurveyRate": 0,
   "sandbox": {
