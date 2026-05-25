@@ -65,7 +65,7 @@ blocks:
         style: diamond
         leading_diamond: <p:base></>
         trailing_diamond: 
-        template: " 󰯉  {{ if .SessionName }}{{ .SessionName }} | {{ end }}{{ .SessionID }} 󰻞 {{ .TokenUsagePercent }}% "
+        template: " 󰯉  {{ .Model.DisplayName }}{{ if .Effort.Level }} · {{ .Effort.Level }}{{ end }} · {{ .SevenDayGauge }} {{ .SevenDayUsage }}% 󰻞 {{ .TokenUsagePercent }}% "
 
       - type: git
         template: " {{ .UpstreamIcon }}{{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }} "
