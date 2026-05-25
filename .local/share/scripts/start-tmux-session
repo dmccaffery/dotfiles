@@ -14,18 +14,20 @@ if [ "${selected:-}" = "." ]; then
 	selected=
 fi
 
-selected=$(find "${REPOS_DIR}" -type d -mindepth 0 -maxdepth 4 -exec test -d {}/.git \; -print -prune | fzf --query "${selected}" --select-1)
+selected=$(find "${REPOS_DIR}" -type d -mindepth 0 -maxdepth 4 -exec test -d {}/.git \; -print -prune | fzf --query "${selected}" --exit-0 --select-1)
 
 if [ -z "${selected:-}" ]; then
 	exit 0
 fi
 
 name=$(basename "${selected}" | tr . _)
+printf '\033]0;%s\007' "${name}" || true
 
 if ! tmux has-session -t "${name}" 2> /dev/null; then
 	tmux -u new-session -d -s "${name}" -n ' nvim' -c "${selected}" -x - -y - "${EDITOR}" . \; \
 		split-window -v -l '10%' -c "${selected}" \; \
-		new-window -a -d -c "${selected}" -n '󰯉  claude (agent)' claude \; \
+		select-pane -t 1 \; \
+		new-window -a -d -c "${selected}" -n '󰯉 claude (agent)' claude \; \
 		new-window -a -d -c "${selected}"
 fi
 
