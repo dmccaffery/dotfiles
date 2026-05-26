@@ -7,66 +7,38 @@
 ## Features
 
 - support for [ghostty][ghostty-url]
-- custom prompt using [oh-my-posh][oh-my-posh-url].
+- custom prompt using [oh-my-posh][oh-my-posh-url]
 - neovim configuration based on [LazyVim][lazyvim-url]
 - tmux configuration
 - [cyberdream][cyberdream-url] theme everywhere, including oh-my-posh, tmux, nvim, yazi, k9s, ghostty, and lazygit
-- simple install script that sets up all dependencies
+- staged install script that sets up all dependencies
 - uses [stow][stow-url] to link farm the configuration
 - extensible git configuration
 
-## Setup
+## Quick start
 
 > [!IMPORTANT]
-> Please [Create a fork][fork-url] of this repository before using it, even if you do not intend to make any
-> customizations for yourself. This repository is primarily meant for me to use for my own needs and I cannot guarantee
-> that I will not break something at some point for you. Having a fork of your own ensures that one can manage any
-> breaking changes as necessary.
-
-If you have any of the existing directories in your $HOME directory, you will need to move them out of the way first.
-The install script does not currently perform a backup. It will refuse to overwrite anything that exists, so no worries
-there, but installation will fail as a result.
-
-A backup script is provided that can perform this backup, which copies the current config / zshrc to a backup folder
-in this repository (ignored by git).
+> [Create a fork][fork-url] before using this repo, even if you don't plan to customize it. This repo is primarily for
+> my own use and may break without warning — a fork lets you manage breaking changes on your own schedule. See the
+> [forking guide][forking-url] for the recommended workflow.
 
 ```sh
-./backup
+./backup.sh   # move existing dotfiles aside (stow refuses to overwrite)
+./install.sh  # stage-by-stage, idempotent installer
 ```
 
-Once this is done, simply run ./install:
-
-```sh
-./install
-```
-
-## Customization
-
-The [`start-tmux-session`][sts-url] cmd assumes that you store git repositories in `${HOME}/Repos/` and uses this path
-to search for git repositories in order to create named sessions. To set a different path, update `.zshenv` to export
-a variable called `REPOS_DIR` (exported env vars belong in `.zshenv` so subprocesses see them too).
-
-[Extending the git configuration][git-config-include] can be achieved by adding a `~/.config/private/git/config`. I
-handle private configuration by using a separate (obviously private) repository that also uses `stow` to symlink the
-`${HOME}/.config/private` directory.
-
-> [!WARNING]
-> DO NOT PUT CREDENTIALS IN ANY REPOSITORY, EVEN A PRIVATE ONE. The use of a private repository is to hide personal
-> information, such as company git urls, email addresses. It is not intended to hide privileged information such as
-> credentials!
+See [Getting Started][getting-started-url] for the full walkthrough.
 
 ## Future Improvements
 
 - add support for linux environments
 - add support for WSL2 environments
-- add support for creating backups
-- add instructions for creating a fork to make your own dotfiles
 
 [cyberdream-url]: https://github.com/scottmckendry/cyberdream.nvim
 [ghostty-url]: https://ghostty.org/
 [lazyvim-url]: https://www.lazyvim.org
 [oh-my-posh-url]: https://ohmyposh.dev
 [stow-url]: https://www.gnu.org/software/stow/
-[git-config-include]: https://github.com/dmccaffery/dotfiles/blob/main/.config/git/config#L73
-[sts-url]: https://github.com/dmccaffery/dotfiles/blob/main/.config/scripts/start-tmux-session#L3
 [fork-url]: https://github.com/dmccaffery/dotfiles/fork
+[forking-url]: https://dmccaffery.github.io/dotfiles/getting-started/install/#fork-first
+[getting-started-url]: https://dmccaffery.github.io/dotfiles/getting-started/

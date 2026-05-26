@@ -11,9 +11,10 @@ initial `./install.sh` run.
 
 The `packages` stage of [`install.sh`](../getting-started/install.md) symlinks the chosen profile from
 `.config/homebrew/Brewfile.<profile>` to `$HOMEBREW_BUNDLE_FILE_GLOBAL`
-(`~/.local/share/homebrew/Brewfile`) and rewrites the target so it always starts with
-[`setup/darwin/Brewfile.requirements`](../../setup/darwin/Brewfile.requirements) followed by the profile's
-extras. See [`setup/darwin/packages.sh`](../../setup/darwin/packages.sh) for the full merge.
+(`~/.local/share/homebrew/Brewfile`) and rewrites the target so it always starts with the
+[`Brewfile.requirements`](packages.md) baseline followed by the profile's extras. See
+[`setup/darwin/packages.sh`](https://github.com/dmccaffery/dotfiles/blob/main/setup/darwin/packages.sh)
+for the full merge.
 
 After install, that symlinked file is the single source of truth — `brew bundle --global` reads and writes it
 directly, so edits land in the underlying `Brewfile.<profile>` and get committed alongside any other dotfiles
@@ -92,6 +93,6 @@ Run `brew bundle --help` for the full list.
 ## See also
 
 - [Install](../getting-started/install.md) — how the profile + requirements Brewfiles are merged at install time.
-- [CLI tools](cli-tools.md) — reference of what the shipped Brewfile installs.
+- [Packages](packages.md) — full reference of what `Brewfile.requirements` installs.
 - [Shell](shell.md) — the `.zshenv` block that exports the variables above.
 - [`brewfile` script](../scripts/misc.md#brewfile) — wrapper that chains `add`/`remove` + `install`.

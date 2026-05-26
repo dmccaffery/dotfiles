@@ -14,7 +14,7 @@ Create a fork before installing. This repository is tuned for one person — bre
 land without a deprecation window. Tracking your own fork means you can pin to a known-good
 commit and pull updates on your schedule.
 
-[Fork dmccaffery/dotfiles :material-fork:](https://github.com/dmccaffery/dotfiles/fork){ .md-button }
+[Fork dmccaffery/dotfiles :octicons-repo-forked-24:](https://github.com/dmccaffery/dotfiles/fork){ .md-button }
 
 ## One-shot install
 
@@ -64,8 +64,8 @@ make shell          # ./install.sh shell
 ## What gets installed
 
 The `requirements` stage installs Xcode CLI tools, Homebrew, and the locked-in baseline from
-[`setup/darwin/Brewfile.requirements`](../../setup/darwin/Brewfile.requirements). The `packages`
-stage then layers a **profile** on top — a Brewfile under `.config/homebrew/Brewfile.*`.
+[`Brewfile.requirements`](../terminal/packages.md). The `packages` stage then
+layers a **profile** on top — a Brewfile under `.config/homebrew/Brewfile.*`.
 
 How profile selection works the first time `packages` runs:
 

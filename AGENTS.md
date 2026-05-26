@@ -29,7 +29,7 @@ Use this map to find the right page (extend as new sections are added):
 | `.config/zsh/**`                                         | `docs/terminal/shell.md`                                              |
 | `.config/oh-my-posh/**`                                  | `docs/terminal/oh-my-posh.md`                                         |
 | `.config/tmux/**`                                        | `docs/terminal/tmux.md`                                               |
-| Brewfiles, new CLI tools                                 | `docs/terminal/cli-tools.md`                                          |
+| `setup/darwin/Brewfile.requirements`                     | `docs/terminal/packages.md`                                           |
 | `brew bundle` lifecycle / `HOMEBREW_BUNDLE_*` env vars   | `docs/terminal/brew-bundle.md`                                        |
 | `.config/nvim/lua/config/lazy.lua`                       | `docs/neovim/lazyvim.md` + `docs/neovim/extras.md`                    |
 | `.config/nvim/lua/plugins/**`                            | `docs/neovim/plugins.md`                                              |

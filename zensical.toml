@@ -13,30 +13,35 @@ extra_css = ["assets/extras.css"]
 nav = [
     { "Home" = "index.md" },
     { "Getting Started" = [
+        "getting-started/index.md",
         "getting-started/install.md",
         "getting-started/backup.md",
         "getting-started/customize.md",
     ] },
     { "Terminal" = [
+        "terminal/index.md",
         "terminal/ghostty.md",
         "terminal/shell.md",
         "terminal/oh-my-posh.md",
         "terminal/tmux.md",
-        "terminal/cli-tools.md",
+        "terminal/packages.md",
         "terminal/brew-bundle.md",
     ] },
     { "NeoVim" = [
+        "neovim/index.md",
         "neovim/lazyvim.md",
         "neovim/extras.md",
         "neovim/plugins.md",
         "neovim/autocmds-keymaps.md",
     ] },
     { "Theme" = [
+        "theme/index.md",
         "theme/cyberdream.md",
         "theme/per-tool.md",
         "theme/wallpapers.md",
     ] },
     { "Git" = [
+        "git/index.md",
         "git/config.md",
         "git/git-town.md",
         "git/auth.md",
@@ -51,15 +56,18 @@ nav = [
         "scripts/misc.md",
     ] },
     { "macOS" = [
+        "macos/index.md",
         "macos/system-defaults.md",
         "macos/launchagents.md",
     ] },
     { "Claude Code" = [
+        "claude/index.md",
         "claude/settings.md",
         "claude/theme.md",
         "claude/hooks-skills.md",
     ] },
-    { "Repo Tooling" = [
+    { "Contribution Guide" = [
+        "tooling/index.md",
         "tooling/stow-and-make.md",
         "tooling/release-please.md",
         "tooling/linting.md",
