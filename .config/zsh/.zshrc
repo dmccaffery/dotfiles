@@ -5,15 +5,15 @@ if [ -n "${ZSHPROFILE:-}" ]; then
 	zmodload zsh/zprof
 fi
 
-# set default editor
-export LS_COLORS="$(vivid generate ${VIVID_THEME:-cyberdream})"
-
 # ensure that brew is configured
 if command -v brew &> /dev/null; then
 	eval "$(brew shellenv)"
 elif [ -x '/opt/homebrew/bin/brew' ]; then
 	eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
+
+# set colors for the terminal
+export LS_COLORS="$(vivid generate ${VIVID_THEME:-cyberdream})"
 
 if [ -n "${HOMEBREW_PREFIX:-}" ]; then
 	google_completion="${HOMEBREW_PREFIX:-}/share/zsh/site-functions/_google_cloud_sdk"
@@ -22,6 +22,7 @@ if [ -n "${HOMEBREW_PREFIX:-}" ]; then
 		source "${google_completion:-}"
 	fi
 fi
+
 
 if ! (( $+functions[compdef] )); then
 	autoload -U +X compinit && compinit
