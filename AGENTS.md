@@ -1,8 +1,13 @@
 # Repository instructions
 
 This repo is a stow-managed macOS dotfiles setup with a companion documentation site at
-[`docs/`](docs/), published to <https://dmccaffery.github.io/dotfiles/> via
-[`.github/workflows/docs.yaml`](.github/workflows/docs.yaml).
+[`docs/`](docs/), published to <https://dmccaffery.github.io/dotfiles/> via the
+`publish-docs` job in [`.github/workflows/release-main.yaml`](.github/workflows/release-main.yaml),
+which runs when release-please cuts a release.
+[`.github/workflows/pull-request.yaml`](.github/workflows/pull-request.yaml) is the PR
+gate: it runs `shellcheck` over every shell script and a non-deploying docs build
+(`prettier --check` + `markdownlint-cli2` + `zensical build`) so breakage surfaces before
+merge.
 
 ## Keep the docs in sync with the configs
 
@@ -15,6 +20,7 @@ Use this map to find the right page (extend as new sections are added):
 | If you change…                                           | Update…                                                               |
 | -------------------------------------------------------- | --------------------------------------------------------------------- |
 | `install.sh`, `backup.sh`, `setup/**`, `Makefile`        | `docs/getting-started/{install,backup,customize}.md`                  |
+| `package.json`, `.prettierignore`, shellcheck rules      | `docs/tooling/linting.md`                                             |
 | `.config/ghostty/**`                                     | `docs/terminal/ghostty.md`                                            |
 | `.config/zsh/**`                                         | `docs/terminal/shell.md`                                              |
 | `.config/oh-my-posh/**`                                  | `docs/terminal/oh-my-posh.md`                                         |
@@ -38,28 +44,45 @@ When adding a brand-new top-level area, also wire it into the `nav = […]` bloc
 ## Verify before committing
 
 ```sh
+make fmt                                      # npm install + prettier --write
+make lint                                     # fmt + shellcheck + markdownlint-cli2
 make docs-serve                               # uv sync + zensical serve (live reload)
-make docs-build                               # uv sync + prettier --write + markdownlint-cli2 + zensical build --clean
+make docs-build                               # lint + uv sync + zensical build --clean
 ```
 
-`make docs-build` is the single gate: it formats `docs/**/*.md` with prettier, lints with
-markdownlint-cli2 (must report 0 errors), then builds with zensical (must finish with "No
-issues found"). No need to run the linter separately.
+`make docs-build` is the single gate: it runs `lint` (which depends on `fmt`, so prettier
+formats first, then shellcheck and markdownlint-cli2 both report 0 errors), then builds
+with zensical (must finish with "No issues found").
 
-To refresh dependency versions: `make docs-upgrade` (wraps `uv sync --upgrade`).
+To refresh dependency versions: `make upgrade` (runs `npm update` then `uv sync --upgrade`
+after a typed confirmation). The target prints a warning that you're bypassing the 7-day
+dependabot cooldown — prefer merging the dependabot PR when possible.
 
-The build runs on every push and PR via GitHub Actions; failures there block deploy.
+PRs run `.github/workflows/pull-request.yaml`, which shellchecks every shell script and
+re-runs the docs build (`prettier --check` + `markdownlint-cli2` + `zensical build`) as a
+smoke test (no deploy). The actual deploy runs only when release-please cuts a release on
+`main`, via the `publish-docs` job in `.github/workflows/release-main.yaml`.
 
 ## Authoring conventions
 
 - **Lead with a one-line summary** of what the page covers.
-- **Wrap at 120 chars.** `docs/.markdownlint-cli2.yaml` enforces it (and relaxes a few rules
-  that conflict with the pymdownx extensions we use).
+- **Wrap at 120 chars.** The `markdownlint-cli2` block in `package.json` enforces it (and
+  relaxes a few rules that conflict with the pymdownx extensions we use).
 - **Tables for key/value mappings** (config options, aliases, scripts).
 - **Reference the source-of-truth file path** instead of duplicating large config blocks —
   readers can click through.
 - **Icons** must exist in Zensical's bundled set (`.venv/lib/python*/site-packages/zensical/templates/.icons/`).
   Stick to `lucide/*` unless you've verified a `simple/*` or `material/*` icon ships.
+
+## Keep dependabot in sync
+
+When a new package ecosystem is introduced to the repo (anything with a manifest like
+`package.json`, `pyproject.toml`, `Cargo.toml`, `Gemfile`, `go.mod`, `composer.json`, a
+new GitHub Actions workflow file, etc.), add a matching `package-ecosystem` block to
+[`.github/dependabot.yaml`](.github/dependabot.yaml) **in the same PR**. Mirror the
+existing entries: `directory: /`, `schedule.interval: daily`, `cooldown.default-days: 7`,
+and an `all-minor-and-patch` group that batches minor + patch updates. Without this,
+the new ecosystem gets no automated security or version updates.
 
 ## Don't touch
 

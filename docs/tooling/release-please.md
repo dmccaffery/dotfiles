@@ -62,6 +62,13 @@ jobs:
 When a release is created, the workflow also moves the floating `v<major>` and
 `v<major>.<minor>` tags forward — useful for consumers that pin to a major or minor branch.
 
+The same workflow then runs a `publish-docs` job (gated on
+`needs.release.outputs.release_created`) that builds the site with `zensical build --clean`
+and ships it to GitHub Pages in a single job. That is why `release-main.yaml` carries the
+`pages: write` / `id-token: write` permissions and the `pages` concurrency group alongside
+the release-please permissions. PR-time smoke-test builds (plus shellcheck and the
+markdown linters) live in `.github/workflows/pull-request.yaml`.
+
 ## CHANGELOG ownership
 
 `CHANGELOG.md` is owned by release-please. Don't hand-edit it; commit conventional commit

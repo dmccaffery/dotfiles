@@ -1,0 +1,46 @@
+{
+  "name": "dotfiles",
+  "private": true,
+  "description": "Lint and formatting toolchain for the dotfiles docs site.",
+  "devDependencies": {
+    "markdownlint-cli2": "^0.14.0",
+    "prettier": "^3.0.0"
+  },
+  "prettier": {
+    "printWidth": 120
+  },
+  "markdownlint-cli2": {
+    "config": {
+      "default": true,
+      "line-length": {
+        "line_length": 120,
+        "heading_line_length": 120,
+        "code_block_line_length": 120,
+        "tables": false
+      },
+      "list-marker-space": false,
+      "table-column-style": {
+        "style": "aligned"
+      },
+      "code-block-style": {
+        "style": "fenced"
+      },
+      "code-fence-style": {
+        "style": "backtick"
+      },
+      "no-inline-html": {
+        "allowed_elements": [
+          "span",
+          "div",
+          "br",
+          "p"
+        ]
+      },
+      "no-space-in-code": false,
+      "link-fragments": false
+    },
+    "ignores": [
+      "CHANGELOG.md"
+    ]
+  }
+}

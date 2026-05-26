@@ -28,3 +28,17 @@ updates:
         update-types:
           - minor
           - patch
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: daily
+    cooldown:
+      default-days: 7
+    groups:
+      all-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch

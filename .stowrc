@@ -8,6 +8,7 @@
 --ignore=setup
 --ignore=site
 --ignore=backups
+--ignore=node_modules
 
 --ignore=.*.yaml
 --ignore=.*.json
@@ -30,6 +31,8 @@
 --ignore=backup.sh
 --ignore=install.sh
 --ignore=Makefile
+--ignore=package.json
+--ignore=package-lock.json
 --ignore=release-please-config.json
 --ignore=restore.sh
 

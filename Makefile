@@ -2,56 +2,85 @@
 
 .PHONY: backup
 backup: ## Move conflicting configs out of $HOME into ./backups
-	./backup.sh
+	@ ./backup.sh
 
 .PHONY: restore
 restore: ## Restore a chosen backup from ./backups back into $HOME (uses fzf)
-	./restore.sh
+	@ ./restore.sh
 
 .PHONY: install
 install: ## Run every install stage in order
-	./install.sh
+	@ ./install.sh
 
 .PHONY: xdg
 xdg: ## Create the XDG base directories under $HOME
-	./install.sh xdg
+	@ ./install.sh xdg
 
 .PHONY: requirements
 requirements: ## Install all prerequisites for the configuration to function
-	./install.sh requirements
+	@ ./install.sh requirements
 
 .PHONY: config
 config: ## Apply macOS system defaults
-	./install.sh config
+	@ ./install.sh config
 
 .PHONY: stow
 stow: ## Symlink configs into ~/ via stow
-	./install.sh stow
+	@ ./install.sh stow
 
 .PHONY: packages
 packages: ## Install all packages, including those in a selected profile
-	./install.sh packages
+	@ ./install.sh packages
 
 .PHONY: shell
 shell: ## Set Zsh from Homebrew as the default login shell
-	./install.sh shell
+	@ ./install.sh shell
+
+.PHONY: fmt
+fmt: ## Install npm deps and auto-format docs with prettier
+	@ npm install --silent --no-audit --no-fund
+	@ npx prettier --write 'docs/**/*.md'
+
+.PHONY: lint
+lint: SHELL := bash
+lint: .SHELLFLAGS := -eu -o pipefail -c
+lint: fmt ## Format docs, then run shellcheck on shell scripts and markdownlint on docs
+	@ shopt -s globstar nullglob; shellcheck --severity=warning --external-sources \
+		install.sh restore.sh backup.sh \
+		setup/**/*.sh \
+		.local/share/scripts/* \
+		.config/git/template/hooks/* \
+		.ssh/rc
+	@ npx markdownlint-cli2 'docs/**/*.md'
 
 .PHONY: docs-serve
 docs-serve: ## Sync deps and serve the docs site at http://localhost:8000
-	uv sync
-	uv run zensical serve
+	@ uv sync
+	@ uv run zensical serve
 
 .PHONY: docs-build
-docs-build: ## Sync deps, format with prettier, lint with markdownlint-cli2, then build the docs site into ./site
-	uv sync
-	npx prettier --write docs/**/*.md
-	npx markdownlint-cli2 docs/**/*.md
-	uv run zensical build --clean
+docs-build: lint ## Lint, then sync deps and build the docs site into ./site
+	@ uv sync
+	@ uv run zensical build --clean
 
-.PHONY: docs-upgrade
-docs-upgrade: ## Upgrade all uv dependencies (refreshes uv.lock)
-	uv sync --upgrade
+.PHONY: upgrade
+upgrade: ## Upgrade npm + uv deps (bypasses dependabot cooldown — confirms first)
+	@ printf '\n'
+	@ printf 'WARNING: `make upgrade` bypasses the 7-day dependabot cooldown configured\n'
+	@ printf 'in .github/dependabot.yaml. Pulling fresh releases from npm and PyPI\n'
+	@ printf 'registries before that window elapses can expose this repo to supply-\n'
+	@ printf 'chain attacks (typosquat releases, hijacked packages, malicious patch\n'
+	@ printf 'versions). Dependabot batches minor/patch updates into one PR after the\n'
+	@ printf 'cooldown so the wider ecosystem has time to flag malicious releases.\n\n'
+	@ printf 'Prefer merging the dependabot PR. Continue only if you have a reason.\n\n'
+	@ printf 'Continue with upgrade? [y/N] '; read ans </dev/tty; \
+		case "$$ans" in \
+			y|Y|yes|Yes|YES) ;; \
+			*) echo "Aborted."; exit 1 ;; \
+		esac
+	@ npm update
+	@ uv sync --upgrade
 
 .PHONY: help
 help: ## Print this help
-	@awk 'BEGIN { FS = ":.*?## "; printf "\nUsage: make \033[36m<target>\033[0m\n\nTargets:\n" } /^[a-zA-Z_-]+:.*?## / { printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
+	@ awk 'BEGIN { FS = ":.*?## "; printf "\nUsage: make \033[36m<target>\033[0m\n\nTargets:\n" } /^[a-zA-Z_-]+:.*?## / { printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)

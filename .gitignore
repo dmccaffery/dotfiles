@@ -5,6 +5,9 @@ backups/
 site/
 __pycache__/
 
+# npm toolchain
+node_modules/
+
 !.claude/
 !.config/
 !.github/
@@ -20,7 +23,6 @@ __pycache__/
 !.zshenv
 !.stowrc
 !.stow-local-ignore
-!.markdownlint-cli2.yaml
 !.editorconfig
 !.prettierignore
 !.release-please-manifest.json

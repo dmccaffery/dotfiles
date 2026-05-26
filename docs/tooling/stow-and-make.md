@@ -42,8 +42,9 @@ verbatim. Files that should _not_ be symlinked are listed in `.stowrc`.
 ```
 
 - **`--target=~/`** — `stow .` symlinks every non-ignored top-level entry into `$HOME`.
-- **Ignored**: repo metadata, CI config, project-level tooling (markdownlint / prettier),
-  installation scripts, and the docs site project.
+- **Ignored**: repo metadata, CI config, project-level tooling (`package.json`,
+  `package-lock.json`, `node_modules`, prettier ignore), installation scripts, and the docs
+  site project.
 
 ## Makefile
 
@@ -69,9 +70,11 @@ requirements: ## Install Xcode CLI tools, Homebrew, and the base Brewfile
 | `make help` (default) | Self-documenting target list                                                                                       |
 | `make packages`       | `./install.sh packages`                                                                                            |
 | `make stow`           | `./install.sh stow`                                                                                                |
+| `make fmt`            | `npm install` + `npx prettier --write 'docs/**/*.md'`                                                              |
+| `make lint`           | `fmt` first, then `shellcheck --severity=warning` over every shell script + `markdownlint-cli2 'docs/**/*.md'`     |
 | `make docs-serve`     | `uv sync` + `uv run zensical serve`                                                                                |
-| `make docs-build`     | `uv sync` + `uv run zensical build --clean` (output: `./site`)                                                     |
-| `make docs-upgrade`   | `uv sync --upgrade` (refresh `uv.lock` to latest matching versions and install)                                    |
+| `make docs-build`     | `lint` first, then `uv sync` + `uv run zensical build --clean` (output: `./site`)                                  |
+| `make upgrade`        | Prompted bypass of dependabot cooldown — `npm update` + `uv sync --upgrade` (refreshes both lock files)            |
 | `make requirements`   | `./install.sh requirements` — hidden from help (blank description); call directly if you need just the brew basics |
 
 `install.sh` itself accepts any subset of stages — Make is just the curated front door.

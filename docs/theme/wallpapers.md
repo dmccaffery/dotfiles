@@ -14,16 +14,16 @@ inline thumbnails for each image.
 
 ## Included wallpapers
 
-| File | Description |
-| --- | --- |
-| [`beach.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/beach.png) | Painterly anime tropical cove — turquoise surf, sand crescent, palm fronds framing lush green hillsides under a bright sky. |
-| [`gojo-sensei.jpg`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/gojo-sensei.jpg) | Satoru Gojo (Jujutsu Kaisen) in profile, white-flame hair and blindfold against a magenta/violet inferno on near-black. 4K. |
-| [`gojo-sensei-dark.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/gojo-sensei-dark.png) | Gojo lifting his blindfold to reveal cyan eyes, conjuring a purple cursed-energy orb in a dark cosmic void. |
-| [`london-night.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/london-night.png) | Storybook illustration of the London skyline at night — Big Ben, the Shard, St Paul's, an airship, and a crescent moon over the Thames. |
-| [`mountain-valley.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/mountain-valley.png) | Sunlit Genshin-style meadow strewn with blue wildflowers, drifting petals, and distant cliffs under cumulus clouds. |
-| [`totoro.jpg`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/totoro.jpg) | Studio Ghibli's Totoro and Chibi-Totoro perched on a cloud bank beneath a dense starfield, umbrella in hand. 4K. |
-| [`window-skyline.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/window-skyline.png) | Anime interior looking through an open window onto a patchwork valley with a domed hilltop temple in the distance. |
-| [`your-name.jpg`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/your-name.jpg) | *Kimi no Na wa*–inspired silhouette on a grassy ridge beneath an aurora-streaked sky and falling comet trails. 16K. |
+| File                                                                                                                    | Description                                                                                                                             |
+| ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| [`beach.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/beach.png)                       | Painterly anime tropical cove — turquoise surf, sand crescent, palm fronds framing lush green hillsides under a bright sky.             |
+| [`gojo-sensei.jpg`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/gojo-sensei.jpg)           | Satoru Gojo (Jujutsu Kaisen) in profile, white-flame hair and blindfold against a magenta/violet inferno on near-black. 4K.             |
+| [`gojo-sensei-dark.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/gojo-sensei-dark.png) | Gojo lifting his blindfold to reveal cyan eyes, conjuring a purple cursed-energy orb in a dark cosmic void.                             |
+| [`london-night.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/london-night.png)         | Storybook illustration of the London skyline at night — Big Ben, the Shard, St Paul's, an airship, and a crescent moon over the Thames. |
+| [`mountain-valley.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/mountain-valley.png)   | Sunlit Genshin-style meadow strewn with blue wildflowers, drifting petals, and distant cliffs under cumulus clouds.                     |
+| [`totoro.jpg`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/totoro.jpg)                     | Studio Ghibli's Totoro and Chibi-Totoro perched on a cloud bank beneath a dense starfield, umbrella in hand. 4K.                        |
+| [`window-skyline.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/window-skyline.png)     | Anime interior looking through an open window onto a patchwork valley with a domed hilltop temple in the distance.                      |
+| [`your-name.jpg`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/your-name.jpg)               | _Kimi no Na wa_–inspired silhouette on a grassy ridge beneath an aurora-streaked sky and falling comet trails. 16K.                     |
 
 If you fork this repo and add your own, drop them in `.local/share/wallpapers/`
 and they'll be picked up by `stow` on the next apply.
@@ -48,7 +48,7 @@ wallpaper set ~/.local/share/wallpapers/gojo-sensei.jpg
 macOS can rotate through the entire `~/.local/share/wallpapers/` folder
 without any third-party tools. Open **System Settings → Wallpaper** and:
 
-1. Click **Add Folder…** (the `+` next to *Pictures*) and pick
+1. Click **Add Folder…** (the `+` next to _Pictures_) and pick
    `~/.local/share/wallpapers/`. It will appear as its own section — in the
    screenshot below it's the row labelled **wallpapers**.
 2. Select the folder thumbnail so its name appears at the top of the
