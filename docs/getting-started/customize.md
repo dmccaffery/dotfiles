@@ -10,15 +10,19 @@ without forking changes upstream.
 ## `REPOS_DIR`
 
 [`start-tmux-session`](../scripts/tmux.md) (and `attach-tmux-session`) discover Git repositories
-by walking a directory tree. The default is `$HOME/Repos`. Override by exporting `REPOS_DIR`
-from `~/.zshrc` (or your own private overlay):
+by walking a directory tree. `.zshenv` exports `REPOS_DIR="${HOME}/Repos"` as the default;
+override it by editing `.config/zsh/.zshenv` (or layering it in via your own private overlay)
+to point elsewhere:
 
 ```sh
 export REPOS_DIR="$HOME/code"
 ```
 
-`.zshenv` already exports `REPO_DIR` (singular) to `${HOME}/Repos` as a separate marker, but
-the tmux scripts read `REPOS_DIR` (plural) — they're independent.
+!!! tip "Prefer `.zshenv` for exported customizations"
+Environment variables (anything you'd `export`) belong in `.zshenv` so they're visible to
+every Zsh invocation — scripts, non-interactive shells, and editor subprocesses — not just
+interactive sessions. Reserve `.zshrc` for things that only matter when a human is typing
+(aliases, key bindings, prompt init, plugin loaders).
 
 ## Private Git overlay
 

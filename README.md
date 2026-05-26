@@ -43,8 +43,8 @@ Once this is done, simply run ./install:
 ## Customization
 
 The [`start-tmux-session`][sts-url] cmd assumes that you store git repositories in `${HOME}/Repos/` and uses this path
-to search for git repositories in order to create named sessions. To set a different path, update the .zshrc to export
-a variable called `REPOS_DIR` or modify the [`start-tmux-session`][sts-url] cmd itself to use a different default.
+to search for git repositories in order to create named sessions. To set a different path, update `.zshenv` to export
+a variable called `REPOS_DIR` (exported env vars belong in `.zshenv` so subprocesses see them too).
 
 [Extending the git configuration][git-config-include] can be achieved by adding a `~/.config/private/git/config`. I
 handle private configuration by using a separate (obviously private) repository that also uses `stow` to symlink the
