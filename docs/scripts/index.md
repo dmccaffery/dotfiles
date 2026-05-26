@@ -27,6 +27,7 @@ All scripts live in `.local/share/scripts/`. The directory is added to `PATH` by
 | [`print-colors`](misc.md#print-colors)                     | Print a 24-bit truecolor gradient bar.                                    |
 | [`fzf-image-preview`](misc.md#fzf-image-preview)           | Preview handler for fzf — chafa for images, bat for text.                 |
 | [`reset-background-items`](misc.md#reset-background-items) | `sfltool resetbtm` then reboot.                                           |
+| [`brewfile`](misc.md#brewfile)                             | `brew bundle <add\|remove> --global` then `brew bundle install --global`. |
 
 ## How scripts use color & logging
 

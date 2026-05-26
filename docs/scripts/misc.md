@@ -71,3 +71,20 @@ disabled in System Settings.
 !!! warning "Reboot required"
 `sfltool resetbtm` only takes effect after a reboot. The script prompts and runs
 `sudo reboot` for you.
+
+## `brewfile` { #brewfile }
+
+```sh
+brewfile add <package> [brew bundle flags...]
+brewfile remove <package>
+```
+
+Wraps the two-step day-2 Brewfile flow into one command:
+
+1. `brew bundle <add|remove> "$@" --global` — edit `$HOMEBREW_BUNDLE_FILE_GLOBAL`.
+2. `brew bundle install --global` — install (or, on remove with `HOMEBREW_BUNDLE_INSTALL_CLEANUP=1`,
+   uninstall) so the Brewfile and the installed state stay in lockstep.
+
+Flags after the action are passed through to `brew bundle`, so `brewfile add --cask ghostty` and
+`brewfile add --tap user/tap` work. See [Brew bundle](../terminal/brew-bundle.md) for the underlying
+commands and the environment variables that shape them.

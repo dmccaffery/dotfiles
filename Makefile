@@ -37,21 +37,21 @@ shell: ## Set Zsh from Homebrew as the default login shell
 	@ ./install.sh shell
 
 .PHONY: fmt
-fmt: ## Install npm deps and auto-format docs with prettier
+fmt: ## Install npm deps and auto-format the repo with prettier
 	@ npm install --silent --no-audit --no-fund
-	@ npx prettier --write 'docs/**/*.md'
+	@ npx prettier --write .
 
 .PHONY: lint
 lint: SHELL := bash
 lint: .SHELLFLAGS := -eu -o pipefail -c
-lint: fmt ## Format docs, then run shellcheck on shell scripts and markdownlint on docs
+lint: fmt ## Format the repo, then run shellcheck on shell scripts and markdownlint on every .md file
 	@ shopt -s globstar nullglob; shellcheck --severity=warning --external-sources \
 		install.sh restore.sh backup.sh \
 		setup/**/*.sh \
 		.local/share/scripts/* \
 		.config/git/template/hooks/* \
 		.ssh/rc
-	@ npx markdownlint-cli2 'docs/**/*.md'
+	@ npx markdownlint-cli2 '**/*.md'
 
 .PHONY: docs-serve
 docs-serve: ## Sync deps and serve the docs site at http://localhost:8000

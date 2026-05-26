@@ -1,2 +1,15 @@
+# Release-please owns the changelog and manifest.
 CHANGELOG.md
+.release-please-manifest.json
+
+# LazyVim / lazy.nvim regenerate these on startup.
+.config/nvim/lazyvim.json
+.config/nvim/lazy-lock.json
+
+# Build/runtime artifacts (also in .gitignore, repeated for clarity).
 site/
+node_modules/
+.venv/
+.cache/
+backups/
+.claude/plans/

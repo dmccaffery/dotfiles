@@ -1,5 +1,9 @@
 # Repository instructions
 
+> **Editing this file:** `CLAUDE.md` is a symlink to `AGENTS.md`. Tools that refuse to write
+> through symlinks (Claude Code's `Edit`/`Write`, etc.) will error out on the `CLAUDE.md` path —
+> always edit `AGENTS.md` directly. The symlink picks up the change automatically.
+
 This repo is a stow-managed macOS dotfiles setup with a companion documentation site at
 [`docs/`](docs/), published to <https://dmccaffery.github.io/dotfiles/> via the
 `publish-docs` job in [`.github/workflows/release-main.yaml`](.github/workflows/release-main.yaml),
@@ -26,6 +30,7 @@ Use this map to find the right page (extend as new sections are added):
 | `.config/oh-my-posh/**`                                  | `docs/terminal/oh-my-posh.md`                                         |
 | `.config/tmux/**`                                        | `docs/terminal/tmux.md`                                               |
 | Brewfiles, new CLI tools                                 | `docs/terminal/cli-tools.md`                                          |
+| `brew bundle` lifecycle / `HOMEBREW_BUNDLE_*` env vars   | `docs/terminal/brew-bundle.md`                                        |
 | `.config/nvim/lua/config/lazy.lua`                       | `docs/neovim/lazyvim.md` + `docs/neovim/extras.md`                    |
 | `.config/nvim/lua/plugins/**`                            | `docs/neovim/plugins.md`                                              |
 | `.config/nvim/lua/config/{autocmds,keymaps,options}.lua` | `docs/neovim/autocmds-keymaps.md`                                     |

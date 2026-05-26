@@ -9,103 +9,103 @@
  */
 
 :root {
-  --cd-bg:        #16181A;
-  --cd-fg:        #FFFFFF;
-  --cd-subtle:    #3C4048;
-  --cd-muted:     #5A6069;
-  --cd-red:       #FF6E5E;
-  --cd-green:     #5EFF6C;
-  --cd-yellow:    #F1FF5E;
-  --cd-blue:      #5EA1FF;
-  --cd-purple:    #BD5EFF;
-  --cd-cyan:      #5EF1FF;
-  --cd-pink:      #FF5EA0;
-  --cd-orange:    #FFBD5E;
+    --cd-bg: #16181a;
+    --cd-fg: #ffffff;
+    --cd-subtle: #3c4048;
+    --cd-muted: #5a6069;
+    --cd-red: #ff6e5e;
+    --cd-green: #5eff6c;
+    --cd-yellow: #f1ff5e;
+    --cd-blue: #5ea1ff;
+    --cd-purple: #bd5eff;
+    --cd-cyan: #5ef1ff;
+    --cd-pink: #ff5ea0;
+    --cd-orange: #ffbd5e;
 
-  --cd-light-bg: #FFFFFF;
-  --cd-light-fg: #16181A;
-  --cd-light-subtle: #ACACAC;
-  --cd-light-red:    #D11500;
-  --cd-light-green:  #008B0C;
-  --cd-light-yellow: #997B00;
-  --cd-light-blue:   #0057D1;
-  --cd-light-purple: #A018FF;
-  --cd-light-cyan:   #008C99;
+    --cd-light-bg: #ffffff;
+    --cd-light-fg: #16181a;
+    --cd-light-subtle: #acacac;
+    --cd-light-red: #d11500;
+    --cd-light-green: #008b0c;
+    --cd-light-yellow: #997b00;
+    --cd-light-blue: #0057d1;
+    --cd-light-purple: #a018ff;
+    --cd-light-cyan: #008c99;
 }
 
 /* Dark scheme (slate) */
 [data-md-color-scheme="slate"] {
-  --md-default-bg-color:        var(--cd-bg);
-  --md-default-bg-color--light: #1B1E21;
-  --md-default-bg-color--lighter: #22262A;
-  --md-default-bg-color--lightest: #2A2F34;
-  --md-default-fg-color:        var(--cd-fg);
-  --md-default-fg-color--light: #C7CAD0;
-  --md-default-fg-color--lighter: #8A8F98;
-  --md-default-fg-color--lightest: var(--cd-subtle);
+    --md-default-bg-color: var(--cd-bg);
+    --md-default-bg-color--light: #1b1e21;
+    --md-default-bg-color--lighter: #22262a;
+    --md-default-bg-color--lightest: #2a2f34;
+    --md-default-fg-color: var(--cd-fg);
+    --md-default-fg-color--light: #c7cad0;
+    --md-default-fg-color--lighter: #8a8f98;
+    --md-default-fg-color--lightest: var(--cd-subtle);
 
-  --md-primary-fg-color:        var(--cd-blue);
-  --md-primary-fg-color--light: #8FBDFF;
-  --md-primary-fg-color--dark:  #2D7DD2;
-  --md-primary-bg-color:        var(--cd-bg);
-  --md-primary-bg-color--light: var(--cd-fg);
+    --md-primary-fg-color: var(--cd-blue);
+    --md-primary-fg-color--light: #8fbdff;
+    --md-primary-fg-color--dark: #2d7dd2;
+    --md-primary-bg-color: var(--cd-bg);
+    --md-primary-bg-color--light: var(--cd-fg);
 
-  --md-accent-fg-color:         var(--cd-pink);
-  --md-accent-fg-color--transparent: rgba(255, 94, 160, 0.15);
-  --md-accent-bg-color:         var(--cd-bg);
-  --md-accent-bg-color--light:  var(--cd-fg);
+    --md-accent-fg-color: var(--cd-pink);
+    --md-accent-fg-color--transparent: rgba(255, 94, 160, 0.15);
+    --md-accent-bg-color: var(--cd-bg);
+    --md-accent-bg-color--light: var(--cd-fg);
 
-  --md-typeset-color:           var(--cd-fg);
-  --md-typeset-a-color:         var(--cd-blue);
-  --md-typeset-mark-color:      rgba(241, 255, 94, 0.35);
-  --md-typeset-del-color:       rgba(255, 110, 94, 0.25);
-  --md-typeset-ins-color:       rgba(94, 255, 108, 0.25);
+    --md-typeset-color: var(--cd-fg);
+    --md-typeset-a-color: var(--cd-blue);
+    --md-typeset-mark-color: rgba(241, 255, 94, 0.35);
+    --md-typeset-del-color: rgba(255, 110, 94, 0.25);
+    --md-typeset-ins-color: rgba(94, 255, 108, 0.25);
 
-  --md-code-bg-color:           #1B1E21;
-  --md-code-fg-color:           var(--cd-fg);
-  --md-code-hl-color:           rgba(94, 161, 255, 0.20);
-  --md-code-hl-number-color:    var(--cd-orange);
-  --md-code-hl-special-color:   var(--cd-pink);
-  --md-code-hl-function-color:  var(--cd-blue);
-  --md-code-hl-constant-color:  var(--cd-purple);
-  --md-code-hl-keyword-color:   var(--cd-pink);
-  --md-code-hl-string-color:    var(--cd-green);
-  --md-code-hl-name-color:      var(--cd-fg);
-  --md-code-hl-operator-color:  var(--cd-cyan);
-  --md-code-hl-punctuation-color: var(--cd-muted);
-  --md-code-hl-comment-color:   var(--cd-muted);
-  --md-code-hl-generic-color:   var(--cd-fg);
-  --md-code-hl-variable-color:  var(--cd-fg);
+    --md-code-bg-color: #1b1e21;
+    --md-code-fg-color: var(--cd-fg);
+    --md-code-hl-color: rgba(94, 161, 255, 0.2);
+    --md-code-hl-number-color: var(--cd-orange);
+    --md-code-hl-special-color: var(--cd-pink);
+    --md-code-hl-function-color: var(--cd-blue);
+    --md-code-hl-constant-color: var(--cd-purple);
+    --md-code-hl-keyword-color: var(--cd-pink);
+    --md-code-hl-string-color: var(--cd-green);
+    --md-code-hl-name-color: var(--cd-fg);
+    --md-code-hl-operator-color: var(--cd-cyan);
+    --md-code-hl-punctuation-color: var(--cd-muted);
+    --md-code-hl-comment-color: var(--cd-muted);
+    --md-code-hl-generic-color: var(--cd-fg);
+    --md-code-hl-variable-color: var(--cd-fg);
 
-  --md-footer-bg-color:         #0F1112;
-  --md-footer-bg-color--dark:   #0A0B0D;
-  --md-footer-fg-color:         var(--cd-fg);
-  --md-footer-fg-color--light:  #C7CAD0;
-  --md-footer-fg-color--lighter: #8A8F98;
+    --md-footer-bg-color: #0f1112;
+    --md-footer-bg-color--dark: #0a0b0d;
+    --md-footer-fg-color: var(--cd-fg);
+    --md-footer-fg-color--light: #c7cad0;
+    --md-footer-fg-color--lighter: #8a8f98;
 
-  --md-admonition-bg-color:     #1B1E21;
-  --md-admonition-fg-color:     var(--cd-fg);
+    --md-admonition-bg-color: #1b1e21;
+    --md-admonition-fg-color: var(--cd-fg);
 
-  color-scheme: dark;
+    color-scheme: dark;
 }
 
 /* Light scheme (default) */
 [data-md-color-scheme="default"] {
-  --md-primary-fg-color:        var(--cd-light-blue);
-  --md-primary-fg-color--light: #4D89E5;
-  --md-primary-fg-color--dark:  #003F99;
-  --md-primary-bg-color:        var(--cd-light-bg);
-  --md-primary-bg-color--light: var(--cd-light-fg);
+    --md-primary-fg-color: var(--cd-light-blue);
+    --md-primary-fg-color--light: #4d89e5;
+    --md-primary-fg-color--dark: #003f99;
+    --md-primary-bg-color: var(--cd-light-bg);
+    --md-primary-bg-color--light: var(--cd-light-fg);
 
-  --md-accent-fg-color:         var(--cd-light-purple);
-  --md-accent-fg-color--transparent: rgba(160, 24, 255, 0.10);
+    --md-accent-fg-color: var(--cd-light-purple);
+    --md-accent-fg-color--transparent: rgba(160, 24, 255, 0.1);
 
-  --md-typeset-a-color:         var(--cd-light-blue);
+    --md-typeset-a-color: var(--cd-light-blue);
 
-  color-scheme: light;
+    color-scheme: light;
 }
 
 /* Status-line/oh-my-posh-style accent for inline code */
 .md-typeset code {
-  border-radius: 4px;
+    border-radius: 4px;
 }

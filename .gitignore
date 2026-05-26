@@ -9,6 +9,8 @@ __pycache__/
 node_modules/
 
 !.claude/
+.claude/plans/
+
 !.config/
 !.github/
 !.local/

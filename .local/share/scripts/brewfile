@@ -1,0 +1,69 @@
+#!/usr/bin/env sh
+
+set -eu
+
+default_color=$(tput sgr 0)
+blue="$(tput setaf 4)"
+info() {
+	printf "%s==> %s%s\n" "$blue" "$1" "$default_color"
+}
+green="$(tput setaf 2)"
+success() {
+	printf "%s==> %s%s\n" "$green" "$1" "$default_color"
+}
+red="$(tput setaf 1)"
+error() {
+	printf "%s==> %s%s\n" "$red" "$1" "$default_color"
+}
+
+usage() {
+	cat <<'USAGE'
+usage: brewfile <add|remove> <package>... [brew bundle flags...]
+
+Wraps `brew bundle <add|remove> --global` then `brew bundle install --global`
+so the global Brewfile and the installed state stay in sync in one command.
+
+Flags after the action are passed through to `brew bundle`, so
+`brewfile add --cask ghostty` and `brewfile add --tap user/tap` work.
+
+Examples:
+  brewfile add jq
+  brewfile add --cask ghostty
+  brewfile remove jq
+USAGE
+}
+
+if [ "$#" -lt 1 ]; then
+	usage >&2
+	exit 1
+fi
+
+action="$1"
+shift
+
+case "$action" in
+	add | remove) ;;
+	-h | --help)
+		usage
+		exit 0
+		;;
+	*)
+		error "unknown action: ${action}"
+		usage >&2
+		exit 1
+		;;
+esac
+
+if [ "$#" -lt 1 ]; then
+	error "missing package argument"
+	usage >&2
+	exit 1
+fi
+
+info "brew bundle ${action} --global $*"
+brew bundle "${action}" "$@" --global
+
+info "brew bundle install --global"
+brew bundle install --global
+
+success "Brewfile in sync"

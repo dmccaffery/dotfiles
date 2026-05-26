@@ -40,7 +40,13 @@
       "link-fragments": false
     },
     "ignores": [
-      "CHANGELOG.md"
+      "CHANGELOG.md",
+      "node_modules/",
+      ".venv/",
+      ".cache/",
+      "site/",
+      "backups/",
+      ".claude/plans"
     ]
   }
 }

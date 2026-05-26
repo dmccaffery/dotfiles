@@ -23,6 +23,7 @@ nav = [
         "terminal/oh-my-posh.md",
         "terminal/tmux.md",
         "terminal/cli-tools.md",
+        "terminal/brew-bundle.md",
     ] },
     { "NeoVim" = [
         "neovim/lazyvim.md",

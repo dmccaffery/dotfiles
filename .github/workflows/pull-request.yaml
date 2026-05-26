@@ -3,17 +3,22 @@ name: pull-request
 on:
   pull_request:
     paths:
+      - "**/*.md"
+      - "**/*.json"
+      - "**/*.jsonc"
+      - "**/*.yaml"
+      - "**/*.yml"
+      - "**/*.css"
+      - "**/*.html"
+      - "**/*.sh"
+      - "**/*.bash"
       - "docs/**"
       - "zensical.toml"
       - "pyproject.toml"
       - "uv.lock"
-      - "CHANGELOG.md"
-      - ".release-please-manifest.json"
       - "package.json"
       - "package-lock.json"
       - ".prettierignore"
-      - "**/*.sh"
-      - "**/*.bash"
       - ".local/share/scripts/**"
       - ".config/git/template/hooks/**"
       - ".ssh/rc"
@@ -63,10 +68,10 @@ jobs:
         run: uv sync --frozen
 
       - name: Check prettier formatting
-        run: npx prettier --check 'docs/**/*.md'
+        run: npx prettier --check .
 
       - name: Run markdownlint
-        run: npx markdownlint-cli2 'docs/**/*.md'
+        run: npx markdownlint-cli2 '**/*.md'
 
       - name: Build site
         run: uv run zensical build --clean
