@@ -4,6 +4,7 @@ set -eu
 
 REPOS_DIR="${REPOS_DIR:-${HOME}/Repos}"
 selected="${1:-}"
+worktree="${2:-}"
 
 if [ ! -d "${REPOS_DIR:-}" ]; then
 	REPOS_DIR='.'
@@ -20,7 +21,28 @@ if [ -z "${selected:-}" ]; then
 	exit 0
 fi
 
-name=$(basename "${selected}" | tr . _)
+repo_name=$(basename "${selected}" | tr . _)
+
+if [ -n "${worktree:-}" ]; then
+	worktree_sanitized=$(printf '%s' "${worktree}" | tr -c 'A-Za-z0-9._-' '-')
+	worktree_full="${repo_name}-${worktree_sanitized}"
+	worktree_path="${HOME}/.cache/agent/worktrees/${worktree_full}"
+	branch="agent/${worktree_full}"
+
+	if [ ! -d "${worktree_path}" ]; then
+		if git -C "${selected}" show-ref --verify --quiet "refs/heads/${branch}"; then
+			git -C "${selected}" worktree add "${worktree_path}" "${branch}"
+		else
+			git -C "${selected}" worktree add -b "${branch}" "${worktree_path}"
+		fi
+	fi
+
+	selected="${worktree_path}"
+	name="${repo_name}/${worktree_sanitized}"
+else
+	name="${repo_name}"
+fi
+
 printf '\033]0;%s\007' "${name}" || true
 
 if ! tmux has-session -t "${name}" 2> /dev/null; then

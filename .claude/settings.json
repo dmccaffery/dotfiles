@@ -13,11 +13,127 @@
   "plansDirectory": "./.claude/plans",
   "respectGitignore": true,
   "feedbackSurveyRate": 0,
+  "permissions": {
+    "additionalDirectories": ["~/Repos", "~/.config", "~/.cache", "~/.local/share", "~/.npm", "/opt/homebrew", "/tmp"],
+    "allow": [
+      "Read(*)",
+      "Glob",
+      "Grep",
+      "WebSearch",
+      "Edit(/tmp/**)",
+      "Edit(~/.cache/agent/worktrees/**)",
+      "Bash(pwd)",
+      "Bash(hostname)",
+      "Bash(whoami)",
+      "Bash(id)",
+      "Bash(id *)",
+      "Bash(uptime)",
+      "Bash(uname)",
+      "Bash(uname *)",
+      "Bash(date)",
+      "Bash(date *)",
+      "Bash(ls)",
+      "Bash(ls *)",
+      "Bash(stat *)",
+      "Bash(file *)",
+      "Bash(wc *)",
+      "Bash(tree)",
+      "Bash(tree *)",
+      "Bash(which *)",
+      "Bash(type *)",
+      "Bash(command -v *)",
+      "Bash(echo *)",
+      "Bash(printf *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(grep *)",
+      "Bash(rg *)",
+      "Bash(find *)",
+      "Bash(jq *)",
+      "Bash(yq *)",
+      "Bash(brew list)",
+      "Bash(brew list *)",
+      "Bash(brew search *)",
+      "Bash(brew info *)",
+      "Bash(brew bundle check)",
+      "Bash(brew bundle check *)",
+      "Bash(git status)",
+      "Bash(git status *)",
+      "Bash(git diff)",
+      "Bash(git diff *)",
+      "Bash(git log)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git blame *)",
+      "Bash(git ls-files)",
+      "Bash(git ls-files *)",
+      "Bash(git rev-parse *)",
+      "Bash(git config --get *)",
+      "Bash(git branch)",
+      "Bash(git branch --list)",
+      "Bash(git branch --list *)",
+      "Bash(git stash list)",
+      "Bash(git worktree list)",
+      "Bash(git remote)",
+      "Bash(git remote -v)",
+      "Bash(git remote get-url *)",
+      "Bash(git add *)",
+      "Bash(git restore *)",
+      "Bash(git checkout *)",
+      "Bash(git switch *)",
+      "Bash(git commit *)"
+    ]
+  },
   "sandbox": {
     "enabled": true,
     "filesystem": {
-      "allowRead": ["~/Repos", "~/.cache", "~/.local/share", "/tmp"],
-      "allowWrite": ["~/Repos", "~/.cache", "~/.local/share", "/tmp"]
+      "allowRead": [
+        "~/Repos",
+        "~/.config",
+        "~/.cache",
+        "~/.cache/agent/worktrees",
+        "~/.local/runtime",
+        "~/.local/share",
+        "~/.npm",
+        "/opt/homebrew",
+        "/tmp"
+      ],
+      "allowWrite": [
+        "~/Repos",
+        "~/.cache/agent/worktrees",
+        "~/.cache/uv",
+        "~/.cache/pip",
+        "~/.cache/fnm",
+        "/tmp",
+        "~/.npm"
+      ]
+    },
+    "network": {
+      "allowMachLookup": [
+        "com.apple.SecurityServer",
+        "com.apple.trustd",
+        "com.apple.trustd.agent",
+        "com.apple.mDNSResponder",
+        "com.apple.dnssd",
+        "com.apple.system.opendirectoryd.api",
+        "com.apple.system.DirectoryService.api"
+      ],
+      "allowedDomains": [
+        "github.com",
+        "api.github.com",
+        "objects.githubusercontent.com",
+        "raw.githubusercontent.com",
+        "codeload.github.com",
+        "ghcr.io",
+        "codeberg.org",
+        "code.forgejo.org",
+        "registry.npmjs.org",
+        "pypi.org",
+        "files.pythonhosted.org",
+        "formulae.brew.sh",
+        "nodejs.org"
+      ]
     },
     "autoAllowBashIfSandboxed": false,
     "allowUnsandboxedCommands": false,
@@ -27,5 +143,30 @@
   "statusLine": {
     "type": "command",
     "command": "oh-my-posh claude --config ~/.config/oh-my-posh/claude.yaml"
+  },
+  "hooks": {
+    "WorktreeCreate": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/worktree-create.sh"
+          }
+        ]
+      }
+    ],
+    "WorktreeRemove": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/worktree-remove.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "worktree": {
+    "baseRef": "head"
   }
 }

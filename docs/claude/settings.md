@@ -4,26 +4,70 @@ icon: lucide/bot
 
 # Claude Code settings
 
-`.claude/settings.json` is the user-level config for [Claude Code](https://claude.com/claude-code).
-The shipped file is small and opinionated:
+`.claude/settings.json` is the project-scoped config for [Claude Code](https://claude.com/claude-code)
+applied automatically when Claude runs inside this repo (it is _not_ stowed — `.stowrc` ignores
+`.json`). The shipped file is small and opinionated:
 
 ```json title=".claude/settings.json"
 {
     "theme": "custom:cyberdream",
+    "tui": "fullscreen",
     "autoMemoryEnabled": true,
     "cleanupPeriodDays": 7,
     "editorMode": "vim",
     "attribution": { "commit": "", "pr": "" },
     "autoUpdatesChannel": "stable",
     "includeGitInstructions": false,
-    "plansDirectory": ".claude/plans",
+    "plansDirectory": "./.claude/plans",
     "respectGitignore": true,
     "feedbackSurveyRate": 0,
+    "permissions": {
+        "additionalDirectories": [
+            "~/Repos",
+            "~/.config",
+            "~/.cache",
+            "~/.local/share",
+            "~/.npm",
+            "/opt/homebrew",
+            "/tmp"
+        ],
+        "allow": ["Read(*)", "Glob", "Grep", "WebSearch", "Edit(/tmp/**)", "..."]
+    },
     "sandbox": {
         "enabled": true,
         "filesystem": {
-            "allowRead": ["~/Repos"],
-            "allowWrite": ["~/Repos"]
+            "allowRead": [
+                "~/Repos",
+                "~/.config",
+                "~/.cache",
+                "~/.cache/agent/worktrees",
+                "~/.local/runtime",
+                "~/.local/share",
+                "~/.npm",
+                "/opt/homebrew",
+                "/tmp"
+            ],
+            "allowWrite": [
+                "~/Repos",
+                "~/.cache/agent/worktrees",
+                "~/.cache/uv",
+                "~/.cache/pip",
+                "~/.cache/fnm",
+                "/tmp",
+                "~/.npm"
+            ]
+        },
+        "network": {
+            "allowMachLookup": [
+                "com.apple.SecurityServer",
+                "com.apple.trustd",
+                "com.apple.trustd.agent",
+                "com.apple.mDNSResponder",
+                "com.apple.dnssd",
+                "com.apple.system.opendirectoryd.api",
+                "com.apple.system.DirectoryService.api"
+            ],
+            "allowedDomains": ["github.com", "api.github.com", "..."]
         },
         "autoAllowBashIfSandboxed": false,
         "allowUnsandboxedCommands": false,
@@ -33,9 +77,21 @@ The shipped file is small and opinionated:
     "statusLine": {
         "type": "command",
         "command": "oh-my-posh claude --config ~/.config/oh-my-posh/claude.yaml"
-    }
+    },
+    "hooks": {
+        "WorktreeCreate": [{ "hooks": [{ "type": "command", "command": "~/.claude/hooks/worktree-create.sh" }] }],
+        "WorktreeRemove": [{ "hooks": [{ "type": "command", "command": "~/.claude/hooks/worktree-remove.sh" }] }]
+    },
+    "worktree": { "baseRef": "head" }
 }
 ```
+
+> **Why literal `~/` paths instead of `${XDG_CONFIG_HOME}` / `${REPOS_DIR}` / `${HOME}`?**
+> Claude Code does not perform environment-variable expansion on values in `settings.json`, so
+> tokens like `${REPOS_DIR}` were being treated as literal directory names and silently failing
+> to match anything. Paths now use `~/` (which Claude does expand) or absolute roots
+> (`/opt/homebrew`, `/tmp`). If the user's XDG layout ever diverges from the defaults, those
+> overrides have to be reflected here by hand.
 
 ## What each block does
 
@@ -46,6 +102,16 @@ The shipped file is small and opinionated:
 ```
 
 Points at `.claude/themes/cyberdream.json` (relative to `~/.claude/themes/`). See [Theme](theme.md).
+
+### TUI mode
+
+```json
+"tui": "fullscreen"
+```
+
+Renders Claude Code in alternate-screen, full-terminal mode rather than the default inline
+scrollback. Pairs well with tmux: the conversation owns the pane while it's active and
+restores the prior terminal contents on exit.
 
 ### Memory & cleanup
 
@@ -78,11 +144,55 @@ that lands.
 ### Plans
 
 ```json
-"plansDirectory": ".claude/plans"
+"plansDirectory": "./.claude/plans"
 ```
 
-When Claude Code is in plan mode, plan files write to `<repo>/.claude/plans/`. The repo's
+When Claude Code is in plan mode, plan files write to `<repo>/.claude/plans/`. The relative
+`./.claude/plans` resolves against Claude's working directory (the repo root). The repo's
 `.gitignore` excludes `.claude/plans/` by default.
+
+### Permissions
+
+`additionalDirectories` widens the working set beyond the repo root. Paths are kept in
+lockstep with `sandbox.filesystem.allowRead` below — anything pre-approved at the permission
+layer is also reachable at the sandbox layer, so "no prompt" implies "will work" (no silent
+EPERM):
+
+- `~/Repos` — the user's source-tree root.
+- `~/.config` — user configuration (XDG config home).
+- `~/.cache` — tooling caches (XDG cache home).
+- `~/.local/share` — per-user data (XDG data home).
+- `~/.npm` — npm's cache (not XDG-aware, so listed explicitly).
+- `/opt/homebrew` — Homebrew prefix on Apple Silicon; lets agents introspect installed
+  formulas via `brew info`, `brew --prefix`, etc.
+- `/tmp` — scratch space.
+
+`allow` pre-approves common, safe tool invocations so they skip the per-call permission
+prompt. The sandbox (see below) is the real safety net — `allow` only controls prompts.
+The list is deliberately aligned with the sandbox's `allowWrite` for Edit entries: an Edit
+permission only goes on the list when the sandbox will actually let the write succeed.
+Grouped by purpose:
+
+- **Read-only Claude tools** — `Read(*)`, `Glob`, `Grep`, `WebSearch`.
+- **Path-scoped edits** — `Edit(/tmp/**)` (scratch) and `Edit(~/.cache/agent/worktrees/**)`
+  (agent worktrees). Edits to `~/Repos` are allowed by the sandbox but still prompt at the
+  permission layer — the prompt is the deliberate friction so you stay aware of in-place
+  repo edits versus agent-isolated ones.
+- **Bash inspection** — `pwd`, `hostname`, `whoami`, `id`, `uptime`, `uname`, `date`, `ls`,
+  `stat`, `file`, `wc`, `tree`, `which`, `type`, `command -v`, `echo`, `printf` (all with
+  optional args).
+- **File inspection** — `cat`, `head`, `tail`, `grep`, `rg`, `find`, `jq`, `yq` (with args).
+  Minor risk: repo-local secrets (e.g. `.env`) can land in transcripts.
+- **Homebrew read-only** — `brew list`, `brew search`, `brew info`, `brew bundle check`.
+- **Git read-only** — `git status`, `diff`, `log`, `show`, `blame`, `ls-files`, `rev-parse`,
+  `config --get`, `branch --list`, `stash list`, `worktree list`, `remote -v`,
+  `remote get-url` (with optional args where applicable).
+- **Git mutation, reversible** — `git add`, `restore`, `checkout`, `switch`, `commit` (with
+  args). Excludes `push`, `reset --hard`, `rebase`, `branch -D` — those still prompt.
+
+Bash patterns use the documented `cmd *` (space-star) form for "command with any args".
+Some commands list both `Bash(cmd)` and `Bash(cmd *)` to cover both no-arg and with-arg
+invocations, since whether `*` matches an empty trailing arg isn't explicit in the docs.
 
 ### Sandbox
 
@@ -90,14 +200,114 @@ When Claude Code is in plan mode, plan files write to `<repo>/.claude/plans/`. T
 "sandbox": {
   "enabled": true,
   "filesystem": {
-    "allowRead":  ["~/Repos"],
-    "allowWrite": ["~/Repos"]
+    "allowRead": [
+      "~/Repos",
+      "~/.config",
+      "~/.cache",
+      "~/.cache/agent/worktrees",
+      "~/.local/runtime",
+      "~/.local/share",
+      "~/.npm",
+      "/opt/homebrew",
+      "/tmp"
+    ],
+    "allowWrite": [
+      "~/Repos",
+      "~/.cache/agent/worktrees",
+      "~/.cache/uv",
+      "~/.cache/pip",
+      "~/.cache/fnm",
+      "/tmp",
+      "~/.npm"
+    ]
+  },
+  "network": {
+    "allowMachLookup": [
+      "com.apple.SecurityServer",
+      "com.apple.trustd",
+      "com.apple.trustd.agent",
+      "com.apple.mDNSResponder",
+      "com.apple.dnssd",
+      "com.apple.system.opendirectoryd.api",
+      "com.apple.system.DirectoryService.api"
+    ],
+    "allowedDomains": ["github.com", "api.github.com", "..."]
   }
 }
 ```
 
-Hard-locks Claude Code's filesystem access to `~/Repos`. Anything outside requires explicit
-permission. The three explicit `false` flags below disable common escape hatches:
+Filesystem access is **asymmetric by design**: broad reads, narrower writes.
+
+- `allowRead` covers the source tree (`~/Repos`), the entire XDG config tree (`~/.config` —
+  required for `git` to load identity and `includeIf` overlays, for `oh-my-posh` to read its
+  theme, etc.), tooling caches (`~/.cache`), `XDG_RUNTIME_DIR` (`~/.local/runtime` — ephemeral
+  sockets and runtime state for `nvim`, `fnm`, etc.), per-user data (`~/.local/share`), `~/.npm`
+  (npm's non-XDG cache), `/opt/homebrew` (so agents can introspect what Homebrew has
+  installed), and scratch (`/tmp`). `~/.cache/agent/worktrees` is listed explicitly as
+  belt-and-suspenders even though it's already covered by `~/.cache`.
+  `allowWrite` covers the paths agents actually need to mutate:
+
+- `~/Repos` — the source tree itself. Agents can edit files in checked-out repos directly. The
+  permission-layer prompt on `Edit(~/Repos/**)` (see Permissions above) is what keeps in-place
+  edits deliberate rather than silent.
+- `~/.cache/agent/worktrees` — the dominant write target when agents use
+  [worktree isolation](hooks-skills.md#worktreecreate).
+- `~/.cache/uv` and `~/.cache/pip` — Python package caches, required for `make docs-build` /
+  `uv sync`.
+- `~/.cache/fnm` — Fast Node Manager's data dir, required for `fnm install <version>` to bring
+  in a new Node toolchain. (Previously `~/.local/share/fnm`; move the entry if you flip fnm
+  back to the XDG_DATA_HOME layout.)
+- `/tmp` — scratch.
+- `~/.npm` — npm's non-XDG cache. Listed last so the historical "read-only" stance is obvious
+  from the diff: `npm install` inside an agent session needs to populate the cache, and
+  leaving this out forces a prompt (or hard fail) on every fetched tarball.
+
+Anything outside the read list still requires explicit permission. The narrow per-tool write
+holes are the model for any future additions — open the smallest path that makes a tool work
+rather than re-allowing the parent.
+
+The `network` block keeps the sandbox strict but punches the holes macOS itself needs to be
+functional. `allowMachLookup` is grouped by purpose:
+
+- **TLS / trust** — `com.apple.SecurityServer`, `com.apple.trustd`, `com.apple.trustd.agent`.
+  Required for any HTTPS-using tool (git, curl, npm, uv) to validate certificates against
+  the system keychain.
+- **DNS** — `com.apple.mDNSResponder`, `com.apple.dnssd`. Required for hostname resolution;
+  without these, anything by name fails closed.
+- **Directory services** — `com.apple.system.opendirectoryd.api`,
+  `com.apple.system.DirectoryService.api`. How `whoami` / `id` resolve names from UID/GID
+  via `getpwuid` / `getgrgid`. (Git identity itself comes from `~/.config/git/`, which is
+  covered by `allowRead` above.)
+
+There is intentionally no `allowUnixSockets` entry. `ssh-agent` is unreachable (so SSH-based
+git operations are blocked from inside the sandbox — use HTTPS via `allowedDomains`), and the
+tmux control socket is unreachable as well. The
+[`WorktreeCreate` hook](hooks-skills.md#worktreecreate)'s `tmux display-message` call
+therefore fails silently and the hook falls back to the repo basename when run from inside
+the sandbox.
+
+`allowedDomains` pre-approves outbound HTTPS destinations so common tools don't trigger a
+permission prompt on first contact. Anything not listed still works — Claude prompts the
+first time it's hit. Grouped by purpose:
+
+- **GitHub** — `github.com`, `api.github.com`, `objects.githubusercontent.com`,
+  `raw.githubusercontent.com`, `codeload.github.com`, `ghcr.io`. Covers `git` over HTTPS,
+  the `gh` CLI, large-object / LFS fetches, raw file reads, archive downloads, and
+  container registry pulls.
+- **Forgejo / Codeberg** — `codeberg.org`, `code.forgejo.org`. Matches the
+  [`includeIf` overrides](../git/config.md#includes) for Forgejo-hosted remotes.
+- **Package registries** — `registry.npmjs.org` (npm metadata + tarballs),
+  `pypi.org` (Python index), `files.pythonhosted.org` (wheel storage),
+  `formulae.brew.sh` (Homebrew formula API).
+- **Node** — `nodejs.org`. For binary-distribution installs (e.g. `nvm install`).
+
+> **Note:** `allowMachLookup` is not in the official Claude Code docs at time of writing; the
+> field is treated as undocumented-but-functional based on observed behavior. If a future
+> Claude Code release stops honoring it, prompts for HTTPS / DNS / directory lookups will
+> reappear. `allowedDomains` / `deniedDomains` _are_ documented (see
+> [Sandboxing](https://code.claude.com/docs/en/sandboxing.md)).
+
+The three explicit `false` flags below disable common escape hatches:
 
 - `autoAllowBashIfSandboxed: false` — Bash commands still require approval.
 - `allowUnsandboxedCommands: false` — no commands can run outside the sandbox.
@@ -116,3 +326,33 @@ Claude Code runs `oh-my-posh claude …` and renders the output as a status line
 `oh-my-posh claude` subcommand consumes Claude Code's session JSON on stdin.
 
 See [Terminal → oh-my-posh](../terminal/oh-my-posh.md#claude-code-status-line).
+
+### Hooks
+
+```json
+"hooks": {
+  "WorktreeCreate": [
+    { "hooks": [{ "type": "command", "command": "~/.claude/hooks/worktree-create.sh" }] }
+  ],
+  "WorktreeRemove": [
+    { "hooks": [{ "type": "command", "command": "~/.claude/hooks/worktree-remove.sh" }] }
+  ]
+}
+```
+
+Two hooks bracket Claude Code's worktree lifecycle:
+
+- `WorktreeCreate` → [`.claude/hooks/worktree-create.sh`](hooks-skills.md#worktreecreate) creates
+  the worktree and branch.
+- `WorktreeRemove` → [`.claude/hooks/worktree-remove.sh`](hooks-skills.md#worktreeremove) tears
+  it back down once Claude is done.
+
+### Worktree
+
+```json
+"worktree": { "baseRef": "head" }
+```
+
+New worktrees branch from `HEAD` of the current checkout rather than the repo's default
+branch — match-what-I-see-now behavior, so a worktree carries whatever state you've staged or
+committed locally.

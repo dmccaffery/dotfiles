@@ -36,6 +36,7 @@ node_modules/
 .cache/
 backups/
 .claude/plans/
+.claude/worktrees/
 ```
 
 - **120-char wrap** for everything prettier touches (matches markdownlint's line length).
@@ -83,7 +84,8 @@ under the `markdownlint-cli2` key. There is no longer a separate
     ".cache/",
     "site/",
     "backups/",
-    ".claude/plans"
+    ".claude/plans",
+    ".claude/worktrees"
   ]
 }
 ```

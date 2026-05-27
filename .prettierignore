@@ -13,3 +13,4 @@ node_modules/
 .cache/
 backups/
 .claude/plans/
+.claude/worktrees/

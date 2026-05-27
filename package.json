@@ -46,7 +46,8 @@
       ".cache/",
       "site/",
       "backups/",
-      ".claude/plans"
+      ".claude/plans",
+      ".claude/worktrees"
     ]
   }
 }

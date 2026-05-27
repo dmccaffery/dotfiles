@@ -111,11 +111,25 @@ See [Git → Auth](auth.md) for the full GitHub / Codeberg / GitLab story.
 
 [include]
     path = ~/.config/private/git/config
+
+[includeIf "gitdir:~/.cache/agent/worktrees/**"]
+    path = ~/.config/git/agent.gitconfig
 ```
 
 Provider-specific overrides are scoped via `hasconfig:remote.*.url` matching — the right
 `gitconfig` is loaded only when the repo's remote matches the host. See
 [Private overlay](private-extension.md) for the unconditional include.
+
+The trailing `includeIf "gitdir:…"` block loads
+[`agent.gitconfig`](https://github.com/dmccaffery/dotfiles/blob/main/.config/git/agent.gitconfig)
+when the repository's `.git` directory sits under `~/.cache/agent/worktrees/` — i.e. a
+worktree created by Claude Code's [WorktreeCreate hook](../claude/hooks-skills.md#worktreecreate).
+Worktrees live in XDG cache (not config) because they're throwaway work areas. The same
+literal path is hard-coded in the hook script; both sides match by convention rather than via
+an environment variable, because git's `includeIf` can't expand env vars. The agent overlay
+sets `commit.gpgSign = false` and `tag.gpgSign = false` so a sandboxed agent (which can't
+reach the SSH key on the security key) can commit without blocking on a signing prompt. It
+is loaded last so it wins ties against the private overlay.
 
 ## Template { #template }
 

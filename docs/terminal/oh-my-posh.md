@@ -89,7 +89,7 @@ It's wired up via `.claude/settings.json`:
 ```json
 "statusLine": {
   "type": "command",
-  "command": "oh-my-posh claude --config ~/.config/oh-my-posh/claude.yaml"
+  "command": "oh-my-posh claude --config ${XDG_CONFIG_HOME}/oh-my-posh/claude.yaml"
 }
 ```
 

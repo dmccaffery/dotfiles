@@ -45,6 +45,7 @@ jobs:
             setup/**/*.sh \
             .local/share/scripts/* \
             .config/git/template/hooks/* \
+            .claude/hooks/*.sh \
             .ssh/rc
 
   docs-build:
