@@ -6,7 +6,6 @@ export XDG_RUNTIME_DIR="${HOME}/.local/runtime"
 
 export REPOS_DIR="${HOME}/Repos"
 
-export CLAUDE_CODE_NO_FLICKER=1
 export TMUX_SOCK="${TMUX%%,*}"
 
 export HOMEBREW_BUNDLE_FILE_GLOBAL="${XDG_DATA_HOME}/homebrew/Brewfile"

@@ -72,6 +72,21 @@ Highlights:
   for newline-without-submit) work inside tmux despite tmux not supporting the kitty keyboard
   protocol.
 
+### Claude Code tmux environment
+
+`options.conf` exports two `CLAUDE_CODE_*` variables via `set-environment -g` so they only
+apply to processes spawned inside tmux, not to plain terminal shells:
+
+| Variable                     | Value  | Effect                                                                    |
+| ---------------------------- | ------ | ------------------------------------------------------------------------- |
+| `CLAUDE_CODE_TMUX_TRUECOLOR` | `true` | Tells Claude Code to emit 24-bit colour even when `$TERM` advertises 256. |
+| `CLAUDE_CODE_NO_FLICKER`     | `true` | Suppresses the redraw flicker Claude Code's TUI shows under tmux.         |
+
+A third toggle, `CLAUDE_CODE_DISABLE_MOUSE=true`, is kept commented out — turning it on hands
+mouse events to tmux instead of Claude Code, but the trade-off (no in-app scroll / no
+selection inside the TUI) didn't carry its weight. Uncomment it in `options.conf` if you'd
+rather let tmux's `mouse on` win drag-select.
+
 ## Plugins
 
 ```text title=".config/tmux/conf/plugins.conf"

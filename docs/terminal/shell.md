@@ -20,7 +20,6 @@ export XDG_STATE_HOME="${HOME}/.local/state"
 export XDG_RUNTIME_DIR="${HOME}/.local/runtime"
 
 export REPOS_DIR="${HOME}/Repos"
-export CLAUDE_CODE_NO_FLICKER=1
 
 export HOMEBREW_BUNDLE_FILE_GLOBAL="${XDG_DATA_HOME}/homebrew/Brewfile"
 export HOMEBREW_BUNDLE_INSTALL_CLEANUP=1
