@@ -46,6 +46,30 @@ Use this map to find the right page (extend as new sections are added):
 When adding a brand-new top-level area, also wire it into the `nav = […]` block in
 [`zensical.toml`](zensical.toml).
 
+### Doc-sync check before every commit
+
+Before creating any commit, inspect the staged changes and decide whether the docs need to
+move with them. Don't rely on the user to remember — this is a hard prerequisite, not a
+courtesy.
+
+1. Run `git diff --staged --name-only` (and `git diff --staged` when the file list isn't
+   enough to know what changed).
+2. For each staged path, look it up in the map above. If it matches a row, the listed
+   doc page is in scope and must be reviewed in the same commit.
+3. Read the current doc page and confirm it still matches the new config. Update it when
+   the change adds, removes, renames, or alters the behaviour of anything the page
+   describes (env vars, keybinds, options, file paths, tables, code snippets).
+4. If the staged set touches a path that isn't in the map but is user-facing (a new
+   top-level area, a new script, a new tool), extend the map row in this file and add the
+   page in the same commit.
+5. Stage the doc updates and re-run `make lint` (or `make docs-build` for new pages)
+   before finalising the commit.
+
+Skip the doc step only when the diff is provably docs-irrelevant (e.g., a change to
+`.claude/plans/`, a release-please-owned file, or a pure formatting pass already covered
+by `make fmt`). When in doubt, update the page — out-of-sync docs are worse than missing
+ones, per the rule above.
+
 ## Verify before committing
 
 ```sh
