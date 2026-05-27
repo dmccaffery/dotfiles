@@ -8,6 +8,9 @@
     "commit": "",
     "pr": ""
   },
+  "env": {
+    "SSH_AUTH_SOCK": "/tmp/ssh-agent.sock"
+  },
   "autoUpdatesChannel": "stable",
   "includeGitInstructions": false,
   "plansDirectory": "./.claude/plans",
@@ -119,6 +122,7 @@
         "com.apple.system.opendirectoryd.api",
         "com.apple.system.DirectoryService.api"
       ],
+      "allowUnixSockets": ["/tmp/ssh-agent.sock"],
       "allowedDomains": [
         "github.com",
         "api.github.com",
