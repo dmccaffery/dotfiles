@@ -92,3 +92,13 @@ defaults write org.gpgtools.common DisableKeychain -bool no
 # require smartcard
 sudo defaults write /Library/Preferences/com.apple.security.smartcard enforceSmartCard -bool true
 sudo defaults write /Library/Preferences/com.apple.security.smartcard allowUnmappedUsers -int 1
+
+# shellcheck disable=SC3028
+id=${UID:-$(id -u)}
+
+# disable agents
+launchctl disable gui/"${id}"/com.openssh.ssh-agent 2> /dev/null || true
+launchctl bootout gui/"${id}"/org.homebrew.ssh-agent 2> /dev/null || true
+
+# bootstrap homebrew ssh agent
+launchctl bootstrap gui/"${id}" ~/Library/LaunchAgents/org.homebrew.ssh-agent.plist

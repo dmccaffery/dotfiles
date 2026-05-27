@@ -4,17 +4,22 @@
 	<dict>
 		<key>Label</key>
 		<string>org.homebrew.ssh-agent</string>
+		<key>EnvironmentVariables</key>
+		<dict>
+			<key>SSH_ASKPASS</key>
+			<string>/usr/local/bin/ssh-askpass</string>
+			<key>SSH_ASKPASS_REQUIRE</key>
+			<string>force</string>
+			<key>DISPLAY</key>
+			<string>:0</string>
+			<key>SSH_AUTH_SOCK_LOCAL</key>
+			<string>/tmp/ssh-agent.sock</string>
+		</dict>
 		<key>ProgramArguments</key>
 		<array>
 			<string>/bin/sh</string>
-			<string>-pc</string>
-			<string>#! /bin/sh
-launchctl setenv SSH_ASKPASS "${SSH_ASKPASS:=/usr/local/bin/ssh-askpass}"
-launchctl setenv SUDO_ASKPASS "${SUDO_ASKPASS:=/usr/local/bin/ssh-askpass}"
-launchctl setenv DISPLAY "ssh-askpass"
-rm -f $SSH_AUTH_SOCK
-SSH_ASKPASS=/usr/local/bin/ssh-askpass DISPLAY='ssh-askpass' /opt/homebrew/bin/ssh-agent -D -a $SSH_AUTH_SOCK
-			</string>
+			<string>-c</string>
+			<string>rm -f ${SSH_AUTH_SOCK}; killall ssh-agent; ln -fs ${SSH_AUTH_SOCK_LOCAL} ${SSH_AUTH_SOCK}; /opt/homebrew/bin/ssh-agent -D -a ${SSH_AUTH_SOCK_LOCAL};</string>
 		</array>
 		<key>RunAtLoad</key>
 		<true />

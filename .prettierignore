@@ -14,3 +14,4 @@ node_modules/
 backups/
 .claude/plans/
 .claude/worktrees/
+**.plist

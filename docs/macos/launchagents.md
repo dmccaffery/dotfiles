@@ -17,11 +17,22 @@ One launch agent ships with this repo: `org.homebrew.ssh-agent`. It replaces App
     <dict>
         <key>Label</key>
         <string>org.homebrew.ssh-agent</string>
+        <key>EnvironmentVariables</key>
+        <dict>
+            <key>SSH_ASKPASS</key>
+            <string>/usr/local/bin/ssh-askpass</string>
+            <key>SSH_ASKPASS_REQUIRE</key>
+            <string>force</string>
+            <key>DISPLAY</key>
+            <string>:0</string>
+            <key>SSH_AUTH_SOCK_LOCAL</key>
+            <string>/tmp/ssh-agent.sock</string>
+        </dict>
         <key>ProgramArguments</key>
         <array>
             <string>/bin/sh</string>
             <string>-c</string>
-            <string>rm -f $SSH_AUTH_SOCK; SSH_ASKPASS=/usr/local/bin/ssh-askpass DISPLAY=':0' /opt/homebrew/bin/ssh-agent -D -a $SSH_AUTH_SOCK</string>
+            <string>rm -f ${SSH_AUTH_SOCK}; killall ssh-agent; ln -fs ${SSH_AUTH_SOCK_LOCAL} ${SSH_AUTH_SOCK}; /opt/homebrew/bin/ssh-agent -D -a ${SSH_AUTH_SOCK_LOCAL};</string>
         </array>
         <key>RunAtLoad</key>
         <true />
@@ -33,19 +44,36 @@ One launch agent ships with this repo: `org.homebrew.ssh-agent`. It replaces App
 </plist>
 ```
 
-The single shell command:
+The `EnvironmentVariables` block exports values into the agent process and into every
+shell descended from this launchd job:
 
-1. Removes any stale `$SSH_AUTH_SOCK` file from a previous run.
-2. Sets `SSH_ASKPASS=/usr/local/bin/ssh-askpass` (the [wrapper script](../scripts/security-keys.md#ssh-askpass)).
-3. Sets `DISPLAY=:0` — required for ssh-agent to call `SSH_ASKPASS` on macOS even though
-   there's no X server.
-4. Runs Homebrew's `ssh-agent` in the foreground (`-D`) listening on the auth socket (`-a`).
+| Key                   | Value                        | Purpose                                                                                                  |
+| --------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `SSH_ASKPASS`         | `/usr/local/bin/ssh-askpass` | The [ssh-askpass wrapper](../scripts/security-keys.md#ssh-askpass) that hands prompts to `pinentry-mac`. |
+| `SSH_ASKPASS_REQUIRE` | `force`                      | OpenSSH 8.4+ flag that **always** uses `SSH_ASKPASS`, even when a TTY is attached.                       |
+| `DISPLAY`             | `:0`                         | Set only to satisfy askpass programs that bail out without a display.                                    |
+| `SSH_AUTH_SOCK_LOCAL` | `/tmp/ssh-agent.sock`        | The **stable** socket path that the agent listens on.                                                    |
+
+The shell command:
+
+1. Removes whatever socket launchd preallocated at `${SSH_AUTH_SOCK}` (the random
+   per-boot `/var/run/com.apple.launchd.<random>/Listeners` path).
+2. `killall ssh-agent` to clear any stale agent left behind by a previous boot or reload.
+3. Symlinks the random launchd path → the stable path
+   (`ln -fs ${SSH_AUTH_SOCK_LOCAL} ${SSH_AUTH_SOCK}`). Shells inherit the launchd
+   `SSH_AUTH_SOCK`, follow the symlink, and end up talking to the agent on the stable
+   socket. The stable path is also what the Claude Code sandbox allowlists — see
+   [Claude → settings](../claude/settings.md#sandbox).
+4. Runs Homebrew's `ssh-agent` in the foreground (`-D`) listening on the stable socket (`-a`).
+
+> **Restart shells after reloading.** Already-running terminals keep their old
+> `SSH_AUTH_SOCK`; only processes launched after the agent reloads pick up the new value.
 
 ## How it's installed
 
-The `shell` stage of `install.sh` (`setup/darwin/shell.sh`) bootstraps it:
+The `config` stage of `install.sh` (`setup/darwin/config.sh`) bootstraps it:
 
-```sh title="setup/darwin/shell.sh"
+```sh title="setup/darwin/config.sh"
 id=${UID:-$(id -u)}
 
 launchctl disable gui/"${id}"/com.openssh.ssh-agent 2> /dev/null || true
