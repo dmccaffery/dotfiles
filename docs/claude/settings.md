@@ -16,7 +16,6 @@ applied automatically when Claude runs inside this repo (it is _not_ stowed — 
     "cleanupPeriodDays": 7,
     "editorMode": "vim",
     "attribution": { "commit": "", "pr": "" },
-    "env": { "SSH_AUTH_SOCK": "/tmp/ssh-agent.sock" },
     "autoUpdatesChannel": "stable",
     "includeGitInstructions": false,
     "plansDirectory": "./.claude/plans",
@@ -60,7 +59,6 @@ applied automatically when Claude runs inside this repo (it is _not_ stowed — 
                 "com.apple.system.opendirectoryd.api",
                 "com.apple.system.DirectoryService.api"
             ],
-            "allowUnixSockets": ["/tmp/ssh-agent.sock"],
             "allowedDomains": ["github.com", "api.github.com", "..."]
         },
         "autoAllowBashIfSandboxed": false,
@@ -134,21 +132,6 @@ Vim-style modal editing in the message composer.
 Empty strings disable Claude Code's default attribution footers on commits and PRs. The git
 config's `Signed-off-by` trailer (from the prepare-commit-msg hook) is the only attribution
 that lands.
-
-### Environment
-
-```json
-"env": { "SSH_AUTH_SOCK": "/tmp/ssh-agent.sock" }
-```
-
-Pins the literal path of the ssh-agent socket the sandbox should connect to. Claude Code does
-**not** expand environment variables in `settings.json` values, so the path has to be the
-exact same literal the [`org.homebrew.ssh-agent` LaunchAgent](../macos/launchagents.md)
-listens on. Pair this with the matching entry in
-[`sandbox.network.allowUnixSockets`](#sandbox) — the sandbox blocks Unix sockets at the
-network layer, so allowlisting the path is what actually permits the `connect()`. Without
-both, `git commit` cannot reach `ssh-agent` and SSH-key signing fails with `user.signingKey
-needs to be set for ssh signing`.
 
 ### Plans
 
@@ -239,7 +222,6 @@ invocations, since whether `*` matches an empty trailing arg isn't explicit in t
       "com.apple.system.opendirectoryd.api",
       "com.apple.system.DirectoryService.api"
     ],
-    "allowUnixSockets": ["/tmp/ssh-agent.sock"],
     "allowedDomains": ["github.com", "api.github.com", "..."]
   }
 }
@@ -285,14 +267,14 @@ functional. `allowMachLookup` is grouped by purpose:
   via `getpwuid` / `getgrgid`. (Git identity itself comes from `~/.config/git/`, which is
   covered by `allowRead` above.)
 
-`allowUnixSockets` opens exactly one socket — `/tmp/ssh-agent.sock`, the stable path that
-[`org.homebrew.ssh-agent`](../macos/launchagents.md) listens on. That hole exists so
-[SSH commit signing](../git/signing-security-keys.md) (which requires `ssh-agent` to mediate
-the YubiKey touch) works from inside the sandbox; the matching literal path is set via the
-[`env` block above](#environment). SSH-based git **remotes** still aren't a goal — those go
-through HTTPS via `allowedDomains`. The tmux control socket is also still unreachable, so the
-[`WorktreeCreate` hook](hooks-skills.md#worktreecreate)'s `tmux display-message` call fails
-silently and the hook falls back to the repo basename when run from inside the sandbox.
+Unix-domain sockets are not allowlisted — `allowUnixSockets` is omitted entirely because the
+sandbox refuses `connect()` on AF_UNIX paths regardless of what's listed there (verified
+empirically: both `/tmp/ssh-agent.sock` and the tmux control socket return EPERM even when
+named explicitly). The practical consequences: SSH commit signing via `ssh-agent` doesn't
+work from inside the sandbox — run `git commit` outside Claude Code when a signature is
+required — and the [`WorktreeCreate` hook](hooks-skills.md#worktreecreate)'s `tmux
+display-message` call fails silently, so the hook falls back to the repo basename. SSH-based
+git **remotes** still aren't a goal either; those go through HTTPS via `allowedDomains`.
 
 `allowedDomains` pre-approves outbound HTTPS destinations so common tools don't trigger a
 permission prompt on first contact. Anything not listed still works — Claude prompts the

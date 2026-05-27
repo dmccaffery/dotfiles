@@ -51,11 +51,10 @@ environment variables. Bonus: `~/.cache` is already in the sandbox
 extension is needed.
 
 The tmux-session lookup runs `tmux display-message` against the active tmux socket. The
-sandbox has no `allowUnixSockets` entry, so when the hook is invoked from inside Claude's
+sandbox refuses `connect()` on any AF_UNIX path (see
+[settings → sandbox](settings.md#sandbox)), so when the hook is invoked from inside Claude's
 sandbox the lookup fails silently (the `2> /dev/null || true` swallow) and step 1 falls back
-to the repo basename. If you want the tmux-session-name behaviour back, the matching tmux
-socket path (e.g. `/private/tmp/tmux-<uid>/default`) needs to be added to
-`sandbox.network.allowUnixSockets`. The `agent/` branch prefix is deliberate: it's the signal
+to the repo basename. The `agent/` branch prefix is deliberate: it's the signal
 [`worktree-remove.sh`](#worktreeremove) uses to decide a branch is safe to delete.
 
 ### WorktreeRemove
