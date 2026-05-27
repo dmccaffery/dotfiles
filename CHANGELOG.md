@@ -1,5 +1,27 @@
 # Changelog
 
+## [3.1.0](https://github.com/dmccaffery/dotfiles/compare/v3.0.0...v3.1.0) (2026-05-27)
+
+
+### Features
+
+* **brew:** add asciicinema for recording terminal sessions ([f403e9d](https://github.com/dmccaffery/dotfiles/commit/f403e9d838780892a57dd6037b3f66a43cbd0b19))
+* **claude:** add support for agent worktrees ([4a806ac](https://github.com/dmccaffery/dotfiles/commit/4a806ac3984ffee586b672867f2160368b6f0434))
+* **claude:** allow ssh-agent socket through the sandbox ([e9b7e6c](https://github.com/dmccaffery/dotfiles/commit/e9b7e6ca6c814ebe0701f0dce1434ca99c888e00))
+* **git:** do not sign commits from claude ([05271df](https://github.com/dmccaffery/dotfiles/commit/05271df7eb7c0ca37e0218b14f49837cbf4f0b68))
+* **oh-my-posh:** update colors for package managers ([cc9accd](https://github.com/dmccaffery/dotfiles/commit/cc9accd3a0ad36c6394b1f680760d5166b135410))
+* **ssh-agent:** use SSH_ASKPASS_REQUIRE with a stable socket symlink ([108aedc](https://github.com/dmccaffery/dotfiles/commit/108aedc2f1d5364e2ca88e80be63528e6a64b418))
+* **tmux:** move CLAUDE_CODE_* env-vars into tmux scope ([96adc7b](https://github.com/dmccaffery/dotfiles/commit/96adc7bf78ea9e8c7268278086848fe5c35e67c6))
+* **zsh:** emit the TMUX_SOCK on its own ([9e3b466](https://github.com/dmccaffery/dotfiles/commit/9e3b466b5f5bd00d1facb878116b78e2b05b2830))
+
+
+### Bug Fixes
+
+* **build:** ensure lfs checkout for images on the docs site ([a64a035](https://github.com/dmccaffery/dotfiles/commit/a64a035c45d9bbfd6e32136bcfe02a28e555bb76))
+* **nvim:** use neovim plugin instead of vim plugin for ghostty ([aab465b](https://github.com/dmccaffery/dotfiles/commit/aab465bd990c1dd2af1af2342774b3516eb156c2))
+* **stow:** ensure opencode is properly symlinked ([e7305f8](https://github.com/dmccaffery/dotfiles/commit/e7305f85690e29e10b62aa3bb6634d4d7cb88c79))
+* **zsh:** ensure repository directory env-var is correct ([939b7ad](https://github.com/dmccaffery/dotfiles/commit/939b7ad701a0afda5f59c30ffe59783e8b12c2d7))
+
 ## [3.0.0](https://github.com/dmccaffery/dotfiles/compare/v2.0.0...v3.0.0) (2026-05-25)
 
 
