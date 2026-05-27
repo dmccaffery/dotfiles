@@ -85,9 +85,15 @@
 	path = ~/.config/git/forgejo.gitconfig
 
 [includeIf "hasconfig:remote.*.url:https://code.forgejo.org/**"]
-	path = ~/.config/git/forgejo.gitconfig
+    path = ~/.config/git/forgejo.gitconfig
 
 # we recommend setting user and email in a private repository
 # that uses stow to symlink to here
 [include]
 	path = ~/.config/private/git/config
+
+# agent worktrees (created by ~/.claude/hooks/worktree-create.sh) live under XDG cache and
+# disable commit/tag signing so sandboxed agents don't block on a security key; loaded last
+# so it overrides anything in the private overlay
+[includeIf "gitdir:~/.cache/agent/worktrees/**"]
+	path = ~/.config/git/agent.gitconfig
