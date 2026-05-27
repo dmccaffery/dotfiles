@@ -48,15 +48,7 @@ applied automatically when Claude runs inside this repo (it is _not_ stowed — 
                 "/opt/homebrew",
                 "/tmp"
             ],
-            "allowWrite": [
-                "~/Repos",
-                "~/.cache/agent/worktrees",
-                "~/.cache/uv",
-                "~/.cache/pip",
-                "~/.cache/fnm",
-                "/tmp",
-                "~/.npm"
-            ]
+            "allowWrite": ["~/Repos", "~/.cache/agent/worktrees", "~/.cache/uv", "~/.cache/pip", "/tmp", "~/.npm"]
         },
         "network": {
             "allowMachLookup": [
@@ -233,7 +225,6 @@ invocations, since whether `*` matches an empty trailing arg isn't explicit in t
       "~/.cache/agent/worktrees",
       "~/.cache/uv",
       "~/.cache/pip",
-      "~/.cache/fnm",
       "/tmp",
       "~/.npm"
     ]
@@ -272,9 +263,6 @@ Filesystem access is **asymmetric by design**: broad reads, narrower writes.
   [worktree isolation](hooks-skills.md#worktreecreate).
 - `~/.cache/uv` and `~/.cache/pip` — Python package caches, required for `make docs-build` /
   `uv sync`.
-- `~/.cache/fnm` — Fast Node Manager's data dir, required for `fnm install <version>` to bring
-  in a new Node toolchain. (Previously `~/.local/share/fnm`; move the entry if you flip fnm
-  back to the XDG_DATA_HOME layout.)
 - `/tmp` — scratch.
 - `~/.npm` — npm's non-XDG cache. Listed last so the historical "read-only" stance is obvious
   from the diff: `npm install` inside an agent session needs to populate the cache, and

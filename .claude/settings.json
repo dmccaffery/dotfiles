@@ -102,15 +102,7 @@
         "/opt/homebrew",
         "/tmp"
       ],
-      "allowWrite": [
-        "~/Repos",
-        "~/.cache/agent/worktrees",
-        "~/.cache/uv",
-        "~/.cache/pip",
-        "~/.cache/fnm",
-        "/tmp",
-        "~/.npm"
-      ]
+      "allowWrite": ["~/Repos", "~/.cache/agent/worktrees", "~/.cache/uv", "~/.cache/pip", "/tmp", "~/.npm"]
     },
     "network": {
       "allowMachLookup": [
