@@ -50,6 +50,8 @@ cask "yubico-authenticator"
 
 # profile packages
 
+brew "actions-up"
+brew "asciinema"
 brew "bash"
 brew "glib"
 brew "harfbuzz"
@@ -77,17 +79,19 @@ brew "sops"
 brew "tflint"
 brew "uv"
 brew "yt-dlp"
+brew "wallpaper"
 
 brew "anomalyco/tap/opencode"
+cask "barutsrb/tap/omniwm"
 brew "bufbuild/buf/buf"
 brew "controlplaneio-fluxcd/tap/flux-operator"
 brew "fluxcd/tap/flux"
 brew "hashicorp/tap/terraform"
 brew "oven-sh/bun/bun"
+cask "steipete/tap/codexbar"
 
 # cask "antigravity"
 # cask "antigravity-cli"
-cask "barutsrb/tap/omniwm"
 cask "claude"
 cask "claude-code"
 cask "gcloud-cli"
@@ -95,6 +99,7 @@ cask "google-drive"
 cask "parallels"
 cask "protonvpn"
 cask "unifi-identity-endpoint"
+brew "shellcheck"
 
 mas "CleanMyMac", id: 1339170533
 mas "Developer", id: 640199958
@@ -103,7 +108,3 @@ mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Speedtest", id: 1153157709
 mas "Xcode", id: 497799835
-brew "wallpaper"
-brew "actions-up"
-brew "asciinema"
-brew "shellcheck"
