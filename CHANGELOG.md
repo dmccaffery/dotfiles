@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.1](https://github.com/dmccaffery/dotfiles/compare/v3.1.0...v3.1.1) (2026-05-27)
+
+
+### Reverts
+
+* **claude:** drop ssh-agent socket from sandbox ([11334f7](https://github.com/dmccaffery/dotfiles/commit/11334f75eed0369d8dafc9824e6485ba50e205d7))
+
 ## [3.1.0](https://github.com/dmccaffery/dotfiles/compare/v3.0.0...v3.1.0) (2026-05-27)
 
 
