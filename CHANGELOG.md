@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.0](https://github.com/dmccaffery/dotfiles/compare/v3.1.1...v3.2.0) (2026-05-28)
+
+
+### Features
+
+* **nvim:** render tmux sessions picker as worktree-aware tree ([14c909a](https://github.com/dmccaffery/dotfiles/commit/14c909ab31983c8adf37fe1f5a766ae09c72cce2))
+* **worktree:** consolidate create/remove into shared scripts ([eeb5454](https://github.com/dmccaffery/dotfiles/commit/eeb54549295b9ca3c43400db4c2c23d6ec43c984))
+
 ## [3.1.1](https://github.com/dmccaffery/dotfiles/compare/v3.1.0...v3.1.1) (2026-05-27)
 
 
