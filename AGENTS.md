@@ -92,6 +92,34 @@ re-runs the docs build (`prettier --check` + `markdownlint-cli2` + `zensical bui
 smoke test (no deploy). The actual deploy runs only when release-please cuts a release on
 `main`, via the `publish-docs` job in `.github/workflows/release-main.yaml`.
 
+## Creating commits
+
+Commit signing in this repo runs through `ssh-agent`, which the sandbox refuses (see
+[settings → sandbox](docs/claude/settings.md#sandbox)). Anything `git commit`ed from inside
+Claude Code is therefore unsigned. The workflow handles this with a `.commit.sh` script that
+the user runs **outside** the sandbox:
+
+- **Outside a worktree** — don't run `git commit` at all. Write `.commit.sh` at the
+  repo root containing the exact `git add` / `git commit` invocations you intended to run
+  (one commit per `git commit` call, real commit messages, trailers, etc.), then hand off
+  by telling the user to execute it. The user runs the script in their own shell so the
+  signing key is reachable.
+- **Inside a worktree** — commit normally when the change is at a sensible stopping point.
+  Those commits land unsigned in the `agent/<name>` branch. Still write `.commit.sh` at the
+  worktree root, but the script's job is to re-sign: invoke `git resign <base>` (see
+  [`git-resign`](docs/scripts/security-keys.md#git-resign)) over the range you authored
+  during this session. Pick `<base>` so it's the parent of the first commit you made (e.g.
+  `HEAD~3` if you wrote three commits, or `$(git merge-base HEAD <parent-branch>)` when
+  the count is dynamic).
+
+Both variants:
+
+- Live at the working-directory root. `.commit.sh` is matched by the top-level `.*` rule in
+  [`.gitignore`](.gitignore), so it never gets committed.
+- Start with `#!/usr/bin/env sh` + `set -eu` and overwrite any prior `.commit.sh` —
+  the file represents the _current_ batch, not history.
+- Are `chmod +x`'d when written so the user can run them as `./.commit.sh`.
+
 ## Authoring conventions
 
 - **Lead with a one-line summary** of what the page covers.
