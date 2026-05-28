@@ -6,7 +6,10 @@ icon: simple/tmux
 
 Three scripts handle tmux session lifecycle: one for creating a fresh session per repo (or per
 worktree), one for fuzzy-picking an existing session, and one for tearing down agent worktree
-sessions and the worktrees behind them.
+sessions and the worktrees behind them. The worktree create/remove work itself is delegated
+to [`start-worktree`](index.md) / [`end-worktree`](index.md), which are also wired in as
+[Claude Code's `WorktreeCreate`/`WorktreeRemove` hooks](../claude/hooks-skills.md#hooks) so
+the naming convention stays consistent regardless of who created the worktree.
 
 ## `start-tmux-session` { #start-tmux-session }
 
@@ -22,12 +25,15 @@ What it does:
 1. Walks `$REPOS_DIR` (default `$HOME/Repos`) up to 4 levels deep looking for directories
    that contain a `.git/` entry.
 2. Pipes the list into `fzf` for selection (`--select-1` auto-picks if there's only one).
-3. Derives a session name from the repo's basename (with dots replaced by underscores).
-4. **If a second `<worktree-name>` argument is supplied**, also:
-    - Creates `~/.cache/agent/worktrees/<repo>-<worktree>` on branch `agent/<repo>-<worktree>`
-      via `git worktree add` (reusing the path or branch if either already exists).
-    - Switches the session's cwd to the worktree path.
-    - Names the session `<repo>/<worktree>` so it doesn't collide with the bare-repo session.
+3. Sanitises the repo's basename through `tr -c 'A-Za-z0-9._-' '-'` to derive the bare-repo
+   session name.
+4. **If a second `<worktree-name>` argument is supplied**, hands off to
+   [`start-worktree`](index.md), which creates `~/.cache/agent/worktrees/<repo>-<worktree>`
+   on branch `agent/<repo>-<worktree>` via `git worktree add` (reusing the path or branch if
+   either already exists), then prints the worktree path back. The tmux session is named
+   after the worktree directory's basename (`<repo>-<worktree>`) so the
+   [Snacks sessions picker](../neovim/plugins.md#snackslua) can nest it under the bare-repo
+   parent by name prefix.
 5. If a session of that name doesn't exist, creates one with:
     - **Window 1 (` nvim`)** — nvim in the top pane (90%), shell in a small pane below (10%).
     - **Window 2 (`󰯉 claude (agent)`)** — runs `claude` (Claude Code) in the repo root.
@@ -42,9 +48,9 @@ tmux -u new-session -d -s "${name}" -n ' nvim' -c "${selected}" -x - -y - "${EDI
     new-window -a -d -c "${selected}"
 ```
 
-The worktree-name argument is sanitised through `tr -c 'A-Za-z0-9._-' '-'`, so `fix/stow symlinks`
-becomes `fix-stow-symlinks`. The `/` in the session name is safe — tmux only reserves `.` and `:` as
-target-specifier delimiters.
+The worktree-name argument is sanitised through `tr -c 'A-Za-z0-9._-' '-'`, so
+`fix/stow symlinks` becomes `fix-stow-symlinks`. The shared sanitizer keeps `.`/`_`/`-`,
+which matters for repos like `next.js`.
 
 ## `attach-tmux-session` { #attach-tmux-session }
 
@@ -77,13 +83,13 @@ What it does:
       (`git rev-list --count HEAD --not --remotes`). This catches both "no upstream set" and
       "upstream set but ahead".
 3. If any selection had warnings and `--force` wasn't passed, prompts once before continuing.
-4. **Destroy pass** — for each selection:
+4. **Destroy pass** — hands each selected path to [`end-worktree`](index.md), which:
     - Resolves the parent repo via `git rev-parse --git-common-dir`.
-    - Kills the matching tmux session (`<repo>/<worktree>`) if present.
+    - Kills the matching tmux session (`<repo>-<worktree>` — the worktree dir basename) if
+      present.
     - `git worktree remove --force <path>` from the parent repo.
-    - `git branch -D <branch>` if the branch is in the `agent/*` namespace (matches the convention
-      used by [`worktree-create.sh`](../claude/hooks-skills.md#worktreecreate) and
-      `start-tmux-session`).
+    - `git branch -D <branch>` if the branch is in the `agent/*` namespace (matches the
+      convention used by [`start-worktree`](../claude/hooks-skills.md#worktreecreate)).
 
 Remote branches are never touched — push before removing if you want to keep the work. The
 matching PR (if any) keeps working off the remote branch even after the local one is gone.

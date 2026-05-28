@@ -71,8 +71,8 @@ applied automatically when Claude runs inside this repo (it is _not_ stowed — 
         "command": "oh-my-posh claude --config ~/.config/oh-my-posh/claude.yaml"
     },
     "hooks": {
-        "WorktreeCreate": [{ "hooks": [{ "type": "command", "command": "~/.claude/hooks/worktree-create.sh" }] }],
-        "WorktreeRemove": [{ "hooks": [{ "type": "command", "command": "~/.claude/hooks/worktree-remove.sh" }] }]
+        "WorktreeCreate": [{ "hooks": [{ "type": "command", "command": "~/.local/share/scripts/start-worktree" }] }],
+        "WorktreeRemove": [{ "hooks": [{ "type": "command", "command": "~/.local/share/scripts/end-worktree" }] }]
     },
     "worktree": { "baseRef": "head" }
 }
@@ -272,9 +272,8 @@ sandbox refuses `connect()` on AF_UNIX paths regardless of what's listed there (
 empirically: both `/tmp/ssh-agent.sock` and the tmux control socket return EPERM even when
 named explicitly). The practical consequences: SSH commit signing via `ssh-agent` doesn't
 work from inside the sandbox — run `git commit` outside Claude Code when a signature is
-required — and the [`WorktreeCreate` hook](hooks-skills.md#worktreecreate)'s `tmux
-display-message` call fails silently, so the hook falls back to the repo basename. SSH-based
-git **remotes** still aren't a goal either; those go through HTTPS via `allowedDomains`.
+required. SSH-based git **remotes** still aren't a goal either; those go through HTTPS via
+`allowedDomains`.
 
 `allowedDomains` pre-approves outbound HTTPS destinations so common tools don't trigger a
 permission prompt on first contact. Anything not listed still works — Claude prompts the
@@ -322,20 +321,22 @@ See [Terminal → oh-my-posh](../terminal/oh-my-posh.md#claude-code-status-line)
 ```json
 "hooks": {
   "WorktreeCreate": [
-    { "hooks": [{ "type": "command", "command": "~/.claude/hooks/worktree-create.sh" }] }
+    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/start-worktree" }] }
   ],
   "WorktreeRemove": [
-    { "hooks": [{ "type": "command", "command": "~/.claude/hooks/worktree-remove.sh" }] }
+    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/end-worktree" }] }
   ]
 }
 ```
 
-Two hooks bracket Claude Code's worktree lifecycle:
+Two hooks bracket Claude Code's worktree lifecycle, both pointing at the same shared scripts
+the [`start-tmux-session`](../scripts/tmux.md#start-tmux-session) and
+[`end-tmux-session`](../scripts/tmux.md#end-tmux-session) wrappers use:
 
-- `WorktreeCreate` → [`.claude/hooks/worktree-create.sh`](hooks-skills.md#worktreecreate) creates
-  the worktree and branch.
-- `WorktreeRemove` → [`.claude/hooks/worktree-remove.sh`](hooks-skills.md#worktreeremove) tears
-  it back down once Claude is done.
+- `WorktreeCreate` → [`start-worktree`](hooks-skills.md#worktreecreate) creates the worktree
+  and `agent/*` branch.
+- `WorktreeRemove` → [`end-worktree`](hooks-skills.md#worktreeremove) tears the worktree back
+  down once Claude is done and kills any matching tmux session.
 
 ### Worktree
 

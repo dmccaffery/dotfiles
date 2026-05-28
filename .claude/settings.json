@@ -142,7 +142,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/worktree-create.sh"
+            "command": "~/.local/share/scripts/start-worktree"
           }
         ]
       }
@@ -152,7 +152,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/worktree-remove.sh"
+            "command": "~/.local/share/scripts/end-worktree"
           }
         ]
       }

@@ -91,26 +91,5 @@ fi
 while IFS= read -r wt; do
 	[ -z "${wt}" ] && continue
 	[ ! -d "${wt}" ] && continue
-
-	common_dir=$(git -C "${wt}" rev-parse --git-common-dir 2> /dev/null || true)
-	branch=$(git -C "${wt}" rev-parse --abbrev-ref HEAD 2> /dev/null || true)
-	main_repo=
-	if [ -n "${common_dir}" ]; then
-		main_repo=$(cd "$(dirname "${common_dir}")" && pwd)
-	fi
-
-	dirname=$(basename "${wt}")
-	if [ -n "${main_repo}" ]; then
-		repo_name=$(basename "${main_repo}" | tr . _)
-		worktree_suffix=${dirname#"${repo_name}-"}
-		session_name="${repo_name}/${worktree_suffix}"
-		tmux kill-session -t "${session_name}" 2> /dev/null || true
-
-		git -C "${main_repo}" worktree remove --force "${wt}" 2> /dev/null || true
-		if [ -n "${branch}" ] && [ "${branch}" != "${branch##agent/*}" ]; then
-			git -C "${main_repo}" branch -D "${branch}" 2> /dev/null || true
-		fi
-	fi
-
-	success "removed ${dirname}"
+	end-worktree "${wt}"
 done < "${sel_file}"
