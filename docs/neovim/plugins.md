@@ -39,8 +39,16 @@ for how to regenerate the art with `figlet`.
 A big Snacks configuration covering:
 
 - **Explorer** — hidden files visible, gitignored files visible.
-- **Sessions picker** — lists tmux sessions, previews their cwd with `lsd --tree`, and
-  switches to the picked one with `tmux switch-client`. Bind: ++leader++ ++f++ ++s++.
+- **Sessions picker** — lists tmux sessions as a tree and switches to the picked one with
+  `tmux switch-client`. The active session is shown at the top with a `(current)` label so
+  its worktrees nest visibly underneath; selecting it is a no-op. Sessions whose `session_path`
+  lives under `~/.cache/agent/worktrees/` (the
+  [Claude Code worktree hook](../claude/hooks-skills.md) convention) are treated as worktrees
+  and indented under the tmux session whose name is the longest matching prefix — so
+  `dotfiles-feature-branch` nests under `dotfiles`. Worktrees whose parent isn't currently in
+  tmux land under a synthetic `(orphans)` header. The preview pane runs
+  `git -C <path> status -sb` so branch + ahead/behind + dirty state are visible at a glance.
+  Bind: ++leader++ ++f++ ++s++.
 - **Snippets picker** — fuzzy-find LuaSnip snippets with live preview and expansion. Bind:
   ++leader++ ++f++ ++x++.
 - **Image previews** — enabled (`image = {}`), so `:Snacks.picker.files` previews images
