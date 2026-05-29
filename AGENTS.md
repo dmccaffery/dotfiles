@@ -105,8 +105,8 @@ worktree commits.
 ## Authoring conventions
 
 - **Lead with a one-line summary** of what the page covers.
-- **Wrap at 120 chars.** The `markdownlint-cli2` block in `package.json` enforces it (and
-  relaxes a few rules that conflict with the pymdownx extensions we use).
+- **Wrap at 120 chars.** The `.markdownlint-cli2.yaml` config enforces it (and relaxes a few
+  rules that conflict with the pymdownx extensions we use).
 - **Tables for key/value mappings** (config options, aliases, scripts).
 - **Reference the source-of-truth file path** instead of duplicating large config blocks —
   readers can click through.

@@ -5,8 +5,9 @@ icon: lucide/check-check
 # Linting & formatting
 
 Four tools enforce style across the repository — one editor baseline, one formatter, and two
-linters. The npm-based tools share a single `package.json` so both config and pinned
-versions live in one place.
+linters. The npm-based tools are pinned in a single `package.json`; prettier's config lives
+there too, while markdownlint-cli2 keeps its config in a dedicated `.markdownlint-cli2.yaml`
+(see below for why).
 
 ## EditorConfig
 
@@ -53,41 +54,44 @@ the PR rather than getting silently rewritten.
 
 ## markdownlint-cli2
 
-markdownlint-cli2 is also pinned in `package.json`, and its config sits next to prettier's
-under the `markdownlint-cli2` key. There is no longer a separate
-`.markdownlint-cli2.yaml`.
+markdownlint-cli2 is pinned in `package.json` under `devDependencies`, but its config lives
+in a dedicated [`.markdownlint-cli2.yaml`](https://github.com/dmccaffery/dotfiles/blob/main/.markdownlint-cli2.yaml)
+at the repo root rather than under a `markdownlint-cli2` key in `package.json`. The
+package.json `config` object is
+[silently ignored when a `.markdownlint-cli2.*` file is present](https://github.com/DavidAnson/markdownlint-cli2/issues/818),
+so keeping the config in its own file is the only reliable place for it.
 
-```json title="package.json (excerpt)"
-"markdownlint-cli2": {
-  "config": {
-    "default": true,
-    "line-length": {
-      "line_length": 120,
-      "heading_line_length": 120,
-      "code_block_line_length": 120,
-      "tables": false
-    },
-    "list-marker-space": false,
-    "table-column-style": { "style": "aligned" },
-    "code-block-style": false,
-    "code-fence-style": { "style": "backtick" },
-    "no-inline-html": {
-      "allowed_elements": ["span", "div", "br", "p"]
-    },
-    "no-space-in-code": false,
-    "link-fragments": false
-  },
-  "ignores": [
-    "CHANGELOG.md",
-    "node_modules/",
-    ".venv/",
-    ".cache/",
-    "site/",
-    "backups/",
-    ".claude/plans",
-    ".claude/worktrees"
-  ]
-}
+```yaml title=".markdownlint-cli2.yaml"
+config:
+  default: true
+  line-length:
+    line_length: 120
+    heading_line_length: 120
+    code_block_line_length: 120
+    tables: false
+  list-marker-space: false
+  table-column-style:
+    style: aligned
+  code-block-style: false
+  code-fence-style:
+    style: backtick
+  no-inline-html:
+    allowed_elements:
+      - span
+      - div
+      - br
+      - p
+  no-space-in-code: false
+  link-fragments: false
+ignores:
+  - CHANGELOG.md
+  - node_modules/
+  - .venv/
+  - .cache/
+  - site/
+  - backups/
+  - .claude/plans
+  - .claude/worktrees
 ```
 
 - **Whole-repo scope** — `make lint` runs `npx markdownlint-cli2 '**/*.md'`, so every

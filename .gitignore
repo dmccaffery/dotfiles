@@ -28,6 +28,7 @@ node_modules/
 !.stow-local-ignore
 !.editorconfig
 !.prettierignore
+!.markdownlint-cli2.yaml
 !.release-please-manifest.json
 
 !.luarc.json

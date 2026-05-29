@@ -10,8 +10,9 @@ fork, edit, and serve locally.
 ## Dev loop
 
 The docs site is a [Zensical](https://zensical.org) project at the repo root. The Python
-runtime is managed by `uv`; prettier, markdownlint-cli2, and their config live in
-`package.json` (pinned via `package-lock.json`).
+runtime is managed by `uv`; prettier and markdownlint-cli2 are pinned in `package.json`
+(via `package-lock.json`). Prettier's config lives there too; markdownlint-cli2's config is
+in a dedicated `.markdownlint-cli2.yaml`.
 
 ```sh
 # install zensical + deps into .venv, then serve at http://localhost:8000
