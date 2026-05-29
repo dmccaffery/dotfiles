@@ -13,9 +13,5 @@ fi
 
 "${INSTALL_DIR}/setup/stage.sh" "$@"
 
-# SCRIPT_DIR="${INSTALL_DIR}/.local/share/scripts"
-# "${SCRIPT_DIR}/git-github-auth"
-# "${SCRIPT_DIR}/get-sk-ssh"
-
 fastfetch
 printf '\n'
