@@ -61,11 +61,11 @@ brew "crane"
 brew "direnv"
 brew "docker", args: ["formula"]
 brew "docker-buildx"
+brew "docker-compose"
 brew "dotnet"
 brew "figlet"
 brew "fnm"
 brew "forgejo-cli"
-brew "gemini-cli"
 brew "libusb"
 brew "go"
 brew "helm"
@@ -88,12 +88,12 @@ brew "controlplaneio-fluxcd/tap/flux-operator"
 brew "fluxcd/tap/flux"
 brew "hashicorp/tap/terraform"
 brew "oven-sh/bun/bun"
-cask "steipete/tap/codexbar"
 
 # cask "antigravity"
 # cask "antigravity-cli"
 cask "claude"
-cask "claude-code"
+cask "claude-code@latest"
+cask "codexbar"
 cask "gcloud-cli"
 cask "google-drive"
 cask "parallels"
@@ -108,3 +108,4 @@ mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Speedtest", id: 1153157709
 mas "Xcode", id: 497799835
+cask "home-assistant"
