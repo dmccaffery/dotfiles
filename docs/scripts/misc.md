@@ -69,8 +69,9 @@ manifests as repeated "Background Items Added" notifications, or login items tha
 disabled in System Settings.
 
 !!! warning "Reboot required"
-`sfltool resetbtm` only takes effect after a reboot. The script prompts and runs
-`sudo reboot` for you.
+
+    `sfltool resetbtm` only takes effect after a reboot. The script prompts and runs
+    `sudo reboot` for you.
 
 ## `brewfile` { #brewfile }
 

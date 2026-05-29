@@ -10,9 +10,10 @@ be re-run independently.
 ## Fork first
 
 !!! warning
-Create a fork before installing. This repository is tuned for one person — breaking changes
-land without a deprecation window. Tracking your own fork means you can pin to a known-good
-commit and pull updates on your schedule.
+
+    Create a fork before installing. This repository is tuned for one person — breaking changes
+    land without a deprecation window. Tracking your own fork means you can pin to a known-good
+    commit and pull updates on your schedule.
 
 [Fork dmccaffery/dotfiles :octicons-repo-forked-24:](https://github.com/dmccaffery/dotfiles/fork){ .md-button }
 

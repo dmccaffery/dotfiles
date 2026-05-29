@@ -83,8 +83,9 @@ does not deploy. A manual `workflow_dispatch` run of `release-main` is the only 
 hatch, and it only redeploys when release-please opens or merges a release on that run.
 
 !!! note "One-time Pages enablement"
-The first deploy needs **Settings → Pages → Source = GitHub Actions** flipped on in the
-repository. The workflow can't enable that for you; the manual flip is one click.
+
+    The first deploy needs **Settings → Pages → Source = GitHub Actions** flipped on in the
+    repository. The workflow can't enable that for you; the manual flip is one click.
 
 ## Style notes
 

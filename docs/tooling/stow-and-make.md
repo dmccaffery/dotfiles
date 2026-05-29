@@ -61,23 +61,27 @@ verbatim. Files that should _not_ be symlinked are listed in `.stowrc`.
   `.claude/settings.json` — is stowed into `$HOME`.
 
 !!! warning "How `--ignore` matches, and why patterns are anchored"
-Each `--ignore=X` compiles to `(?^:(X)\z)` and is tested against the path **relative to the package, anchored only
-at the end**. A bare name therefore matches any path that _ends_ with it — a suffix match, not a top-level-only one.
-Two consequences shaped the list above:
 
-- A bare `--ignore=CLAUDE.md` catches both the top-level `CLAUDE.md` symlink _and_ `.claude/CLAUDE.md`. The latter is
-  meant to stow to `~/.claude/CLAUDE.md` (see [Claude → Memory](../claude/memory.md)), so the top-level entry is
-  pinned to the repo root with `^CLAUDE.md`. The transient
-  [`.commit.sh`](../claude/memory.md#what-it-covers) is anchored the same way (`^.commit.sh`).
-- The old broad `--ignore=.*.json` / `--ignore=.*.yaml` matched _every_ JSON/YAML by that suffix rule. Nested
-  configs under `.config/**` survived only because `stow` **folds** a whole directory into a single symlink when the
-  target dir doesn't exist yet — the per-file ignore never runs. But `~/.claude` already exists, so `stow`
-  **descends** into it and applies the ignore file-by-file, which silently skipped `.claude/settings.json` and
-  `.claude/themes/cyberdream.json`. Both patterns were removed; the root lockfiles and manifests they used to cover
-  are now ignored by explicit `^`-anchored entries (`^package.json`, `^package-lock.json`, … ).
+    Each `--ignore=X` compiles to `(?^:(X)\z)` and is tested against the path **relative to the
+    package, anchored only at the end**. A bare name therefore matches any path that _ends_ with it
+    — a suffix match, not a top-level-only one. Two consequences shaped the list above:
 
-`.stowrc` strips backslashes when it parses each line, so the anchors use `^` rather than `\A`/`\z`/`\.` (the
-surviving `.*ignore` pattern likewise relies on `.`-as-any-char).
+    - A bare `--ignore=CLAUDE.md` catches both the top-level `CLAUDE.md` symlink _and_
+      `.claude/CLAUDE.md`. The latter is meant to stow to `~/.claude/CLAUDE.md` (see
+      [Claude → Memory](../claude/memory.md)), so the top-level entry is pinned to the repo root
+      with `^CLAUDE.md`. The transient [`.commit.sh`](../claude/memory.md#what-it-covers) is
+      anchored the same way (`^.commit.sh`).
+    - The old broad `--ignore=.*.json` / `--ignore=.*.yaml` matched _every_ JSON/YAML by that suffix
+      rule. Nested configs under `.config/**` survived only because `stow` **folds** a whole
+      directory into a single symlink when the target dir doesn't exist yet — the per-file ignore
+      never runs. But `~/.claude` already exists, so `stow` **descends** into it and applies the
+      ignore file-by-file, which silently skipped `.claude/settings.json` and
+      `.claude/themes/cyberdream.json`. Both patterns were removed; the root lockfiles and manifests
+      they used to cover are now ignored by explicit `^`-anchored entries (`^package.json`,
+      `^package-lock.json`, … ).
+
+    `.stowrc` strips backslashes when it parses each line, so the anchors use `^` rather than
+    `\A`/`\z`/`\.` (the surviving `.*ignore` pattern likewise relies on `.`-as-any-char).
 
 ## Makefile
 
@@ -113,9 +117,10 @@ requirements: ## Install Xcode CLI tools, Homebrew, and the base Brewfile
 `install.sh` itself accepts any subset of stages — Make is just the curated front door.
 
 !!! tip "Adding a new target"
-Add `## <one-line description>` after the target's colon-line. `make help` picks it up
-automatically — no changes to the help target needed. To hide a target from help while
-keeping it callable, leave the `## ` empty.
+
+    Add `## <one-line description>` after the target's colon-line. `make help` picks it up
+    automatically — no changes to the help target needed. To hide a target from help while
+    keeping it callable, leave the `## ` empty.
 
 ## Layout for stow
 

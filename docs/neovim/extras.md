@@ -62,6 +62,7 @@ following are imported in `lua/config/lazy.lua`:
 | `lazyvim.plugins.extras.lang.yaml`       | yamlls + schemastore.                               |
 
 !!! tip "Pruning extras"
-Each language extra installs an LSP, a formatter, and treesitter parsers. Removing extras
-you don't use is the single biggest startup-time win — drop the import lines from
-`lua/config/lazy.lua` and re-run `:Lazy sync`.
+
+    Each language extra installs an LSP, a formatter, and treesitter parsers. Removing extras
+    you don't use is the single biggest startup-time win — drop the import lines from
+    `lua/config/lazy.lua` and re-run `:Lazy sync`.

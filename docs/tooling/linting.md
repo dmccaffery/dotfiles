@@ -69,7 +69,7 @@ under the `markdownlint-cli2` key. There is no longer a separate
     },
     "list-marker-space": false,
     "table-column-style": { "style": "aligned" },
-    "code-block-style": { "style": "fenced" },
+    "code-block-style": false,
     "code-fence-style": { "style": "backtick" },
     "no-inline-html": {
       "allowed_elements": ["span", "div", "br", "p"]
@@ -98,6 +98,11 @@ under the `markdownlint-cli2` key. There is no longer a separate
 - **`list-marker-space: false`** — turns off the rule requiring exactly one space after `-`
   list markers; lets you align bullets visually when useful.
 - **`no-inline-html` allow list** — span/div/br/p are needed by zensical's templates.
+- **`code-block-style: false`** — disables MD046. Zensical [admonitions](https://zensical.org/docs/authoring/admonitions/)
+  require their body to be **indented four spaces** under the `!!! type "title"` line; MD046's
+  `fenced` style would flag that indented body as a stray indented code block. The body must also
+  be separated from the title by a blank line so prettier leaves the indentation untouched instead
+  of un-indenting it.
 - **`no-space-in-code: false`** — inline code with intentional whitespace (e.g. `` `D ` ``)
   is needed for tmux window names with nerd-font prefixes.
 - **`link-fragments: false`** — pymdownx `attr_list` IDs (`## Heading { #anchor }`) render

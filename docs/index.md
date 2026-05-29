@@ -55,8 +55,10 @@ small fleet of [custom scripts](scripts/index.md).
 3. [Run `./install.sh`](getting-started/install.md) to install Homebrew, apply macOS defaults, and stow the configs.
 4. [Customize](getting-started/customize.md) `REPOS_DIR` and add a private Git overlay if you need one.
 
-!!! warning "Fork-first" This repository is primarily for personal use; breaking changes land without ceremony. Forking
-insulates you from those changes and lets you keep your own private overlay separately.
+!!! warning "Fork-first"
+
+    This repository is primarily for personal use; breaking changes land without ceremony. Forking
+    insulates you from those changes and lets you keep your own private overlay separately.
 
 ## Build the docs locally
 

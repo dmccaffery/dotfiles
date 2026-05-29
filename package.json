@@ -22,9 +22,7 @@
       "table-column-style": {
         "style": "aligned"
       },
-      "code-block-style": {
-        "style": "fenced"
-      },
+      "code-block-style": false,
       "code-fence-style": {
         "style": "backtick"
       },

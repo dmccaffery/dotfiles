@@ -35,7 +35,7 @@ What it does:
    [Snacks sessions picker](../neovim/plugins.md#snackslua) can nest it under the bare-repo
    parent by name prefix.
 5. If a session of that name doesn't exist, creates one with:
-    - **Window 1 (` nvim`)** — nvim in the top pane (90%), shell in a small pane below (10%).
+    - **Window 1 (`nvim`)** — nvim in the top pane (90%), shell in a small pane below (10%).
     - **Window 2 (`󰯉 claude (agent)`)** — runs `claude` (Claude Code) in the repo root.
     - **Window 3** — bare shell window.
 6. Attaches to the session.

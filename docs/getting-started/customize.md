@@ -19,10 +19,11 @@ export REPOS_DIR="$HOME/code"
 ```
 
 !!! tip "Prefer `.zshenv` for exported customizations"
-Environment variables (anything you'd `export`) belong in `.zshenv` so they're visible to
-every Zsh invocation — scripts, non-interactive shells, and editor subprocesses — not just
-interactive sessions. Reserve `.zshrc` for things that only matter when a human is typing
-(aliases, key bindings, prompt init, plugin loaders).
+
+    Environment variables (anything you'd `export`) belong in `.zshenv` so they're visible to
+    every Zsh invocation — scripts, non-interactive shells, and editor subprocesses — not just
+    interactive sessions. Reserve `.zshrc` for things that only matter when a human is typing
+    (aliases, key bindings, prompt init, plugin loaders).
 
 ## Private Git overlay
 
@@ -38,9 +39,10 @@ Put your `user.name`, `user.email`, and any company-specific Git config in
 that uses `stow` to symlink into `~/.config/private`.
 
 !!! warning "No credentials in private repos"
-Even private repositories are not a credential store. Use the system keychain
-(`git-credential-manager`) or a hardware token. The private overlay is for _personal_
-information (email, work URLs), not secrets.
+
+    Even private repositories are not a credential store. Use the system keychain
+    (`git-credential-manager`) or a hardware token. The private overlay is for _personal_
+    information (email, work URLs), not secrets.
 
 ## Theme variants
 

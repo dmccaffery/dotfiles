@@ -29,8 +29,9 @@ ssh-keygen \
 After both keys are generated, the script calls [`get-sk-ssh`](#get-sk-ssh) to load them.
 
 !!! note "Why two keys?"
-Different services accept different key types. Shipping both means the same YubiKey works
-everywhere without re-running `gen-sk-ssh`.
+
+    Different services accept different key types. Shipping both means the same YubiKey works
+    everywhere without re-running `gen-sk-ssh`.
 
 ## `get-sk-ssh` { #get-sk-ssh }
 
@@ -116,8 +117,9 @@ Common use: you authored commits on a machine without the YubiKey loaded, and no
 the chain signed before opening a PR.
 
 !!! warning "History rewrite"
-This rewrites commit SHAs. Don't run it on a branch that's already published unless you
-intend to force-push and notify collaborators.
+
+    This rewrites commit SHAs. Don't run it on a branch that's already published unless you
+    intend to force-push and notify collaborators.
 
 ## `ssh-askpass` { #ssh-askpass }
 

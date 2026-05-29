@@ -66,6 +66,7 @@ _contents_ never enter the public repository.
 ```
 
 !!! warning "No credentials here either"
-Private repos are _not_ a credential store. Use the system keychain
-(`git-credential-manager`) and resident SSH keys on a hardware token. The private overlay
-is for _personal_ information (name, email, internal URLs) — not secrets.
+
+    Private repos are _not_ a credential store. Use the system keychain
+    (`git-credential-manager`) and resident SSH keys on a hardware token. The private overlay
+    is for _personal_ information (name, email, internal URLs) — not secrets.
