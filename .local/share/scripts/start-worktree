@@ -5,36 +5,41 @@ set -eu
 tty=/dev/tty
 
 default_color=$(tput sgr 0 2> /dev/null || true)
+
 blue=$(tput setaf 4 2> /dev/null || true)
-green=$(tput setaf 2 2> /dev/null || true)
-yellow=$(tput setaf 3 2> /dev/null || true)
-
 info() {
-	printf '%s==> %s%s\n' "$blue" "$1" "$default_color" > "$tty" 2> /dev/null || true
+	printf '%s==> %s%s\n' "$blue" "$1" "$default_color" > $tty 2> /dev/null || true
 }
 
-success() {
-	printf '%s==> %s%s\n' "$green" "$1" "$default_color" > "$tty" 2> /dev/null || true
-}
-
+yellow=$(tput setaf 3 2> /dev/null || true)
 warn() {
-	printf '%s==> %s%s\n' "$yellow" "$1" "$default_color" > "$tty" 2> /dev/null || true
+	{ printf '%s==> %s%s\n' "$yellow" "$1" "$default_color" >&2; } 2> $tty || true
+}
+
+green=$(tput setaf 2 2> /dev/null || true)
+success() {
+	printf '%s==> %s%s\n' "$green" "$1" "$default_color" > $tty 2> /dev/null || true
+}
+
+red="$(tput setaf 1 2> /dev/null || true)"
+error() {
+	{ printf '%s==> %s%s\n' "$red" "$1" "$default_color" >&2; } 2> $tty || true
 }
 
 sanitize() {
-	printf '%s' "$1" | tr -c 'A-Za-z0-9._-' '-'
+	printf '%s' "${1}" | tr -c 'A-Za-z0-9._-' '-'
 }
 
-repo_path="${1:-${CLAUDE_PROJECT_DIR:-}}"
+repo="${1:-${CLAUDE_PROJECT_DIR:-}}"
 suffix="${2:-}"
 
-if [ -z "${repo_path:-}" ]; then
-	warn "no repo path; falling back to git rev-parse --show-toplevel"
-	repo_path=$(git rev-parse --show-toplevel 2> /dev/null || true)
+if [ -z "${repo:-}" ]; then
+	warn "no repository specified, attempting to fall back to repository root..."
+	repo=$(git rev-parse --show-toplevel 2> /dev/null || true)
 fi
 
-if [ -z "${repo_path:-}" ]; then
-	printf 'start-worktree: no repo path; pass as $1 or set CLAUDE_PROJECT_DIR\n' >&2
+if [ -z "${repo:-}" ]; then
+	error "no repository found; did you forget to specify an argument?"
 	exit 1
 fi
 
@@ -50,21 +55,21 @@ if [ -z "${suffix:-}" ]; then
 	suffix=$(date -u +%Y%m%d-%H%M%S)
 fi
 
-repo_name=$(sanitize "$(basename -- "${repo_path}")")
-suffix=$(sanitize "${suffix}")
-name="${repo_name}-${suffix}"
-worktree_path="${HOME}/.cache/agent/worktrees/${name}"
+name=$(basename -- "${repo}")
+name=$(sanitize "${name}-${suffix}")
+
+worktree="${HOME}/.cache/agent/worktrees/${name}"
 branch="agent/${name}"
 
-if [ -d "${worktree_path}" ]; then
-	warn "worktree already exists at ${worktree_path}; reusing"
-elif git -C "${repo_path}" show-ref --verify --quiet "refs/heads/${branch}"; then
-	info "branch ${branch} exists; checking it out at ${worktree_path}"
-	git -C "${repo_path}" worktree add "${worktree_path}" "${branch}" > /dev/null 2>&1
+if [ -d "${worktree}" ]; then
+	warn "worktree already exists at ${worktree}; reusing"
+elif git -C "${repo}" show-ref --verify --quiet "refs/heads/${branch}"; then
+	info "branch ${branch} exists; checking it out at ${worktree}"
+	git -C "${repo}" worktree add "${worktree}" "${branch}" > /dev/null 2>&1
 else
-	info "creating worktree ${name} at ${worktree_path}"
-	git -C "${repo_path}" worktree add -b "${branch}" "${worktree_path}" > /dev/null 2>&1
+	info "creating worktree ${name} at ${worktree}"
+	git -C "${repo}" worktree add -b "${branch}" "${worktree}" > /dev/null 2>&1
 fi
 
 success "worktree ${name} is ready"
-printf '%s\n' "${worktree_path}"
+printf '%s\n' "${worktree}"

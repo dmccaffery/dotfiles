@@ -2,6 +2,10 @@
 
 set -eu
 
+sanitize() {
+	printf '%s' "${1}" | tr -c 'A-Za-z0-9._-' '-'
+}
+
 REPOS_DIR="${REPOS_DIR:-${HOME}/Repos}"
 selected="${1:-}"
 worktree="${2:-}"
@@ -21,17 +25,13 @@ if [ -z "${selected:-}" ]; then
 	exit 0
 fi
 
-repo_name=$(basename -- "${selected}" | tr -c 'A-Za-z0-9._-' '-')
-
 if [ -n "${worktree:-}" ]; then
-	worktree_path=$(start-worktree "${selected}" "${worktree}")
-	selected="${worktree_path}"
-	name=$(basename -- "${worktree_path}")
+	worktree=$(start-worktree "${selected}" "${worktree}")
+	selected="${worktree}"
+	name=$(basename -- "${worktree}")
 else
-	name="${repo_name}"
+	name=$(sanitize "$(basename -- "${selected}")")
 fi
-
-printf '\033]0;%s\007' "${name}" || true
 
 if ! tmux has-session -t "${name}" 2> /dev/null; then
 	tmux -u new-session -d -s "${name}" -n ' nvim' -c "${selected}" -x - -y - "${EDITOR}" . \; \
