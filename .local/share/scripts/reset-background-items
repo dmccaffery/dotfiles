@@ -6,7 +6,7 @@ default_color=$(tput sgr 0)
 
 yellow="$(tput setaf 3)"
 warn() {
-	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color"
+	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color" >&2
 }
 
 warn "This will reset the current state of ALL remaining background items"

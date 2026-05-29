@@ -11,7 +11,7 @@ info() {
 
 yellow="$(tput setaf 3)"
 warn() {
-	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color"
+	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color" >&2
 }
 
 skip="${1:-}"
