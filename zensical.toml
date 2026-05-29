@@ -63,6 +63,7 @@ nav = [
     { "Claude Code" = [
         "claude/index.md",
         "claude/settings.md",
+        "claude/memory.md",
         "claude/theme.md",
         "claude/hooks-skills.md",
     ] },

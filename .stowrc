@@ -10,8 +10,6 @@
 --ignore=backups
 --ignore=node_modules
 
---ignore=.*.yaml
---ignore=.*.json
 --ignore=.*ignore
 
 --ignore=__pycache__
@@ -23,19 +21,21 @@
 --ignore=.stowrc
 --ignore=.venv
 
---ignore=CHANGELOG.md
---ignore=CLAUDE.md
---ignore=AGENTS.md
---ignore=README.md
+--ignore=^.claude/plans
+--ignore=^CHANGELOG.md
+--ignore=^CLAUDE.md
+--ignore=^AGENTS.md
+--ignore=^README.md
 
---ignore=backup.sh
---ignore=install.sh
---ignore=Makefile
---ignore=package.json
---ignore=package-lock.json
---ignore=release-please-config.json
---ignore=restore.sh
+--ignore=^.commit.sh
+--ignore=^backup.sh
+--ignore=^install.sh
+--ignore=^Makefile
+--ignore=^package.json
+--ignore=^package-lock.json
+--ignore=^release-please-config.json
+--ignore=^restore.sh
 
---ignore=pyproject.toml
---ignore=uv.lock
---ignore=zensical.toml
+--ignore=^pyproject.toml
+--ignore=^uv.lock
+--ignore=^zensical.toml

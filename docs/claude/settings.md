@@ -4,9 +4,11 @@ icon: lucide/bot
 
 # Claude Code settings
 
-`.claude/settings.json` is the project-scoped config for [Claude Code](https://claude.com/claude-code)
-applied automatically when Claude runs inside this repo (it is _not_ stowed — `.stowrc` ignores
-`.json`). The shipped file is small and opinionated:
+`.claude/settings.json` configures [Claude Code](https://claude.com/claude-code). It is **stowed to
+`~/.claude/settings.json`** — Claude Code's _user-level_ settings file — so these defaults apply in every repo on
+the machine, not just this one. A project-level `.claude/settings.json` in another repo layers on top of it. (See
+[Memory](memory.md) for how the user-level `.claude/` files reach `$HOME` via `stow`.) The shipped file is small
+and opinionated:
 
 ```json title=".claude/settings.json"
 {
@@ -140,8 +142,10 @@ that lands.
 ```
 
 When Claude Code is in plan mode, plan files write to `<repo>/.claude/plans/`. The relative
-`./.claude/plans` resolves against Claude's working directory (the repo root). The repo's
-`.gitignore` excludes `.claude/plans/` by default.
+`./.claude/plans` resolves against Claude's working directory (the repo root) — deliberately relative so this
+user-level setting still scopes plans per-repo rather than dumping them all under `~/.claude/plans/`. The repo's
+`.gitignore` excludes `.claude/plans/` by default, and `.stowrc` ignores `^.claude/plans` so plan artifacts are
+never stowed into `$HOME`.
 
 ### Permissions
 

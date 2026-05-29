@@ -41,6 +41,7 @@ Use this map to find the right page (extend as new sections are added):
 | `setup/darwin/config.sh`                                 | `docs/macos/system-defaults.md`                                       |
 | `Library/LaunchAgents/**`                                | `docs/macos/launchagents.md`                                          |
 | `.claude/settings.json`, `.claude/themes/**`             | `docs/claude/{settings,theme}.md`                                     |
+| `.claude/CLAUDE.md` (user-level agent memory)            | `docs/claude/memory.md`                                               |
 | `.stowrc`, `Makefile`, release-please config, linting    | the matching page under `docs/tooling/`                               |
 
 When adding a brand-new top-level area, also wire it into the `nav = […]` block in
@@ -94,31 +95,12 @@ smoke test (no deploy). The actual deploy runs only when release-please cuts a r
 
 ## Creating commits
 
-Commit signing in this repo runs through `ssh-agent`, which the sandbox refuses (see
-[settings → sandbox](docs/claude/settings.md#sandbox)). Anything `git commit`ed from inside
-Claude Code is therefore unsigned. The workflow handles this with a `.commit.sh` script that
-the user runs **outside** the sandbox:
-
-- **Outside a worktree** — don't run `git commit` at all. Write `.commit.sh` at the
-  repo root containing the exact `git add` / `git commit` invocations you intended to run
-  (one commit per `git commit` call, real commit messages, trailers, etc.), then hand off
-  by telling the user to execute it. The user runs the script in their own shell so the
-  signing key is reachable.
-- **Inside a worktree** — commit normally when the change is at a sensible stopping point.
-  Those commits land unsigned in the `agent/<name>` branch. Still write `.commit.sh` at the
-  worktree root, but the script's job is to re-sign: invoke `git resign <base>` (see
-  [`git-resign`](docs/scripts/security-keys.md#git-resign)) over the range you authored
-  during this session. Pick `<base>` so it's the parent of the first commit you made (e.g.
-  `HEAD~3` if you wrote three commits, or `$(git merge-base HEAD <parent-branch>)` when
-  the count is dynamic).
-
-Both variants:
-
-- Live at the working-directory root. `.commit.sh` is matched by the top-level `.*` rule in
-  [`.gitignore`](.gitignore), so it never gets committed.
-- Start with `#!/usr/bin/env sh` + `set -eu` and overwrite any prior `.commit.sh` —
-  the file represents the _current_ batch, not history.
-- Are `chmod +x`'d when written so the user can run them as `./.commit.sh`.
+The Conventional-Commits format and the `.commit.sh` signing-handoff workflow are
+machine-wide conventions, documented in the user-level
+[`~/.claude/CLAUDE.md`](.claude/CLAUDE.md). Repo-specific notes: `.commit.sh` is matched by
+the top-level `.*` rule in [`.gitignore`](.gitignore), and the
+[`git resign`](docs/scripts/security-keys.md#git-resign) helper is the re-sign step for
+worktree commits.
 
 ## Authoring conventions
 

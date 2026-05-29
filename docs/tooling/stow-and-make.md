@@ -12,39 +12,72 @@ verbatim. Files that should _not_ be symlinked are listed in `.stowrc`.
 ```text title=".stowrc"
 --target=~/
 
---ignore=.DS_Store
+--ignore=DS_Store
 
---ignore=.github/
---ignore=setup/
---ignore=packages/
+--ignore=.github
+--ignore=docs
+--ignore=packages
+--ignore=setup
+--ignore=site
+--ignore=backups
+--ignore=node_modules
 
---ignore=.*.yaml
---ignore=.*.json
 --ignore=.*ignore
+
+--ignore=__pycache__
 
 --ignore=.editorconfig
 --ignore=.gitattributes
 --ignore=.gitignore
 --ignore=.release-please-manifest.json
 --ignore=.stowrc
+--ignore=.venv
 
---ignore=CHANGELOG.md
---ignore=README.md
---ignore=backup.sh
---ignore=install.sh
---ignore=release-please-config.json
+--ignore=^.claude/plans
+--ignore=^CHANGELOG.md
+--ignore=^CLAUDE.md
+--ignore=^AGENTS.md
+--ignore=^README.md
 
---ignore=docs/
---ignore=site/
---ignore=zensical.toml
---ignore=pyproject.toml
---ignore=uv.lock
+--ignore=^.commit.sh
+--ignore=^backup.sh
+--ignore=^install.sh
+--ignore=^Makefile
+--ignore=^package.json
+--ignore=^package-lock.json
+--ignore=^release-please-config.json
+--ignore=^restore.sh
+
+--ignore=^pyproject.toml
+--ignore=^uv.lock
+--ignore=^zensical.toml
 ```
 
 - **`--target=~/`** — `stow .` symlinks every non-ignored top-level entry into `$HOME`.
-- **Ignored**: repo metadata, CI config, project-level tooling (`package.json`,
-  `package-lock.json`, `node_modules`, prettier ignore), installation scripts, and the docs
-  site project.
+- **Ignored**: repo metadata, CI config (`.github`), project-level tooling (`package.json`,
+  `package-lock.json`, `node_modules`, the `.*ignore` files), installation scripts, the docs
+  site project (`docs`, `site`, `.venv`, `zensical.toml`, `pyproject.toml`), and Claude's plan
+  artifacts (`^.claude/plans`). Everything else — including `.claude/CLAUDE.md` and
+  `.claude/settings.json` — is stowed into `$HOME`.
+
+!!! warning "How `--ignore` matches, and why patterns are anchored"
+Each `--ignore=X` compiles to `(?^:(X)\z)` and is tested against the path **relative to the package, anchored only
+at the end**. A bare name therefore matches any path that _ends_ with it — a suffix match, not a top-level-only one.
+Two consequences shaped the list above:
+
+- A bare `--ignore=CLAUDE.md` catches both the top-level `CLAUDE.md` symlink _and_ `.claude/CLAUDE.md`. The latter is
+  meant to stow to `~/.claude/CLAUDE.md` (see [Claude → Memory](../claude/memory.md)), so the top-level entry is
+  pinned to the repo root with `^CLAUDE.md`. The transient
+  [`.commit.sh`](../claude/memory.md#what-it-covers) is anchored the same way (`^.commit.sh`).
+- The old broad `--ignore=.*.json` / `--ignore=.*.yaml` matched _every_ JSON/YAML by that suffix rule. Nested
+  configs under `.config/**` survived only because `stow` **folds** a whole directory into a single symlink when the
+  target dir doesn't exist yet — the per-file ignore never runs. But `~/.claude` already exists, so `stow`
+  **descends** into it and applies the ignore file-by-file, which silently skipped `.claude/settings.json` and
+  `.claude/themes/cyberdream.json`. Both patterns were removed; the root lockfiles and manifests they used to cover
+  are now ignored by explicit `^`-anchored entries (`^package.json`, `^package-lock.json`, … ).
+
+`.stowrc` strips backslashes when it parses each line, so the anchors use `^` rather than `\A`/`\z`/`\.` (the
+surviving `.*ignore` pattern likewise relies on `.`-as-any-char).
 
 ## Makefile
 
