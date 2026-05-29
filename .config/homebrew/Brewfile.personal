@@ -93,7 +93,6 @@ brew "oven-sh/bun/bun"
 # cask "antigravity-cli"
 cask "claude"
 cask "claude-code@latest"
-cask "codexbar"
 cask "gcloud-cli"
 cask "google-drive"
 cask "parallels"
@@ -109,3 +108,4 @@ mas "Pages", id: 409201541
 mas "Speedtest", id: 1153157709
 mas "Xcode", id: 497799835
 cask "home-assistant"
+brew "ccusage"
