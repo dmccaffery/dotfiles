@@ -63,35 +63,35 @@ so keeping the config in its own file is the only reliable place for it.
 
 ```yaml title=".markdownlint-cli2.yaml"
 config:
-  default: true
-  line-length:
-    line_length: 120
-    heading_line_length: 120
-    code_block_line_length: 120
-    tables: false
-  list-marker-space: false
-  table-column-style:
-    style: aligned
-  code-block-style: false
-  code-fence-style:
-    style: backtick
-  no-inline-html:
-    allowed_elements:
-      - span
-      - div
-      - br
-      - p
-  no-space-in-code: false
-  link-fragments: false
+    default: true
+    line-length:
+        line_length: 120
+        heading_line_length: 120
+        code_block_line_length: 120
+        tables: false
+    list-marker-space: false
+    table-column-style:
+        style: aligned
+    code-block-style: false
+    code-fence-style:
+        style: backtick
+    no-inline-html:
+        allowed_elements:
+            - span
+            - div
+            - br
+            - p
+    no-space-in-code: false
+    link-fragments: false
 ignores:
-  - CHANGELOG.md
-  - node_modules/
-  - .venv/
-  - .cache/
-  - site/
-  - backups/
-  - .claude/plans
-  - .claude/worktrees
+    - CHANGELOG.md
+    - node_modules/
+    - .venv/
+    - .cache/
+    - site/
+    - backups/
+    - .claude/plans
+    - .claude/worktrees
 ```
 
 - **Whole-repo scope** — `make lint` runs `npx markdownlint-cli2 '**/*.md'`, so every
