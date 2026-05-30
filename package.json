@@ -3,7 +3,7 @@
   "private": true,
   "description": "Lint and formatting toolchain for the dotfiles docs site.",
   "devDependencies": {
-    "markdownlint-cli2": "^0.14.0",
+    "markdownlint-cli2": "^0.22.1",
     "prettier": "^3.0.0"
   },
   "prettier": {
