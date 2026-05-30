@@ -12,14 +12,12 @@
 			<string>force</string>
 			<key>DISPLAY</key>
 			<string>:0</string>
-			<key>SSH_AUTH_SOCK_LOCAL</key>
-			<string>/tmp/ssh-agent.sock</string>
 		</dict>
 		<key>ProgramArguments</key>
 		<array>
 			<string>/bin/sh</string>
 			<string>-c</string>
-			<string>rm -f ${SSH_AUTH_SOCK}; killall ssh-agent; ln -fs ${SSH_AUTH_SOCK_LOCAL} ${SSH_AUTH_SOCK}; /opt/homebrew/bin/ssh-agent -D -a ${SSH_AUTH_SOCK_LOCAL};</string>
+			<string>rm -f $SSH_AUTH_SOCK; /opt/homebrew/bin/ssh-agent -D -a $SSH_AUTH_SOCK</string>
 		</array>
 		<key>RunAtLoad</key>
 		<true />
