@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.0](https://github.com/dmccaffery/dotfiles/compare/v3.3.0...v3.4.0) (2026-05-30)
+
+
+### Features
+
+* **docs:** embed asciinema demo recording on the home page and README ([ef33e26](https://github.com/dmccaffery/dotfiles/commit/ef33e2645420e65d6e22f1158ed725b2952af482))
+
 ## [3.3.0](https://github.com/dmccaffery/dotfiles/compare/v3.2.0...v3.3.0) (2026-05-30)
 
 
