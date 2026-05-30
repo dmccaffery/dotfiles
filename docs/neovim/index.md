@@ -8,6 +8,8 @@ NeoVim configuration is built on LazyVim, with selected extras enabled, custom p
 in `lua/plugins/`, and the `options.lua` / `keymaps.lua` / `autocmds.lua` triplet under
 `lua/config/` shaping day-to-day editing.
 
+![NeoVim with LazyVim and the cyberdream colorscheme editing a buffer](../assets/images/neovim.png)
+
 | Page                                                   | Purpose                                                          |
 | ------------------------------------------------------ | ---------------------------------------------------------------- |
 | [LazyVim](lazyvim.md)                                  | Layout of `.config/nvim/`, the base spec, and how LazyVim loads. |

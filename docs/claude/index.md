@@ -8,6 +8,8 @@ Configuration for [Claude Code](https://claude.com/claude-code): the user-level 
 memory (both stowed into `~/.claude/`), the cyberdream theme override, and notes on what this repo intentionally
 does not ship.
 
+![Claude Code running in the terminal with the cyberdream theme and oh-my-posh status line](../assets/images/claude-code.png)
+
 | Page                              | Purpose                                                             |
 | --------------------------------- | ------------------------------------------------------------------- |
 | [Settings](settings.md)           | `.claude/settings.json` — user-level config, stowed to `~/.claude`. |

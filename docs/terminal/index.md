@@ -7,6 +7,8 @@ icon: lucide/terminal
 The terminal stack: Ghostty as the emulator, Zsh as the shell, oh-my-posh for the prompt, tmux
 for sessions, and the cyberdream-skinned CLI tools the Brewfile installs.
 
+![Ghostty running Zsh with the cyberdream-themed oh-my-posh prompt and CLI tooling](../assets/images/terminal.png)
+
 | Page                          | Purpose                                                                 |
 | ----------------------------- | ----------------------------------------------------------------------- |
 | [Ghostty](ghostty.md)         | Terminal emulator config and themes.                                    |
