@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.3.0](https://github.com/dmccaffery/dotfiles/compare/v3.2.0...v3.3.0) (2026-05-30)
+
+
+### Features
+
+* **claude:** stow user-level CLAUDE.md and settings.json machine-wide ([faf8ff4](https://github.com/dmccaffery/dotfiles/commit/faf8ff49bf493d04a8cc6cbab750c42a288ec4fd))
+
+
+### Bug Fixes
+
+* **docs:** indent admonition bodies so they render correctly ([07193e6](https://github.com/dmccaffery/dotfiles/commit/07193e612eed04dcbb69054440d1873da8a449e3))
+* **scripts:** send diagnostic output to stderr ([798cf70](https://github.com/dmccaffery/dotfiles/commit/798cf701a165f8962d5bb41835e1c0a66ff2e749))
+
 ## [3.2.0](https://github.com/dmccaffery/dotfiles/compare/v3.1.1...v3.2.0) (2026-05-28)
 
 
