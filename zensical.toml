@@ -8,7 +8,15 @@ repo_name = "dmccaffery/dotfiles"
 edit_uri = "edit/main/docs/"
 copyright = "Copyright &copy; 2026 Deavon McCaffery"
 
-extra_css = ["assets/extras.css"]
+extra_css = [
+    "https://cdn.jsdelivr.net/npm/asciinema-player@3.15.1/dist/bundle/asciinema-player.min.css",
+    "assets/extras.css",
+]
+
+extra_javascript = [
+    "https://cdn.jsdelivr.net/npm/asciinema-player@3.15.1/dist/bundle/asciinema-player.min.js",
+    "assets/asciinema-player-init.js",
+]
 
 nav = [
     { "Home" = "index.md" },

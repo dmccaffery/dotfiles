@@ -12,6 +12,13 @@ around [Ghostty](terminal/ghostty.md), [Zsh](terminal/shell.md), [tmux](terminal
 [cyberdream](theme/cyberdream.md) palette, plus a security-key-driven [Git workflow](git/signing-security-keys.md) and a
 small fleet of [custom scripts](scripts/index.md).
 
+## Demo
+
+A recorded session of the environment in action — tmux, NeoVim, lazygit, oh-my-posh, and a Claude Code agent, all in
+cyberdream. Press play to watch.
+
+<div id="asciinema-demo" data-cast="assets/demo.cast"></div>
+
 ## What's inside
 
 <div class="grid cards" markdown>

@@ -4,6 +4,13 @@
 
 📖 **Full documentation:** <https://dmccaffery.github.io/dotfiles/>
 
+## Demo
+
+[![Watch the demo: tmux, NeoVim, lazygit, oh-my-posh, and a Claude Code agent in cyberdream][demo-poster]][demo-url]
+
+A recorded walkthrough of the environment — tmux, NeoVim, lazygit, oh-my-posh, and a Claude Code agent, all in
+cyberdream. The thumbnail links to the playable recording on the [docs site][demo-url].
+
 ## Features
 
 - support for [ghostty][ghostty-url]
@@ -34,6 +41,8 @@ See [Getting Started][getting-started-url] for the full walkthrough.
 - add support for linux environments
 - add support for WSL2 environments
 
+[demo-poster]: docs/assets/images/demo-poster.png
+[demo-url]: https://dmccaffery.github.io/dotfiles/#demo
 [cyberdream-url]: https://github.com/scottmckendry/cyberdream.nvim
 [ghostty-url]: https://ghostty.org/
 [lazyvim-url]: https://www.lazyvim.org
