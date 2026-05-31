@@ -24,13 +24,47 @@ The shipped file documents conventions that hold regardless of which repo Claude
 
 - **Commit messages** — [Conventional Commits](https://www.conventionalcommits.org/) (`type(scope): summary`),
   the format release-please and friends parse to derive versions and changelogs.
-- **Creating commits** — the `.commit.sh` handoff. SSH commit signing runs through `ssh-agent`, which the Claude
-  Code sandbox refuses (`EPERM` on the agent socket), so commits made inside the sandbox are unsigned. Claude writes
-  a `.commit.sh` at the working-directory root and the user runs it **outside** the sandbox, where the signing key is
-  reachable. Inside a worktree, it instead re-signs the session's commits with
-  [`git resign`](../scripts/security-keys.md#git-resign).
+- **Creating commits** — the [`.commit.sh` handoff](#the-commitsh-workflow) that works around the sandbox's inability
+  to reach the SSH signing key. Detailed in its own section below.
 
 See the source file for the authoritative wording.
+
+## The `.commit.sh` workflow
+
+Commit signing on this machine runs through `ssh-agent`. Claude Code's sandbox refuses that connection — it gets
+`EPERM` on `connect()` to the agent's `AF_UNIX` socket — so **anything `git commit`ed from inside the sandbox is
+unsigned**. The workaround is to hand the real, signable commit back to you in a `.commit.sh` script you run
+**outside** the sandbox, where the signing key is reachable. Which form the script takes depends on whether Claude is
+working in a git worktree:
+
+=== "Outside a worktree"
+
+    Claude does **not** run `git commit` at all. It writes the exact `git add` / `git commit` invocations it intended
+    into `.commit.sh` — one commit per `git commit` call, with real Conventional-Commit messages and any trailers —
+    then tells you to run it. The signing happens when _you_ execute the script, key in hand.
+
+=== "Inside a worktree"
+
+    Claude commits normally at sensible stopping points; those land **unsigned** on the `agent/<name>` branch. The
+    `.commit.sh` it writes instead _re-signs_ the range it authored this session with
+    [`git resign <base>`](../scripts/security-keys.md#git-resign). `<base>` is the parent of the first commit —
+    `HEAD~3` for three commits, or `$(git merge-base HEAD <parent-branch>)` when the commit count is dynamic.
+
+Both forms obey the same rules:
+
+| Rule            | Detail                                                                                                                                                                |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Location        | Written at the working-directory root (the repo root, or the worktree root).                                                                                          |
+| Never committed | Kept out of version control — in this repo the top-level `.*` rule in [`.gitignore`](https://github.com/dmccaffery/dotfiles/blob/main/.gitignore) already matches it. |
+| Header          | Starts with `#!/usr/bin/env sh`, then `set -eu`.                                                                                                                      |
+| Single batch    | Overwrites any prior `.commit.sh` — the file is the _current_ batch, not history.                                                                                     |
+| Executable      | `chmod +x`'d on write, so you can run it as `./.commit.sh`.                                                                                                           |
+
+!!! note "Why the indirection"
+
+    The sandbox is what keeps an autonomous agent from reaching your signing key (or anything else outside its
+    allow-list) on its own. `.commit.sh` doesn't poke a hole in that boundary — it moves the one privileged step,
+    signing, back to a shell _you_ launch, so the agent never touches the key directly.
 
 ## Stowing it
 
