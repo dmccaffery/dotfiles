@@ -261,7 +261,9 @@ invocations, since whether `*` matches an empty trailing arg isn't explicit in t
       "com.apple.system.opendirectoryd.api",
       "com.apple.system.DirectoryService.api"
     ],
-    "allowedDomains": ["github.com", "api.github.com", "..."]
+    "allowedDomains": ["github.com", "api.github.com", "..."],
+    "allowLocalBinding": true,
+    "allowUnixSockets": ["/tmp", "/private/tmp"]
   }
 }
 ```
@@ -334,13 +336,19 @@ functional. `allowMachLookup` is grouped by purpose:
   via `getpwuid` / `getgrgid`. (Git identity itself comes from `~/.config/git/`, which is
   covered by `allowRead` above.)
 
-Unix-domain sockets are not allowlisted — `allowUnixSockets` is omitted entirely because the
-sandbox refuses `connect()` on AF_UNIX paths regardless of what's listed there (verified
-empirically: both `/tmp/ssh-agent.sock` and the tmux control socket return EPERM even when
-named explicitly). The practical consequences: SSH commit signing via `ssh-agent` doesn't
-work from inside the sandbox — run `git commit` outside Claude Code when a signature is
-required. SSH-based git **remotes** still aren't a goal either; those go through HTTPS via
-`allowedDomains`.
+`allowUnixSockets` allowlists AF_UNIX socket paths the sandbox may `connect()` to — here
+`/tmp` and `/private/tmp` (the same scratch root under its `/private` realpath), covering
+the local sockets tools drop there (test fixtures, language-server / dev-server IPC, etc.).
+It does **not** rescue SSH commit signing: `ssh-agent`'s socket lives under macOS's per-user
+`/var/folders/...` dir, not `/tmp`, and `connect()` to it still returns EPERM — so signing
+via `ssh-agent` doesn't work from inside the sandbox; run `git commit` outside Claude Code
+when a signature is required. SSH-based git **remotes** still aren't a goal either; those go
+through HTTPS via `allowedDomains`.
+
+`allowLocalBinding: true` lets sandboxed processes `bind()` and `listen()` on local
+addresses, so a dev server or test harness can open a port on `localhost` and be reached
+from the same session (the matching `localhost` / `127.0.0.1` / `::1` entries in
+`allowedDomains` cover the outbound side).
 
 `allowedDomains` pre-approves outbound HTTPS destinations so common tools don't trigger a
 permission prompt on first contact. Anything not listed still works — Claude prompts the
@@ -359,6 +367,10 @@ first time it's hit. Grouped by purpose:
 - **Go** — `proxy.golang.org` (module proxy), `sum.golang.org` (checksum database),
   `index.golang.org` (module index). Covers `go mod download` / `go get` over the default
   module proxy.
+- **Terraform** — `registry.terraform.io`. The provider / module registry, for
+  `terraform init` provider downloads.
+- **Loopback** — `localhost`, `127.0.0.1`, `::1`. Lets the session reach local servers it
+  starts itself (dev servers, test fixtures); pairs with `allowLocalBinding` below.
 
 > **Note:** `allowMachLookup` is not in the official Claude Code docs at time of writing; the
 > field is treated as undocumented-but-functional based on observed behavior. If a future

@@ -144,8 +144,14 @@
         "nodejs.org",
         "proxy.golang.org",
         "sum.golang.org",
-        "index.golang.org"
-      ]
+        "index.golang.org",
+        "registry.terraform.io",
+        "localhost",
+        "127.0.0.1",
+        "::1"
+      ],
+      "allowLocalBinding": true,
+      "allowUnixSockets": ["/tmp", "/private/tmp"]
     },
     "autoAllowBashIfSandboxed": false,
     "allowUnsandboxedCommands": false,
