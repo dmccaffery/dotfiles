@@ -11,6 +11,11 @@ export TMUX_SOCK="${TMUX%%,*}"
 export HOMEBREW_BUNDLE_FILE_GLOBAL="${XDG_DATA_HOME}/homebrew/Brewfile"
 export HOMEBREW_BUNDLE_INSTALL_CLEANUP=1
 
+export GOPATH="${XDG_DATA_HOME}/go"
+export GOCACHE="${XDG_CACHE_HOME}/go/build"
+export GOMODCACHE="${XDG_CACHE_HOME}/go/mod"
+export GOENV="${XDG_CACHE_HOME}/go/env"
+
 export POSH_THEME="${XDG_CONFIG_HOME}/oh-my-posh/prompt.yaml"
 export VIVID_THEME="${XDG_CONFIG_HOME}/vivid/themes/cyberdream.yaml"
 

@@ -95,11 +95,7 @@ and opinionated:
     },
     "worktree": { "baseRef": "head" },
     "env": {
-        "IS_DEMO": "1",
-        "GOPATH": "~/.local/share/go",
-        "GOCACHE": "~/.cache/go/build",
-        "GOMODCACHE": "~/.cache/go/mod",
-        "GOENV": "~/.cache/go/env"
+        "IS_DEMO": "1"
     }
 }
 ```
@@ -107,9 +103,12 @@ and opinionated:
 > **Why literal `~/` paths instead of `${XDG_CONFIG_HOME}` / `${REPOS_DIR}` / `${HOME}`?**
 > Claude Code does not perform environment-variable expansion on values in `settings.json`, so
 > tokens like `${REPOS_DIR}` were being treated as literal directory names and silently failing
-> to match anything. Paths now use `~/` (which Claude does expand) or absolute roots
-> (`/opt/homebrew`, `/tmp`). If the user's XDG layout ever diverges from the defaults, those
-> overrides have to be reflected here by hand.
+> to match anything. The `statusLine` and `hooks` command paths use `~/` (which Claude expands
+> for command fields) or absolute roots (`/opt/homebrew`, `/tmp`). The `env` block is stricter
+> still — it does **not** expand `~` or `$HOME` either, so any value there must be a literal
+> absolute path. That is why Go's path overrides live in [`.zshenv`](../terminal/shell.md), not
+> here: a relative-looking `~/...` or `$HOME/...` `GOPATH` makes `go` fail with
+> _"GOPATH entry is relative; must be absolute path"_.
 
 ## What each block does
 
@@ -274,8 +273,8 @@ Filesystem access is **asymmetric by design**: broad reads, narrower writes.
   theme, etc.), tooling caches (`~/.cache`), `XDG_RUNTIME_DIR` (`~/.local/runtime` — ephemeral
   sockets and runtime state for `nvim`, `fnm`, etc.), per-user data (`~/.local/share`), `~/.npm`
   (npm's non-XDG cache), `/opt/homebrew` (so agents can introspect what Homebrew has
-  installed), and scratch (`/tmp`). The Go toolchain needs no dedicated read entry: the `env`
-  block (see [Environment](#environment)) relocates every Go path (`GOPATH`, `GOCACHE`,
+  installed), and scratch (`/tmp`). The Go toolchain needs no dedicated read entry:
+  [`.zshenv`](../terminal/shell.md) relocates every Go path (`GOPATH`, `GOCACHE`,
   `GOMODCACHE`, `GOENV`) under `~/.cache/go` and `~/.local/share/go`, both of which already fall
   inside the `~/.cache` and `~/.local/share` read roots above.
   `allowWrite` covers the paths agents actually need to mutate:
@@ -357,6 +356,9 @@ first time it's hit. Grouped by purpose:
   `pypi.org` (Python index), `files.pythonhosted.org` (wheel storage),
   `formulae.brew.sh` (Homebrew formula API).
 - **Node** — `nodejs.org`. For binary-distribution installs (e.g. `nvm install`).
+- **Go** — `proxy.golang.org` (module proxy), `sum.golang.org` (checksum database),
+  `index.golang.org` (module index). Covers `go mod download` / `go get` over the default
+  module proxy.
 
 > **Note:** `allowMachLookup` is not in the official Claude Code docs at time of writing; the
 > field is treated as undocumented-but-functional based on observed behavior. If a future
@@ -420,27 +422,20 @@ committed locally.
 
 ```json
 "env": {
-  "IS_DEMO": "1",
-  "GOPATH": "~/.local/share/go",
-  "GOCACHE": "~/.cache/go/build",
-  "GOMODCACHE": "~/.cache/go/mod",
-  "GOENV": "~/.cache/go/env"
+  "IS_DEMO": "1"
 }
 ```
 
 `env` injects environment variables into every Claude Code session:
 
-| Variable     | Value               | Purpose                                                                 |
-| ------------ | ------------------- | ----------------------------------------------------------------------- |
-| `IS_DEMO`    | `1`                 | Enables Claude Code's demo mode (intentional, not a leaked credential). |
-| `GOPATH`     | `~/.local/share/go` | Relocates the Go workspace from `~/go` under XDG data home.             |
-| `GOCACHE`    | `~/.cache/go/build` | Relocates Go's build cache from `~/Library/Caches/go-build` under XDG.  |
-| `GOMODCACHE` | `~/.cache/go/mod`   | Relocates the Go module cache from `$GOPATH/pkg/mod` under XDG.         |
-| `GOENV`      | `~/.cache/go/env`   | Relocates Go's `env` config file under XDG.                             |
+| Variable  | Value | Purpose                                                                 |
+| --------- | ----- | ----------------------------------------------------------------------- |
+| `IS_DEMO` | `1`   | Enables Claude Code's demo mode (intentional, not a leaked credential). |
 
-The `GO*` overrides pull Go's scattered, non-XDG default locations onto XDG paths: the build,
-module, and `env` caches land under `~/.cache/go`, and the workspace (installed binaries under
-`bin`) under `~/.local/share/go`. Both roots are exactly the paths the [sandbox](#sandbox)
-grants write access to, so a Go build inside an agent session never trips an `EPERM`. Because
-every Go location is relocated, the upstream defaults (`~/go`, `~/Library/Caches/go-build`) no
-longer need their own sandbox entries.
+Go's path overrides (`GOPATH`, `GOCACHE`, `GOMODCACHE`, `GOENV`) deliberately do **not** live
+here. The `env` block does no variable expansion, so a `~/...` or `$HOME/...` value reaches `go`
+verbatim and fails as a relative path (_"GOPATH entry is relative; must be absolute path"_).
+They live in [`.zshenv`](../terminal/shell.md) instead, where `${XDG_DATA_HOME}` /
+`${XDG_CACHE_HOME}` expand to absolute paths. The targets still land under `~/.cache/go` and
+`~/.local/share/go` — exactly the roots the [sandbox](#sandbox) grants write access to — so a Go
+build inside an agent session never trips an `EPERM`.

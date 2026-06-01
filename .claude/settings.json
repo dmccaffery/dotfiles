@@ -141,7 +141,10 @@
         "pypi.org",
         "files.pythonhosted.org",
         "formulae.brew.sh",
-        "nodejs.org"
+        "nodejs.org",
+        "proxy.golang.org",
+        "sum.golang.org",
+        "index.golang.org"
       ]
     },
     "autoAllowBashIfSandboxed": false,
@@ -179,10 +182,6 @@
     "baseRef": "head"
   },
   "env": {
-    "IS_DEMO": "1",
-    "GOPATH": "~/.local/share/go",
-    "GOCACHE": "~/.cache/go/build",
-    "GOMODCACHE": "~/.cache/go/mod",
-    "GOENV": "~/.cache/go/env"
+    "IS_DEMO": "1"
   }
 }
