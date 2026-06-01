@@ -25,15 +25,7 @@ and opinionated:
     "feedbackSurveyRate": 0,
     "permissions": {
         "allow": ["Read(*)", "Glob", "Grep", "WebSearch", "Edit(/tmp/**)", "..."],
-        "deny": [
-            "Read(~/.aws)",
-            "Read(~/.config/gcloud)",
-            "Read(~/.ssh)",
-            "Read(~/.gnupg)",
-            "Read(**/.env*)",
-            "Read(**/*secret*)",
-            "Read(**/*credentials*)"
-        ]
+        "deny": ["Read(~/.aws)", "Read(~/.config/gcloud)", "Read(~/.ssh)", "Read(~/.gnupg)", "Read(**/.env*)"]
     },
     "sandbox": {
         "enabled": true,
@@ -58,15 +50,7 @@ and opinionated:
                 "/tmp",
                 "~/.npm"
             ],
-            "denyRead": [
-                "~/.aws",
-                "~/.config/gcloud",
-                "~/.ssh",
-                "~/.gnupg",
-                "**/.env*",
-                "**/*secret*",
-                "**/*credentials*"
-            ]
+            "denyRead": ["~/.aws", "~/.config/gcloud", "~/.ssh", "~/.gnupg", "**/.env*"]
         },
         "network": {
             "allowMachLookup": [
@@ -180,16 +164,14 @@ collapsed onto the sandbox as the single source of truth.
 
 `deny` takes precedence over `allow`, so it carves secrets back out of the broad `Read(*)` grant.
 It lists two kinds of entry: the credential directories `Read(~/.aws)`, `Read(~/.config/gcloud)`,
-`Read(~/.ssh)`, `Read(~/.gnupg)`, and the secret-file globs `Read(**/.env*)`, `Read(**/*secret*)`,
-`Read(**/*credentials*)` (which match any dotenv file or any path whose name contains `secret` or
-`credentials` — the latter also subsuming a `secrets/` directory, since the `secrets` segment
-matches `*secret*`). Per the [permissions docs](https://code.claude.com/docs/en/iam), these
+`Read(~/.ssh)`, `Read(~/.gnupg)`, and the secret-file glob `Read(**/.env*)` (which matches any
+dotenv file). Per the [permissions docs](https://code.claude.com/docs/en/iam), these
 `Read` deny rules apply to Claude's `Read`/`Edit` tools **and** to the file-reading built-ins
 Claude Code recognises in Bash (`cat`, `head`, `tail`, `sed`) — but _not_ to an arbitrary
 subprocess that opens a file itself (a `python`/`node` script, `awk`, etc.). The credential
 directories matter here precisely because the sandbox does **not** govern the built-in `Read`
 tool: without this list, `Read(*)` would let Claude open `~/.ssh/id_rsa` directly (the file name
-trips none of the globs). The same seven entries are mirrored into the sandbox's `denyRead`
+trips none of the globs). The same five entries are mirrored into the sandbox's `denyRead`
 (see [Sandbox](#sandbox)) to cover the subprocess path the permission layer can't reach. The two
 lists are kept identical: `deny` is the tool-aware block, `denyRead` is the boundary nothing
 escapes.
@@ -209,9 +191,9 @@ Grouped by purpose:
   `stat`, `file`, `wc`, `tree`, `which`, `type`, `command -v`, `echo`, `printf` (all with
   optional args).
 - **File inspection** — `cat`, `head`, `tail`, `grep`, `rg`, `find`, `jq`, `yq` (with args).
-  These are broadly allowed, but the sandbox's `denyRead` globs (`**/.env*`, `**/*secret*`,
-  `**/*credentials*`) block them — and any other subprocess — from reading secret files at the
-  OS level, so `cat .env` fails with `EPERM` rather than leaking into a transcript.
+  These are broadly allowed, but the sandbox's `denyRead` glob `**/.env*` blocks them — and any
+  other subprocess — from reading dotenv files at the OS level, so `cat .env` fails with `EPERM`
+  rather than leaking into a transcript.
 - **Homebrew read-only** — `brew list`, `brew search`, `brew info`, `brew bundle check`.
 - **Git read-only** — `git status`, `diff`, `log`, `show`, `blame`, `ls-files`, `rev-parse`,
   `config --get`, `branch --list`, `stash list`, `worktree list`, `remote -v`,
@@ -249,7 +231,7 @@ invocations, since whether `*` matches an empty trailing arg isn't explicit in t
       "/tmp",
       "~/.npm"
     ],
-    "denyRead": ["~/.aws", "~/.config/gcloud", "~/.ssh", "~/.gnupg", "**/.env*", "**/*secret*", "**/*credentials*"]
+    "denyRead": ["~/.aws", "~/.config/gcloud", "~/.ssh", "~/.gnupg", "**/.env*"]
   },
   "network": {
     "allowMachLookup": [
@@ -297,7 +279,7 @@ Filesystem access is **asymmetric by design**: broad reads, narrower writes.
   leaving this out forces a prompt (or hard fail) on every fetched tarball.
 
 `denyRead` is the kernel-level counterpart to the permission layer's `deny`, and carries the
-identical seven entries: it blocks reads of the listed paths no matter which tool — or which
+identical five entries: it blocks reads of the listed paths no matter which tool — or which
 subprocess — reaches for them, and it accepts gitignore-style globs. The two halves of the list
 do different work:
 
@@ -307,17 +289,17 @@ do different work:
   The other three aren't under any `allowRead` root to begin with, so at the sandbox layer they
   are defense-in-depth — but they still earn their keep, since the matching `deny` entries are
   what stop the built-in `Read` tool (which the sandbox doesn't govern) from opening them.
-- **Secret files anywhere** — `**/.env*`, `**/*secret*`, `**/*credentials*`. Because `~/Repos`
-  is both readable and writable, a dotenv file in a checked-out repo would otherwise be
-  `cat`-able; these globs make the read fail with `EPERM` for _any_ process, closing the gap
-  that `deny` alone leaves open for non-built-in subprocesses.
+- **Secret files anywhere** — `**/.env*`. Because `~/Repos` is both readable and writable, a
+  dotenv file in a checked-out repo would otherwise be `cat`-able; this glob makes the read fail
+  with `EPERM` for _any_ process, closing the gap that `deny` alone leaves open for non-built-in
+  subprocesses.
 
-> **Breadth caveat:** these globs are intentionally aggressive and, because the file is stowed
-> to `~/.claude/settings.json`, apply in **every** repo on the machine. `**/*secret*` will also
-> block reading legitimately-named source like `internal/secret/secret.go` or a doc named
-> `secrets.md`. If that bites in a given repo, re-allow the specific path with a narrower
-> `sandbox.filesystem.allowRead` entry (deny still wins over a broad root, but a more specific
-> allow carves an exception back out) rather than loosening the global glob.
+> **Why only `**/.env*`?** Earlier revisions also denied `\*\*/*secret*`and`\*\*/*credentials*`,
+but those globs are stowed to `~/.claude/settings.json`and so apply in **every** repo on the
+machine — they blocked legitimately-named source like`internal/secret/secret.go`or a doc
+named`secrets.md`. The narrower `\*\*/.env*`keeps real dotenv files out of transcripts without
+shadowing ordinary source. If a repo genuinely needs a broader secret block, add it to that
+repo's own`.claude/settings.json` rather than the global file.
 
 Anything outside the read list still requires explicit permission. The narrow per-tool write
 holes are the model for any future additions — open the smallest path that makes a tool work

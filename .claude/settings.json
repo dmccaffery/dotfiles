@@ -83,15 +83,7 @@
       "Bash(git switch *)",
       "Bash(git commit *)"
     ],
-    "deny": [
-      "Read(~/.aws)",
-      "Read(~/.config/gcloud)",
-      "Read(~/.ssh)",
-      "Read(~/.gnupg)",
-      "Read(**/.env*)",
-      "Read(**/*secret*)",
-      "Read(**/*credentials*)"
-    ]
+    "deny": ["Read(~/.aws)", "Read(~/.config/gcloud)", "Read(~/.ssh)", "Read(~/.gnupg)", "Read(**/.env*)"]
   },
   "sandbox": {
     "enabled": true,
@@ -116,7 +108,7 @@
         "/tmp",
         "~/.npm"
       ],
-      "denyRead": ["~/.aws", "~/.config/gcloud", "~/.ssh", "~/.gnupg", "**/.env*", "**/*secret*", "**/*credentials*"]
+      "denyRead": ["~/.aws", "~/.config/gcloud", "~/.ssh", "~/.gnupg", "**/.env*"]
     },
     "network": {
       "allowMachLookup": [
