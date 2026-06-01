@@ -42,6 +42,7 @@ jobs:
             install.sh \
             restore.sh \
             backup.sh \
+            hack/*.sh \
             setup/**/*.sh \
             .local/share/scripts/* \
             .config/git/template/hooks/* \

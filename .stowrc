@@ -4,6 +4,7 @@
 
 --ignore=.github
 --ignore=docs
+--ignore=hack
 --ignore=packages
 --ignore=setup
 --ignore=site

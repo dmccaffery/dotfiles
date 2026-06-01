@@ -43,6 +43,7 @@ Use this map to find the right page (extend as new sections are added):
 | `.claude/settings.json`, `.claude/themes/**`             | `docs/claude/{settings,theme}.md`                                     |
 | `.claude/CLAUDE.md` (user-level agent memory)            | `docs/claude/memory.md`                                               |
 | `.stowrc`, `Makefile`, release-please config, linting    | the matching page under `docs/tooling/`                               |
+| `hack/**`, `docs/assets/demo.cast`                       | `docs/tooling/contributing.md`                                        |
 
 When adding a brand-new top-level area, also wire it into the `nav = […]` block in
 [`zensical.toml`](zensical.toml).

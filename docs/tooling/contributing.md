@@ -35,8 +35,9 @@ make upgrade
 `npm install --silent` (idempotent against `package-lock.json`) then
 `npx prettier --write 'docs/**/*.md'`. `make lint` depends on `fmt`, then runs
 `shellcheck --severity=warning --external-sources …` over every shell script
-(`install.sh`, `restore.sh`, `backup.sh`, `setup/**/*.sh`, `.local/share/scripts/*`, the
-git template hooks, and `.ssh/rc`) followed by `npx markdownlint-cli2 'docs/**/*.md'`.
+(`install.sh`, `restore.sh`, `backup.sh`, `hack/*.sh`, `setup/**/*.sh`,
+`.local/share/scripts/*`, the git template hooks, and `.ssh/rc`) followed by
+`npx markdownlint-cli2 'docs/**/*.md'`.
 `make docs-build` depends on `lint`, then runs `uv sync` + `uv run zensical build --clean`.
 `make upgrade` prompts for confirmation (because it bypasses the 7-day dependabot
 cooldown), then runs `npm update` to refresh `package-lock.json` and `uv sync --upgrade` to
@@ -72,6 +73,36 @@ docs/
 - **Mermaid diagrams** are configured (use ` ```mermaid `).
 - **Content tabs** (`=== "Tab title"`) and **collapsible details** (`??? info "Title"`) are
   available.
+
+## Re-recording the homepage demo
+
+The homepage embeds [`docs/assets/demo.cast`](https://github.com/dmccaffery/dotfiles/blob/main/docs/assets/demo.cast)
+through asciinema-player (mounted by
+[`docs/assets/asciinema-player-init.js`](https://github.com/dmccaffery/dotfiles/blob/main/docs/assets/asciinema-player-init.js)).
+A cast is baked to a fixed grid and can't be reflowed, so changing its size means re-recording.
+[`hack/record-demo.sh`](https://github.com/dmccaffery/dotfiles/blob/main/hack/record-demo.sh)
+captures a fresh take at a compact, roughly-square geometry and offers to publish it over the
+existing asset.
+
+```sh
+# records to $TMPDIR, then prompts before replacing docs/assets/demo.cast
+./hack/record-demo.sh
+
+# override the default grid (105x40 ~= 800x800 px in Ghostty / Iosevka NF 15)
+WINDOW_SIZE=120x45 ./hack/record-demo.sh
+```
+
+The grid is forced with asciinema's `--window-size`, so the physical Ghostty window only needs to
+be at least that large. Run it inside Ghostty with the cyberdream theme active so the captured
+header palette matches. The script prints a replay checklist of the original demo's beats — the
+Claude-agent output naturally differs, so reproduce the structure, not the literal text.
+
+!!! warning "Keep the take past 2:00"
+
+    `asciinema-player-init.js` sets `poster: "npt:2:00"` (the lazygit-in-tmux frame). A recording
+    shorter than two minutes blanks the poster — keep it longer, or drop the poster timestamp in
+    that file. The script bakes idle at 2s (`--idle-time-limit 2`), matching the player's
+    `idleTimeLimit: 2`.
 
 ## Deploy
 

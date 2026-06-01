@@ -47,6 +47,7 @@ lint: .SHELLFLAGS := -eu -o pipefail -c
 lint: fmt ## Format the repo, then run shellcheck on shell scripts and markdownlint on every .md file
 	@ shopt -s globstar nullglob; shellcheck --severity=warning --external-sources \
 		install.sh restore.sh backup.sh \
+		hack/*.sh \
 		setup/**/*.sh \
 		.local/share/scripts/* \
 		.config/git/template/hooks/* \
