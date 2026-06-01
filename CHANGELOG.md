@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.7.0](https://github.com/dmccaffery/dotfiles/compare/v3.6.0...v3.7.0) (2026-06-01)
+
+
+### Features
+
+* **claude:** allow terraform registry, loopback, and unix sockets in sandbox ([e2f6197](https://github.com/dmccaffery/dotfiles/commit/e2f61978e0c9765e40975412baec34860a16fd5b))
+* **scripts:** set terminal title to tmux session name ([34ca83a](https://github.com/dmccaffery/dotfiles/commit/34ca83a2b97cb4755e00c503791b4d58cd0c793e))
+
 ## [3.6.0](https://github.com/dmccaffery/dotfiles/compare/v3.5.0...v3.6.0) (2026-06-01)
 
 
