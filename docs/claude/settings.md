@@ -24,16 +24,16 @@ and opinionated:
     "respectGitignore": true,
     "feedbackSurveyRate": 0,
     "permissions": {
-        "additionalDirectories": [
-            "~/Repos",
-            "~/.config",
-            "~/.cache",
-            "~/.local/share",
-            "~/.npm",
-            "/opt/homebrew",
-            "/tmp"
-        ],
-        "allow": ["Read(*)", "Glob", "Grep", "WebSearch", "Edit(/tmp/**)", "..."]
+        "allow": ["Read(*)", "Glob", "Grep", "WebSearch", "Edit(/tmp/**)", "..."],
+        "deny": [
+            "Read(~/.aws)",
+            "Read(~/.config/gcloud)",
+            "Read(~/.ssh)",
+            "Read(~/.gnupg)",
+            "Read(**/.env*)",
+            "Read(**/*secret*)",
+            "Read(**/*credentials*)"
+        ]
     },
     "sandbox": {
         "enabled": true,
@@ -42,14 +42,31 @@ and opinionated:
                 "~/Repos",
                 "~/.config",
                 "~/.cache",
-                "~/.cache/agent/worktrees",
                 "~/.local/runtime",
                 "~/.local/share",
                 "~/.npm",
                 "/opt/homebrew",
                 "/tmp"
             ],
-            "allowWrite": ["~/Repos", "~/.cache/agent/worktrees", "~/.cache/uv", "~/.cache/pip", "/tmp", "~/.npm"]
+            "allowWrite": [
+                "~/Repos",
+                "~/.cache/agent/worktrees",
+                "~/.cache/uv",
+                "~/.cache/pip",
+                "~/.cache/go",
+                "~/.local/share/go",
+                "/tmp",
+                "~/.npm"
+            ],
+            "denyRead": [
+                "~/.aws",
+                "~/.config/gcloud",
+                "~/.ssh",
+                "~/.gnupg",
+                "**/.env*",
+                "**/*secret*",
+                "**/*credentials*"
+            ]
         },
         "network": {
             "allowMachLookup": [
@@ -76,7 +93,14 @@ and opinionated:
         "WorktreeCreate": [{ "hooks": [{ "type": "command", "command": "~/.local/share/scripts/start-worktree" }] }],
         "WorktreeRemove": [{ "hooks": [{ "type": "command", "command": "~/.local/share/scripts/end-worktree" }] }]
     },
-    "worktree": { "baseRef": "head" }
+    "worktree": { "baseRef": "head" },
+    "env": {
+        "IS_DEMO": "1",
+        "GOPATH": "~/.local/share/go",
+        "GOCACHE": "~/.cache/go/build",
+        "GOMODCACHE": "~/.cache/go/mod",
+        "GOENV": "~/.cache/go/env"
+    }
 }
 ```
 
@@ -149,19 +173,27 @@ never stowed into `$HOME`.
 
 ### Permissions
 
-`additionalDirectories` widens the working set beyond the repo root. Paths are kept in
-lockstep with `sandbox.filesystem.allowRead` below — anything pre-approved at the permission
-layer is also reachable at the sandbox layer, so "no prompt" implies "will work" (no silent
-EPERM):
+There is no `additionalDirectories` list — the working set beyond the repo root is governed
+entirely by `sandbox.filesystem` below. The sandbox is the real boundary; pre-approving a
+directory at the permission layer without the matching `allowRead`/`allowWrite` hole only
+suppresses the prompt while the underlying access still fails with `EPERM`, so the two were
+collapsed onto the sandbox as the single source of truth.
 
-- `~/Repos` — the user's source-tree root.
-- `~/.config` — user configuration (XDG config home).
-- `~/.cache` — tooling caches (XDG cache home).
-- `~/.local/share` — per-user data (XDG data home).
-- `~/.npm` — npm's cache (not XDG-aware, so listed explicitly).
-- `/opt/homebrew` — Homebrew prefix on Apple Silicon; lets agents introspect installed
-  formulas via `brew info`, `brew --prefix`, etc.
-- `/tmp` — scratch space.
+`deny` takes precedence over `allow`, so it carves secrets back out of the broad `Read(*)` grant.
+It lists two kinds of entry: the credential directories `Read(~/.aws)`, `Read(~/.config/gcloud)`,
+`Read(~/.ssh)`, `Read(~/.gnupg)`, and the secret-file globs `Read(**/.env*)`, `Read(**/*secret*)`,
+`Read(**/*credentials*)` (which match any dotenv file or any path whose name contains `secret` or
+`credentials` — the latter also subsuming a `secrets/` directory, since the `secrets` segment
+matches `*secret*`). Per the [permissions docs](https://code.claude.com/docs/en/iam), these
+`Read` deny rules apply to Claude's `Read`/`Edit` tools **and** to the file-reading built-ins
+Claude Code recognises in Bash (`cat`, `head`, `tail`, `sed`) — but _not_ to an arbitrary
+subprocess that opens a file itself (a `python`/`node` script, `awk`, etc.). The credential
+directories matter here precisely because the sandbox does **not** govern the built-in `Read`
+tool: without this list, `Read(*)` would let Claude open `~/.ssh/id_rsa` directly (the file name
+trips none of the globs). The same seven entries are mirrored into the sandbox's `denyRead`
+(see [Sandbox](#sandbox)) to cover the subprocess path the permission layer can't reach. The two
+lists are kept identical: `deny` is the tool-aware block, `denyRead` is the boundary nothing
+escapes.
 
 `allow` pre-approves common, safe tool invocations so they skip the per-call permission
 prompt. The sandbox (see below) is the real safety net — `allow` only controls prompts.
@@ -178,7 +210,9 @@ Grouped by purpose:
   `stat`, `file`, `wc`, `tree`, `which`, `type`, `command -v`, `echo`, `printf` (all with
   optional args).
 - **File inspection** — `cat`, `head`, `tail`, `grep`, `rg`, `find`, `jq`, `yq` (with args).
-  Minor risk: repo-local secrets (e.g. `.env`) can land in transcripts.
+  These are broadly allowed, but the sandbox's `denyRead` globs (`**/.env*`, `**/*secret*`,
+  `**/*credentials*`) block them — and any other subprocess — from reading secret files at the
+  OS level, so `cat .env` fails with `EPERM` rather than leaking into a transcript.
 - **Homebrew read-only** — `brew list`, `brew search`, `brew info`, `brew bundle check`.
 - **Git read-only** — `git status`, `diff`, `log`, `show`, `blame`, `ls-files`, `rev-parse`,
   `config --get`, `branch --list`, `stash list`, `worktree list`, `remote -v`,
@@ -200,7 +234,6 @@ invocations, since whether `*` matches an empty trailing arg isn't explicit in t
       "~/Repos",
       "~/.config",
       "~/.cache",
-      "~/.cache/agent/worktrees",
       "~/.local/runtime",
       "~/.local/share",
       "~/.npm",
@@ -212,9 +245,12 @@ invocations, since whether `*` matches an empty trailing arg isn't explicit in t
       "~/.cache/agent/worktrees",
       "~/.cache/uv",
       "~/.cache/pip",
+      "~/.cache/go",
+      "~/.local/share/go",
       "/tmp",
       "~/.npm"
-    ]
+    ],
+    "denyRead": ["~/.aws", "~/.config/gcloud", "~/.ssh", "~/.gnupg", "**/.env*", "**/*secret*", "**/*credentials*"]
   },
   "network": {
     "allowMachLookup": [
@@ -238,8 +274,10 @@ Filesystem access is **asymmetric by design**: broad reads, narrower writes.
   theme, etc.), tooling caches (`~/.cache`), `XDG_RUNTIME_DIR` (`~/.local/runtime` — ephemeral
   sockets and runtime state for `nvim`, `fnm`, etc.), per-user data (`~/.local/share`), `~/.npm`
   (npm's non-XDG cache), `/opt/homebrew` (so agents can introspect what Homebrew has
-  installed), and scratch (`/tmp`). `~/.cache/agent/worktrees` is listed explicitly as
-  belt-and-suspenders even though it's already covered by `~/.cache`.
+  installed), and scratch (`/tmp`). The Go toolchain needs no dedicated read entry: the `env`
+  block (see [Environment](#environment)) relocates every Go path (`GOPATH`, `GOCACHE`,
+  `GOMODCACHE`, `GOENV`) under `~/.cache/go` and `~/.local/share/go`, both of which already fall
+  inside the `~/.cache` and `~/.local/share` read roots above.
   `allowWrite` covers the paths agents actually need to mutate:
 
 - `~/Repos` — the source tree itself. Agents can edit files in checked-out repos directly. The
@@ -249,10 +287,36 @@ Filesystem access is **asymmetric by design**: broad reads, narrower writes.
   [worktree isolation](hooks-skills.md#worktreecreate).
 - `~/.cache/uv` and `~/.cache/pip` — Python package caches, required for `make docs-build` /
   `uv sync`.
+- `~/.cache/go` and `~/.local/share/go` — Go's relocated caches and workspace. `~/.cache/go`
+  holds the `GOCACHE`/`GOMODCACHE`/`GOENV` targets (build cache, module cache, `go env` file);
+  `~/.local/share/go` is the relocated `GOPATH`, where `go install` writes binaries under `bin`.
 - `/tmp` — scratch.
 - `~/.npm` — npm's non-XDG cache. Listed last so the historical "read-only" stance is obvious
   from the diff: `npm install` inside an agent session needs to populate the cache, and
   leaving this out forces a prompt (or hard fail) on every fetched tarball.
+
+`denyRead` is the kernel-level counterpart to the permission layer's `deny`, and carries the
+identical seven entries: it blocks reads of the listed paths no matter which tool — or which
+subprocess — reaches for them, and it accepts gitignore-style globs. The two halves of the list
+do different work:
+
+- **Credential directories** — `~/.aws`, `~/.config/gcloud`, `~/.ssh`, `~/.gnupg`.
+  `~/.config/gcloud` is the load-bearing sandbox entry: it sits _inside_ the allowed `~/.config`
+  root, so without an explicit carve-out it would be readable; `denyRead` subtracts it back out.
+  The other three aren't under any `allowRead` root to begin with, so at the sandbox layer they
+  are defense-in-depth — but they still earn their keep, since the matching `deny` entries are
+  what stop the built-in `Read` tool (which the sandbox doesn't govern) from opening them.
+- **Secret files anywhere** — `**/.env*`, `**/*secret*`, `**/*credentials*`. Because `~/Repos`
+  is both readable and writable, a dotenv file in a checked-out repo would otherwise be
+  `cat`-able; these globs make the read fail with `EPERM` for _any_ process, closing the gap
+  that `deny` alone leaves open for non-built-in subprocesses.
+
+> **Breadth caveat:** these globs are intentionally aggressive and, because the file is stowed
+> to `~/.claude/settings.json`, apply in **every** repo on the machine. `**/*secret*` will also
+> block reading legitimately-named source like `internal/secret/secret.go` or a doc named
+> `secrets.md`. If that bites in a given repo, re-allow the specific path with a narrower
+> `sandbox.filesystem.allowRead` entry (deny still wins over a broad root, but a more specific
+> allow carves an exception back out) rather than loosening the global glob.
 
 Anything outside the read list still requires explicit permission. The narrow per-tool write
 holes are the model for any future additions — open the smallest path that makes a tool work
@@ -351,3 +415,32 @@ the [`start-tmux-session`](../scripts/tmux.md#start-tmux-session) and
 New worktrees branch from `HEAD` of the current checkout rather than the repo's default
 branch — match-what-I-see-now behavior, so a worktree carries whatever state you've staged or
 committed locally.
+
+### Environment
+
+```json
+"env": {
+  "IS_DEMO": "1",
+  "GOPATH": "~/.local/share/go",
+  "GOCACHE": "~/.cache/go/build",
+  "GOMODCACHE": "~/.cache/go/mod",
+  "GOENV": "~/.cache/go/env"
+}
+```
+
+`env` injects environment variables into every Claude Code session:
+
+| Variable     | Value               | Purpose                                                                 |
+| ------------ | ------------------- | ----------------------------------------------------------------------- |
+| `IS_DEMO`    | `1`                 | Enables Claude Code's demo mode (intentional, not a leaked credential). |
+| `GOPATH`     | `~/.local/share/go` | Relocates the Go workspace from `~/go` under XDG data home.             |
+| `GOCACHE`    | `~/.cache/go/build` | Relocates Go's build cache from `~/Library/Caches/go-build` under XDG.  |
+| `GOMODCACHE` | `~/.cache/go/mod`   | Relocates the Go module cache from `$GOPATH/pkg/mod` under XDG.         |
+| `GOENV`      | `~/.cache/go/env`   | Relocates Go's `env` config file under XDG.                             |
+
+The `GO*` overrides pull Go's scattered, non-XDG default locations onto XDG paths: the build,
+module, and `env` caches land under `~/.cache/go`, and the workspace (installed binaries under
+`bin`) under `~/.local/share/go`. Both roots are exactly the paths the [sandbox](#sandbox)
+grants write access to, so a Go build inside an agent session never trips an `EPERM`. Because
+every Go location is relocated, the upstream defaults (`~/go`, `~/Library/Caches/go-build`) no
+longer need their own sandbox entries.

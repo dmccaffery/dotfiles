@@ -14,7 +14,6 @@
   "respectGitignore": true,
   "feedbackSurveyRate": 0,
   "permissions": {
-    "additionalDirectories": ["~/Repos", "~/.config", "~/.cache", "~/.local/share", "~/.npm", "/opt/homebrew", "/tmp"],
     "allow": [
       "Read(*)",
       "Glob",
@@ -83,6 +82,15 @@
       "Bash(git checkout *)",
       "Bash(git switch *)",
       "Bash(git commit *)"
+    ],
+    "deny": [
+      "Read(~/.aws)",
+      "Read(~/.config/gcloud)",
+      "Read(~/.ssh)",
+      "Read(~/.gnupg)",
+      "Read(**/.env*)",
+      "Read(**/*secret*)",
+      "Read(**/*credentials*)"
     ]
   },
   "sandbox": {
@@ -92,14 +100,23 @@
         "~/Repos",
         "~/.config",
         "~/.cache",
-        "~/.cache/agent/worktrees",
         "~/.local/runtime",
         "~/.local/share",
         "~/.npm",
         "/opt/homebrew",
         "/tmp"
       ],
-      "allowWrite": ["~/Repos", "~/.cache/agent/worktrees", "~/.cache/uv", "~/.cache/pip", "/tmp", "~/.npm"]
+      "allowWrite": [
+        "~/Repos",
+        "~/.cache/agent/worktrees",
+        "~/.cache/uv",
+        "~/.cache/pip",
+        "~/.cache/go",
+        "~/.local/share/go",
+        "/tmp",
+        "~/.npm"
+      ],
+      "denyRead": ["~/.aws", "~/.config/gcloud", "~/.ssh", "~/.gnupg", "**/.env*", "**/*secret*", "**/*credentials*"]
     },
     "network": {
       "allowMachLookup": [
@@ -160,5 +177,12 @@
   },
   "worktree": {
     "baseRef": "head"
+  },
+  "env": {
+    "IS_DEMO": "1",
+    "GOPATH": "~/.local/share/go",
+    "GOCACHE": "~/.cache/go/build",
+    "GOMODCACHE": "~/.cache/go/mod",
+    "GOENV": "~/.cache/go/env"
   }
 }
