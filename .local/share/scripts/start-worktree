@@ -27,7 +27,12 @@ error() {
 }
 
 sanitize() {
-	printf '%s' "${1}" | tr -c 'A-Za-z0-9._-' '-'
+	# tmux >=3.5 rejects '.' in session names, so encode dots before falling back
+	# to '-' for any other disallowed character: leading '.' -> 'dot-', trailing
+	# '.' -> '-dot', interior '.' -> '-dot-'.
+	printf '%s' "${1}" \
+		| sed -e 's/^\./dot-/' -e 's/\.$/-dot/' -e 's/\./-dot-/g' \
+		| tr -c 'A-Za-z0-9_-' '-'
 }
 
 repo="${1:-${CLAUDE_PROJECT_DIR:-}}"

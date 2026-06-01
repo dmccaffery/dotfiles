@@ -25,8 +25,8 @@ What it does:
 1. Walks `$REPOS_DIR` (default `$HOME/Repos`) up to 4 levels deep looking for directories
    that contain a `.git/` entry.
 2. Pipes the list into `fzf` for selection (`--select-1` auto-picks if there's only one).
-3. Sanitises the repo's basename through `tr -c 'A-Za-z0-9._-' '-'` to derive the bare-repo
-   session name.
+3. Sanitises the repo's basename to derive the bare-repo session name (see the
+   [shared sanitizer](#sanitizer) below).
 4. **If a second `<worktree-name>` argument is supplied**, hands off to
    [`start-worktree`](index.md), which creates `~/.cache/agent/worktrees/<repo>-<worktree>`
    on branch `agent/<repo>-<worktree>` via `git worktree add` (reusing the path or branch if
@@ -48,9 +48,15 @@ tmux -u new-session -d -s "${name}" -n ' nvim' -c "${selected}" -x - -y - "${EDI
     new-window -a -d -c "${selected}"
 ```
 
-The worktree-name argument is sanitised through `tr -c 'A-Za-z0-9._-' '-'`, so
-`fix/stow symlinks` becomes `fix-stow-symlinks`. The shared sanitizer keeps `.`/`_`/`-`,
-which matters for repos like `next.js`.
+### The shared sanitizer { #sanitizer }
+
+Both [`start-tmux-session`](#start-tmux-session) and [`start-worktree`](index.md) run names
+through the same `sanitize` helper, so `fix/stow symlinks` becomes `fix-stow-symlinks`. It
+collapses any character outside `A-Za-z0-9_-` to `-`, with special handling for `.`: tmux
+3.5+ rejects `.` in session names (it's the session/window/pane separator), so dots are
+encoded rather than dropped — a leading `.` becomes `dot-`, a trailing `.` becomes `-dot`,
+and an interior `.` becomes `-dot-`. So `next.js` becomes `next-dot-js` and `.config`
+becomes `dot-config`, keeping each name unique and tmux-safe.
 
 ## `attach-tmux-session` { #attach-tmux-session }
 
