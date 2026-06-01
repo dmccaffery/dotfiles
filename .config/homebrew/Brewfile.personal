@@ -52,9 +52,9 @@ cask "yubico-authenticator"
 
 brew "actions-up"
 brew "asciinema"
+brew "agg"
 brew "bash"
-brew "glib"
-brew "harfbuzz"
+brew "ccusage"
 brew "colima"
 brew "cosign"
 brew "crane"
@@ -67,7 +67,9 @@ brew "figlet"
 brew "fnm"
 brew "forgejo-cli"
 brew "libusb"
+brew "glib"
 brew "go"
+brew "harfbuzz"
 brew "helm"
 brew "kubernetes-cli"
 brew "mas"
@@ -75,6 +77,7 @@ brew "opentofu"
 brew "oras"
 brew "pkgconf"
 brew "protobuf"
+brew "shellcheck"
 brew "sops"
 brew "tflint"
 brew "uv"
@@ -82,7 +85,6 @@ brew "yt-dlp"
 brew "wallpaper"
 
 brew "anomalyco/tap/opencode"
-cask "barutsrb/tap/omniwm"
 brew "bufbuild/buf/buf"
 brew "controlplaneio-fluxcd/tap/flux-operator"
 brew "fluxcd/tap/flux"
@@ -95,20 +97,17 @@ cask "claude"
 cask "claude-code@latest"
 cask "gcloud-cli"
 cask "google-drive"
+cask "home-assistant"
 cask "parallels"
 cask "protonvpn"
+cask "rectangle"
 cask "unifi-identity-endpoint"
-brew "shellcheck"
 
 mas "CleanMyMac", id: 1339170533
 mas "Developer", id: 640199958
+mas "IPCams", id: 1045600272
 mas "Keynote", id: 409183694
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Speedtest", id: 1153157709
 mas "Xcode", id: 497799835
-mas "IP Camera Viewer - IPCams", id: 1045600272
-cask "home-assistant"
-brew "ccusage"
-brew "agg"
-cask "rectangle"
