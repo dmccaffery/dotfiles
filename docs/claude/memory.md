@@ -22,6 +22,8 @@ top of them and is deliberately **not** stowed.
 
 The shipped file documents conventions that hold regardless of which repo Claude is working in:
 
+- **Temporary files** — always route `mktemp` through `$TMPDIR` (e.g. `mktemp -d "$TMPDIR/foo.XXXXXX"`); the bare
+  default lands in `/var/folders/.../T`, which the sandbox blocks.
 - **Commit messages** — [Conventional Commits](https://www.conventionalcommits.org/) (`type(scope): summary`),
   the format release-please and friends parse to derive versions and changelogs.
 - **Creating commits** — the [`.commit.sh` handoff](#the-commitsh-workflow) that works around the sandbox's inability

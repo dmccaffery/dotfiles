@@ -3,6 +3,14 @@
 Cross-repository conventions for this machine. These apply in every repo; a project's own
 `CLAUDE.md` / `AGENTS.md` layers repo-specific rules on top.
 
+## Temporary files
+
+Always create temp files and dirs under `$TMPDIR`, e.g. `mktemp -d "$TMPDIR/foo.XXXXXX"`.
+A bare `mktemp` / `mktemp -d` defaults to macOS's per-user `/var/folders/.../T`, which the
+sandbox blocks (`Operation not permitted`); even bare `/tmp` resolves to `/private/tmp` outside
+the allowed `…/claude` subdir and fails the same way. The Bash tool sets `$TMPDIR` to a
+sandbox-writable directory, so routing every temp path through it is what actually works.
+
 ## Commit messages
 
 Use [Conventional Commits](https://www.conventionalcommits.org/): `type(scope): summary`
