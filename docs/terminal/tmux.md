@@ -39,6 +39,7 @@ bind C-a send-prefix
 | ++ctrl+a++ ++minus++                     | Split window vertically, preserve cwd.             |
 | ++ctrl+a++ ++ctrl+p++                    | Previous window.                                   |
 | ++ctrl+a++ ++ctrl+n++                    | Next window.                                       |
+| ++ctrl+a++ ++shift+c++                   | New window running Claude Code at the repo root.   |
 | ++ctrl+a++ ++h++ / ++j++ / ++k++ / ++l++ | Resize pane left / down / up / right (repeatable). |
 | ++ctrl+a++ ++m++                         | Toggle pane zoom.                                  |
 | ++ctrl+a++ ++backspace++                 | Kill current session.                              |
