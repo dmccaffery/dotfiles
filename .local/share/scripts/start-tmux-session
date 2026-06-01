@@ -46,4 +46,8 @@ if ! tmux has-session -t "${name}" 2> /dev/null; then
 		new-window -a -d -c "${selected}"
 fi
 
+# Set the terminal window/tab title to the session name (OSC 0), otherwise the
+# terminal keeps showing the launching command (e.g. 'sts dotfiles').
+printf '\033]0;%s\007' "${name}"
+
 tmux -u attach-session -t "${name}" -c "${selected}"

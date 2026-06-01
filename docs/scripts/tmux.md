@@ -38,7 +38,10 @@ What it does:
     - **Window 1 (`nvim`)** — nvim in the top pane (90%), shell in a small pane below (10%).
     - **Window 2 (`󰯉 claude (agent)`)** — runs `claude` (Claude Code) in the repo root.
     - **Window 3** — bare shell window.
-6. Attaches to the session.
+6. Sets the terminal window/tab title to the session name via an `OSC 0` escape
+   (`printf '\033]0;%s\007'`), so the tab reads e.g. `dotfiles` instead of the launching
+   command `sts dotfiles`. tmux leaves this alone because `set-titles` is off.
+7. Attaches to the session.
 
 ```sh title=".local/share/scripts/start-tmux-session (core)"
 tmux -u new-session -d -s "${name}" -n ' nvim' -c "${selected}" -x - -y - "${EDITOR}" . \; \
