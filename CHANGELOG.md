@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.6.0](https://github.com/dmccaffery/dotfiles/compare/v3.5.0...v3.6.0) (2026-06-01)
+
+
+### Features
+
+* **go:** allow module proxy hosts and fix GOPATH relocation ([ddcec9a](https://github.com/dmccaffery/dotfiles/commit/ddcec9acbd0428c43f8b2b65233068e821d00a9e))
+
 ## [3.5.0](https://github.com/dmccaffery/dotfiles/compare/v3.4.0...v3.5.0) (2026-06-01)
 
 
