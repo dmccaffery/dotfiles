@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.5.0](https://github.com/dmccaffery/dotfiles/compare/v3.4.0...v3.5.0) (2026-06-01)
+
+
+### Features
+
+* **tmux:** add prefix+C bind to open claude code at repo root ([87b3080](https://github.com/dmccaffery/dotfiles/commit/87b3080584cbac22fda7fbc8a0159d681d37eaed))
+
+
+### Bug Fixes
+
+* **scripts:** encode '.' in tmux session names ([c83f897](https://github.com/dmccaffery/dotfiles/commit/c83f89723af8f8ec558d7f62174a743227154b20))
+
 ## [3.4.0](https://github.com/dmccaffery/dotfiles/compare/v3.3.0...v3.4.0) (2026-05-30)
 
 
