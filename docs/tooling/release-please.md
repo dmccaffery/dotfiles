@@ -49,6 +49,10 @@ jobs:
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
 
+            - name: enable-auto-merge
+              if: ${{ steps.release.outputs.pr }}
+              run: gh pr merge --auto --squash --repo "$REPO" "$PR_NUMBER"
+
             - uses: actions/checkout@…
               if: ${{ steps.release.outputs.release_created }}
 
@@ -58,6 +62,17 @@ jobs:
                   # delete & re-push v<major> and v<major>.<minor> tags so they always
                   # point at the latest matching release
 ```
+
+Whenever release-please opens or updates a Release PR (its `pr` output is set), the
+`enable-auto-merge` step turns on auto-merge for that PR via `gh pr merge --auto`. With
+branch protection requiring a review, the PR then squash-merges itself the moment you
+approve it — no manual "Merge" click. Two repo prerequisites:
+
+- **Settings → General → "Allow auto-merge"** must be enabled, or `gh pr merge --auto` errors.
+- Because the PR is opened by `GITHUB_TOKEN`, it does **not** trigger other workflows
+  (`pull-request.yaml` won't run on it). If branch protection makes those checks required,
+  auto-merge will wait forever for checks that never run — swap the action's `token:` for a
+  PAT or GitHub App token so the PR triggers CI.
 
 When a release is created, the workflow also moves the floating `v<major>` and
 `v<major>.<minor>` tags forward — useful for consumers that pin to a major or minor branch.
