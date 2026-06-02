@@ -36,8 +36,10 @@ What it does:
    parent by name prefix.
 5. If a session of that name doesn't exist, creates one with:
     - **Window 1 (`nvim`)** — nvim in the top pane (90%), shell in a small pane below (10%).
-    - **Window 2 (`󰯉 claude (agent)`)** — runs `claude` (Claude Code) in the repo root.
-    - **Window 3** — bare shell window.
+    - **Window 2 (`󰚩 opencode (primary)`)** — runs `opencode` in the repo root.
+    - **Window 3 (`󰯉 claude (primary)`)** — runs `claude` (Claude Code) in the repo root.
+      tmux keeps the `nvim` window selected while adding detached windows, so the final
+      `opencode` command lands immediately before the previously inserted Claude window.
 6. Sets the terminal window/tab title to the session name via an `OSC 0` escape
    (`printf '\033]0;%s\007'`), so the tab reads e.g. `dotfiles` instead of the launching
    command `sts dotfiles`. tmux leaves this alone because `set-titles` is off.
@@ -47,8 +49,8 @@ What it does:
 tmux -u new-session -d -s "${name}" -n ' nvim' -c "${selected}" -x - -y - "${EDITOR}" . \; \
     split-window -v -l '10%' -c "${selected}" \; \
     select-pane -t 1 \; \
-    new-window -a -d -c "${selected}" -n '󰯉 claude (agent)' claude \; \
-    new-window -a -d -c "${selected}"
+    new-window -a -d -c "${selected}" -n '󰯉 claude (primary)' claude \; \
+    new-window -a -d -c "${selected}" -n '󰚩 opencode (primary)' opencode
 ```
 
 ### The shared sanitizer { #sanitizer }

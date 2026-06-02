@@ -6,9 +6,9 @@ sanitize() {
 	# tmux >=3.5 rejects '.' in session names, so encode dots before falling back
 	# to '-' for any other disallowed character: leading '.' -> 'dot-', trailing
 	# '.' -> '-dot', interior '.' -> '-dot-'.
-	printf '%s' "${1}" \
-		| sed -e 's/^\./dot-/' -e 's/\.$/-dot/' -e 's/\./-dot-/g' \
-		| tr -c 'A-Za-z0-9_-' '-'
+	printf '%s' "${1}" |
+		sed -e 's/^\./dot-/' -e 's/\.$/-dot/' -e 's/\./-dot-/g' |
+		tr -c 'A-Za-z0-9_-' '-'
 }
 
 REPOS_DIR="${REPOS_DIR:-${HOME}/Repos}"
@@ -43,7 +43,7 @@ if ! tmux has-session -t "${name}" 2> /dev/null; then
 		split-window -v -l '10%' -c "${selected}" \; \
 		select-pane -t 1 \; \
 		new-window -a -d -c "${selected}" -n '󰯉 claude (primary)' claude \; \
-		new-window -a -d -c "${selected}"
+		new-window -a -d -c "${selected}" -n '󰚩 opencode (primary)' opencode
 fi
 
 # Set the terminal window/tab title to the session name (OSC 0), otherwise the
