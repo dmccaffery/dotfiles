@@ -15,7 +15,6 @@ else
 	info "linking config symlinks to repository"
 	mkdir -p "${HOME}/.claude"
 	mkdir -p "${HOME}/.config"
-	mkdir -p "${HOME}/.config/opencode"
 	mkdir -p "${HOME}/.ssh"
 
 	stow --dir="${INSTALL_DIR}" .
