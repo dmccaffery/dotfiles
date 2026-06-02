@@ -109,3 +109,43 @@
 .md-typeset code {
     border-radius: 4px;
 }
+
+/*
+ * Iosevka Nerd Font for the asciinema-player demo.
+ *
+ * The terminal font is "Iosevka NF" (see .config/ghostty/config). asciinema-player renders the
+ * recording as HTML, so without a Nerd Font web font the powerline / oh-my-posh glyphs fall back
+ * to tofu boxes. These faces are subset to the glyphs the demo uses (plus the common box-drawing,
+ * block, dingbat and powerline ranges) with hack/build-demo-fonts.sh, then self-hosted here.
+ *
+ * The player is pointed at this family via `terminalFontFamily` in asciinema-player-init.js — the
+ * player measures its own glyph metrics, so a CSS `font-family` override alone is not enough.
+ */
+@font-face {
+    font-family: "Iosevka NF";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("fonts/IosevkaNerdFont-Regular.woff2") format("woff2");
+}
+@font-face {
+    font-family: "Iosevka NF";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("fonts/IosevkaNerdFont-Bold.woff2") format("woff2");
+}
+@font-face {
+    font-family: "Iosevka NF";
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url("fonts/IosevkaNerdFont-Italic.woff2") format("woff2");
+}
+@font-face {
+    font-family: "Iosevka NF";
+    font-style: italic;
+    font-weight: 700;
+    font-display: swap;
+    src: url("fonts/IosevkaNerdFont-BoldItalic.woff2") format("woff2");
+}

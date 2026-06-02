@@ -85,24 +85,64 @@ captures a fresh take at a compact, roughly-square geometry and offers to publis
 existing asset.
 
 ```sh
-# records to $TMPDIR, then prompts before replacing docs/assets/demo.cast
+# opens a new Ghostty window to record in, walks you through the beats, then
+# prompts before replacing docs/assets/demo.cast
 ./hack/record-demo.sh
 
 # override the default grid (105x40 ~= 800x800 px in Ghostty / Iosevka NF 15)
 WINDOW_SIZE=120x45 ./hack/record-demo.sh
 ```
 
-The grid is forced with asciinema's `--window-size`, so the physical Ghostty window only needs to
-be at least that large. Run it inside Ghostty with the cyberdream theme active so the captured
-header palette matches. The script prints a replay checklist of the original demo's beats — the
-Claude-agent output naturally differs, so reproduce the structure, not the literal text.
+The recording runs in a **new Ghostty window** (opened with `open -na Ghostty.app`, the only
+supported way to launch Ghostty from the CLI on macOS), sized to the recording grid and pinned to
+the dark `cyberdream` theme with `--theme`. The pin matters: a window spawned via `open -na … -e sh`
+resolves its appearance before AppKit finishes initialising and can fall back to the light branch of
+`theme = dark:cyberdream,light:cyberdream-light`, which bakes a white background into the cast header
+even when macOS is in dark mode. Override the pinned theme with `GHOSTTY_THEME=… ./hack/record-demo.sh`
+if you ever need a different palette. The window you ran the script from becomes a **teleprompter**: it walks the
+demo beats one at a time, waiting for Enter between each. Command steps are copied to the clipboard
+so you can paste them into the recording window with ++cmd+v++; the quoted steps are directions to
+perform there (navigate the tmux windows, drive the agent, open lazygit) and are not copied. Reproduce
+the structure, not the literal text — the Claude-agent output naturally differs. When you exit the
+recorded shell, control returns to the teleprompter window to publish the cast (`open` and `pbcopy`
+make this step macOS-only). The grid is forced with asciinema's `--window-size`, so the geometry
+holds regardless of how you resize the window.
 
-!!! warning "Keep the take past 2:00"
+When you publish a fresh take, the script also regenerates the README/docs poster
+([`docs/assets/images/demo-poster.png`](https://github.com/dmccaffery/dotfiles/blob/main/docs/assets/images/demo-poster.png))
+from the new cast with [`agg`](https://docs.asciinema.org/manual/agg/): it renders the whole cast
+at the player's idle cap, grabs the poster frame, and flattens it onto the cyberdream background.
+`agg` renders with the same Iosevka Nerd Font as the terminal (via `--font-dir` / `--font-family`,
+per the [agg Nerd Fonts docs](https://docs.asciinema.org/manual/agg/usage/#nerd-fonts)) so the
+powerline / oh-my-posh glyphs render instead of tofu. This step needs `agg`, `ffmpeg`, and `magick`
+on `PATH`; if any is missing it warns and skips, leaving the poster for you to update by hand.
 
-    `asciinema-player-init.js` sets `poster: "npt:2:00"` (the lazygit-in-tmux frame). A recording
-    shorter than two minutes blanks the poster — keep it longer, or drop the poster timestamp in
-    that file. The script bakes idle at 2s (`--idle-time-limit 2`), matching the player's
-    `idleTimeLimit: 2`.
+The poster frame is **whatever was on screen as you crossed from step 8 to step 9** in the
+teleprompter (the post-commit view). The script records that wall-clock instant, converts it to the
+player's idle-collapsed `npt` timeline using the cast's start `timestamp` and per-event intervals
+(each capped at the 2s idle limit, exactly as `agg` and the player collapse idle gaps), then both
+seeks `agg` to that frame and rewrites `poster: "npt:…"` in `asciinema-player-init.js` so the live
+poster and the static PNG agree. Converting through the cast — rather than using raw elapsed
+seconds — keeps the frame correct even when the take has long idle pauses (e.g. while the agent
+works). Deriving the timestamp needs `python3`; without it the script keeps the existing
+`POSTER_NPT` fallback.
+
+### Nerd Font web fonts
+
+asciinema-player renders the recording as HTML, so the browser needs a Nerd Font web font or the
+powerline / oh-my-posh glyphs fall back to tofu boxes. The full Iosevka Nerd Font is ~13 MB per
+face, so [`hack/build-demo-fonts.sh`](https://github.com/dmccaffery/dotfiles/blob/main/hack/build-demo-fonts.sh)
+subsets each face to the glyphs the cast renders (plus common box-drawing, block, dingbat and
+powerline ranges) and writes ~50 KB `woff2` files to `docs/assets/fonts/`. `extras.css` then
+`@font-face`s them, and `asciinema-player-init.js` points the player at the family with its
+`terminalFontFamily` option (the player measures its own glyph metrics, so a CSS `font-family`
+override alone leaves it on the default font) and waits for the font to load before mounting so the
+grid is measured against the right metrics.
+
+```sh
+# re-run after a re-record only if the new take uses glyphs outside the kept ranges
+./hack/build-demo-fonts.sh
+```
 
 ## Deploy
 
