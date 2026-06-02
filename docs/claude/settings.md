@@ -17,7 +17,6 @@ and opinionated:
     "autoMemoryEnabled": true,
     "cleanupPeriodDays": 7,
     "editorMode": "vim",
-    "defaultMode": "auto",
     "effortLevel": "high",
     "attribution": { "commit": "", "pr": "" },
     "autoUpdatesChannel": "stable",
@@ -26,6 +25,7 @@ and opinionated:
     "respectGitignore": true,
     "feedbackSurveyRate": 0,
     "permissions": {
+        "defaultMode": "auto",
         "allow": ["Read(*)", "Glob", "Grep", "WebSearch", "Edit(/tmp/**)", "..."],
         "deny": ["Read(~/.aws)", "Read(~/.config/gcloud)", "Read(~/.ssh)", "Read(~/.gnupg)", "Read(**/.env*)"]
     },
@@ -137,11 +137,12 @@ Vim-style modal editing in the message composer.
 ### Default permission mode
 
 ```json
-"defaultMode": "auto"
+"permissions": { "defaultMode": "auto" }
 ```
 
-Sets the permission mode each session starts in. `auto` lets Claude Code pick the mode based on
-context rather than always opening in the default prompt-for-everything mode — sandbox-safe
+Nests inside the [`permissions`](#permissions) object. Sets the permission mode each session starts in. `auto`
+lets Claude Code pick the mode based on context rather than always opening in the default
+prompt-for-everything mode — sandbox-safe
 commands run without a prompt while the [sandbox](#sandbox) and the [permission](#permissions)
 `deny`/`denyRead` lists remain the real boundary. Cycle modes mid-session with ++shift+tab++.
 

@@ -10,6 +10,7 @@
   },
   "includeGitInstructions": false,
   "permissions": {
+    "defaultMode": "auto",
     "allow": [
       "Read(*)",
       "Glob",
@@ -197,6 +198,5 @@
   "autoMemoryEnabled": true,
   "theme": "custom:cyberdream",
   "editorMode": "vim",
-  "effortLevel": "high",
-  "defaultMode": "auto"
+  "effortLevel": "high"
 }
