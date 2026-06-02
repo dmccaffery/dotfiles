@@ -34,14 +34,21 @@ What it does:
    after the worktree directory's basename (`<repo>-<worktree>`) so the
    [Snacks sessions picker](../neovim/plugins.md#snackslua) can nest it under the bare-repo
    parent by name prefix.
-5. If a session of that name doesn't exist, creates one with:
-    - **Window 1 (`nvim`)** — nvim in the top pane (90%), shell in a small pane below (10%).
-    - **Window 2 (`󰚩 opencode (primary)`)** — runs `opencode` in the repo root when it is
+5. If a session of that name doesn't exist, creates one. The `nvim` window is created first;
+   every other window is created detached and inserted with `-a` (immediately **after** the
+   `nvim` window), so the windows end up in reverse creation order. The creation order is
+   `opencode` → `claude` → `zsh`, which yields this layout:
+    - **Window 1 (` nvim`)** — nvim in the top pane (90%), shell in a small pane below (10%).
+    - **Window 2 (` zsh`)** — a plain login shell in the repo root.
+    - **Window 3 (`󰯉  claude (primary)`)** — runs `claude` (Claude Code) in the repo root when
+      it is available on `PATH`.
+    - **Window 4 (`󰚩  opencode (primary)`)** — runs `opencode` in the repo root when it is
       available on `PATH`.
-    - **Window 3 (`󰯉 claude (primary)`)** — runs `claude` (Claude Code) in the repo root when
-      it is available on `PATH`. tmux inserts both detached agent windows after the `nvim`
-      window, so the final `opencode` command lands immediately before Claude when both CLIs
-      are installed.
+
+    The two agent windows are skipped entirely when their CLI isn't on `PATH`, so the trailing
+    indices shift down accordingly — but `zsh` always lands at window 2, immediately after the
+    editor.
+
 6. Sets the terminal window/tab title to the session name via an `OSC 0` escape
    (`printf '\033]0;%s\007'`), so the tab reads e.g. `dotfiles` instead of the launching
    command `sts dotfiles`. tmux leaves this alone because `set-titles` is off.
@@ -57,10 +64,12 @@ editor_window=$(tmux display-message -p -t "${editor_pane}" '#{window_id}')
 tmux split-window -t "${editor_pane}" -v -l '10%' -c "${selected}"
 tmux select-pane -t "${editor_pane}"
 
-[ -n "${claude_bin}" ] && tmux new-window -a -d -t "${editor_window}" -c "${selected}" \
-    -n '󰯉 claude (primary)' "${claude_bin}"
 [ -n "${opencode_bin}" ] && tmux new-window -a -d -t "${editor_window}" -c "${selected}" \
-    -n '󰚩 opencode (primary)' "${opencode_bin}"
+    -n '󰚩  opencode (primary)' "${opencode_bin}"
+[ -n "${claude_bin}" ] && tmux new-window -a -d -t "${editor_window}" -c "${selected}" \
+    -n '󰯉  claude (primary)' "${claude_bin}"
+
+tmux new-window -a -d -t "${editor_window}" -n ' zsh' -c "${selected}"
 ```
 
 ### The shared sanitizer { #sanitizer }

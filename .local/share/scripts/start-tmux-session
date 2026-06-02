@@ -41,18 +41,20 @@ else
 fi
 
 if ! tmux has-session -t "${name}" 2> /dev/null; then
-	editor_pane=$(tmux -u new-session -d -P -F '#{pane_id}' -s "${name}" -n ' nvim' -c "${selected}" -x - -y - "${EDITOR}" .)
+	editor_pane=$(tmux -u new-session -d -P -F '#{pane_id}' -s "${name}" -n ' nvim' -c "${selected}" -x - -y - "${EDITOR}" .)
 	editor_window=$(tmux display-message -p -t "${editor_pane}" '#{window_id}')
 	tmux split-window -t "${editor_pane}" -v -l '10%' -c "${selected}"
 	tmux select-pane -t "${editor_pane}"
 
-	if [ -n "${claude_bin}" ]; then
-		tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󰯉 claude (primary)' "${claude_bin}"
+	if [ -n "${opencode_bin}" ]; then
+		tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󰚩  opencode (primary)' "${opencode_bin}"
 	fi
 
-	if [ -n "${opencode_bin}" ]; then
-		tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󰚩 opencode (primary)' "${opencode_bin}"
+	if [ -n "${claude_bin}" ]; then
+		tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󰯉  claude (primary)' "${claude_bin}"
 	fi
+
+	tmux new-window -a -d -t "${editor_window}" -n ' zsh' -c "${selected}"
 fi
 
 # Set the terminal window/tab title to the session name (OSC 0), otherwise the
