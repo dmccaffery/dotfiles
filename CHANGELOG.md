@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.8.0](https://github.com/dmccaffery/dotfiles/compare/v3.7.0...v3.8.0) (2026-06-02)
+
+
+### Features
+
+* **claude:** default to auto permission mode ([a27788a](https://github.com/dmccaffery/dotfiles/commit/a27788a5bf5a60af679fdc6270e85d9339b2d438))
+* **nvim:** enable go semantic tokens ([3d46a39](https://github.com/dmccaffery/dotfiles/commit/3d46a39bdfe7d60fd033559342869bfe6a245f49))
+* **opencode:** add global permission config ([3e3657a](https://github.com/dmccaffery/dotfiles/commit/3e3657aac36bd125be656cb94ce379fa334654b6))
+* **scripts:** add zsh window and reorder agents in start-tmux-session ([950a81c](https://github.com/dmccaffery/dotfiles/commit/950a81c2db31f7dbaf7d165ca31741ef76e5f15f))
+* **tmux:** launch opencode in repo sessions ([550275b](https://github.com/dmccaffery/dotfiles/commit/550275b228381e87351c9500896addfd4dceb44a))
+
+
+### Bug Fixes
+
+* guard optional cli availability ([94f427e](https://github.com/dmccaffery/dotfiles/commit/94f427e75de959e8195079ef65dda4d9bfcc383c))
+
 ## [3.7.0](https://github.com/dmccaffery/dotfiles/compare/v3.6.0...v3.7.0) (2026-06-01)
 
 
