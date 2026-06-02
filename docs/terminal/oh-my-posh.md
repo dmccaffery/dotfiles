@@ -99,16 +99,18 @@ from stdin.
 ### What it shows
 
 Left to right, the status line renders the OS icon, the current path, a `claude` segment, and the
-git segment. The `claude` segment packs four pieces of information:
+git segment. The `claude` segment packs six pieces of information:
 
-| Field                                | Source field                        | Shown as                         |
-| ------------------------------------ | ----------------------------------- | -------------------------------- |
-| Current model                        | `.Model.DisplayName`                | e.g. `Claude Opus 4.7`           |
-| Reasoning effort (when supported)    | `.Effort.Level`                     | e.g. `· high` (omitted if empty) |
-| Weekly (7-day rolling) usage         | `.SevenDayGauge` + `.SevenDayUsage` | gauge `▰▰▱▱▱` + `42%`            |
-| Current session context-window usage | `.TokenUsagePercent`                | `18%`                            |
+| Field                                | Source field         | Shown as                         |
+| ------------------------------------ | -------------------- | -------------------------------- |
+| Current model                        | `.Model.DisplayName` | e.g. `Claude Opus 4.7`           |
+| Reasoning effort (when supported)    | `.Effort.Level`      | e.g. `• high` (omitted if empty) |
+| Current session context-window usage | `.TokenUsagePercent` | `18%`                            |
+| Weekly (7-day rolling) usage         | `.SevenDayUsage`     | `42%`                            |
+| Session token count                  | `.FormattedTokens`   | e.g. `12.3k`                     |
+| Session cost                         | `.FormattedCost`     | e.g. `$0.42`                     |
 
 The 7-day window aggregates usage across **all models** and **all sessions** on the account, so
-it's the limit most likely to surprise you during heavy use — the gauge gives an at-a-glance read
-without needing to remember the exact percentage. The effort segment is conditional: models that
-don't expose a reasoning-effort level (`.Effort.Level` is empty) skip the `· level` suffix entirely.
+it's the limit most likely to surprise you during heavy use. The effort segment is conditional:
+models that don't expose a reasoning-effort level (`.Effort.Level` is empty) skip the `• level`
+suffix entirely.
