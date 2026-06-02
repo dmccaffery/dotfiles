@@ -6,6 +6,9 @@ CHANGELOG.md
 .config/nvim/lazyvim.json
 .config/nvim/lazy-lock.json
 
+# Claude Code owns settings.json formatting; the sandbox also blocks rewriting it.
+.claude/settings.json
+
 # Build/runtime artifacts (also in .gitignore, repeated for clarity).
 site/
 node_modules/
