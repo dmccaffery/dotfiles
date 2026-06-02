@@ -1,18 +1,14 @@
 {
-  "theme": "custom:cyberdream",
-  "tui": "fullscreen",
-  "autoMemoryEnabled": true,
+  "respectGitignore": true,
   "cleanupPeriodDays": 7,
-  "editorMode": "vim",
+  "env": {
+    "IS_DEMO": "1"
+  },
   "attribution": {
     "commit": "",
     "pr": ""
   },
-  "autoUpdatesChannel": "stable",
   "includeGitInstructions": false,
-  "plansDirectory": "./.claude/plans",
-  "respectGitignore": true,
-  "feedbackSurveyRate": 0,
   "permissions": {
     "allow": [
       "Read(*)",
@@ -83,76 +79,13 @@
       "Bash(git switch *)",
       "Bash(git commit *)"
     ],
-    "deny": ["Read(~/.aws)", "Read(~/.config/gcloud)", "Read(~/.ssh)", "Read(~/.gnupg)", "Read(**/.env*)"]
-  },
-  "sandbox": {
-    "enabled": true,
-    "filesystem": {
-      "allowRead": [
-        "~/Repos",
-        "~/.config",
-        "~/.cache",
-        "~/.local/runtime",
-        "~/.local/share",
-        "~/.npm",
-        "/opt/homebrew",
-        "/tmp"
-      ],
-      "allowWrite": [
-        "~/Repos",
-        "~/.cache/agent/worktrees",
-        "~/.cache/uv",
-        "~/.cache/pip",
-        "~/.cache/go",
-        "~/.local/share/go",
-        "/tmp",
-        "~/.npm"
-      ],
-      "denyRead": ["~/.aws", "~/.config/gcloud", "~/.ssh", "~/.gnupg", "**/.env*"]
-    },
-    "network": {
-      "allowMachLookup": [
-        "com.apple.SecurityServer",
-        "com.apple.trustd",
-        "com.apple.trustd.agent",
-        "com.apple.mDNSResponder",
-        "com.apple.dnssd",
-        "com.apple.system.opendirectoryd.api",
-        "com.apple.system.DirectoryService.api"
-      ],
-      "allowedDomains": [
-        "github.com",
-        "api.github.com",
-        "objects.githubusercontent.com",
-        "raw.githubusercontent.com",
-        "codeload.github.com",
-        "ghcr.io",
-        "codeberg.org",
-        "code.forgejo.org",
-        "registry.npmjs.org",
-        "pypi.org",
-        "files.pythonhosted.org",
-        "formulae.brew.sh",
-        "nodejs.org",
-        "proxy.golang.org",
-        "sum.golang.org",
-        "index.golang.org",
-        "registry.terraform.io",
-        "localhost",
-        "127.0.0.1",
-        "::1"
-      ],
-      "allowLocalBinding": true,
-      "allowUnixSockets": ["/tmp", "/private/tmp"]
-    },
-    "autoAllowBashIfSandboxed": false,
-    "allowUnsandboxedCommands": false,
-    "enableWeakerNetworkIsolation": false,
-    "enableWeakerNestedSandbox": false
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "oh-my-posh claude --config ~/.config/oh-my-posh/claude.yaml"
+    "deny": [
+      "Read(~/.aws)",
+      "Read(~/.config/gcloud)",
+      "Read(~/.ssh)",
+      "Read(~/.gnupg)",
+      "Read(**/.env*)"
+    ]
   },
   "hooks": {
     "WorktreeCreate": [
@@ -179,7 +112,90 @@
   "worktree": {
     "baseRef": "head"
   },
-  "env": {
-    "IS_DEMO": "1"
-  }
+  "statusLine": {
+    "type": "command",
+    "command": "oh-my-posh claude --config ~/.config/oh-my-posh/claude.yaml"
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": false,
+    "allowUnsandboxedCommands": false,
+    "network": {
+      "allowedDomains": [
+        "github.com",
+        "api.github.com",
+        "objects.githubusercontent.com",
+        "raw.githubusercontent.com",
+        "codeload.github.com",
+        "ghcr.io",
+        "codeberg.org",
+        "code.forgejo.org",
+        "registry.npmjs.org",
+        "pypi.org",
+        "files.pythonhosted.org",
+        "formulae.brew.sh",
+        "nodejs.org",
+        "proxy.golang.org",
+        "sum.golang.org",
+        "index.golang.org",
+        "registry.terraform.io",
+        "localhost",
+        "127.0.0.1",
+        "::1"
+      ],
+      "allowUnixSockets": [
+        "/tmp",
+        "/private/tmp"
+      ],
+      "allowLocalBinding": true,
+      "allowMachLookup": [
+        "com.apple.SecurityServer",
+        "com.apple.trustd",
+        "com.apple.trustd.agent",
+        "com.apple.mDNSResponder",
+        "com.apple.dnssd",
+        "com.apple.system.opendirectoryd.api",
+        "com.apple.system.DirectoryService.api"
+      ]
+    },
+    "filesystem": {
+      "allowWrite": [
+        "~/Repos",
+        "~/.cache/agent/worktrees",
+        "~/.cache/uv",
+        "~/.cache/pip",
+        "~/.cache/go",
+        "~/.local/share/go",
+        "/tmp",
+        "~/.npm"
+      ],
+      "denyRead": [
+        "~/.aws",
+        "~/.config/gcloud",
+        "~/.ssh",
+        "~/.gnupg",
+        "**/.env*"
+      ],
+      "allowRead": [
+        "~/Repos",
+        "~/.config",
+        "~/.cache",
+        "~/.local/runtime",
+        "~/.local/share",
+        "~/.npm",
+        "/opt/homebrew",
+        "/tmp"
+      ]
+    },
+    "enableWeakerNestedSandbox": false,
+    "enableWeakerNetworkIsolation": false
+  },
+  "feedbackSurveyRate": 0,
+  "autoUpdatesChannel": "stable",
+  "plansDirectory": "./.claude/plans",
+  "tui": "fullscreen",
+  "autoMemoryEnabled": true,
+  "theme": "custom:cyberdream",
+  "editorMode": "vim",
+  "effortLevel": "high"
 }
