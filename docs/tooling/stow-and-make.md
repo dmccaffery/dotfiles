@@ -16,6 +16,7 @@ verbatim. Files that should _not_ be symlinked are listed in `.stowrc`.
 
 --ignore=.github
 --ignore=docs
+--ignore=hack
 --ignore=packages
 --ignore=setup
 --ignore=site
@@ -30,6 +31,7 @@ verbatim. Files that should _not_ be symlinked are listed in `.stowrc`.
 --ignore=.gitattributes
 --ignore=.gitignore
 --ignore=.release-please-manifest.json
+--ignore=.markdownlint-cli2.yaml
 --ignore=.stowrc
 --ignore=.venv
 
@@ -55,10 +57,10 @@ verbatim. Files that should _not_ be symlinked are listed in `.stowrc`.
 
 - **`--target=~/`** — `stow .` symlinks every non-ignored top-level entry into `$HOME`.
 - **Ignored**: repo metadata, CI config (`.github`), project-level tooling (`package.json`,
-  `package-lock.json`, `node_modules`, the `.*ignore` files), installation scripts, the docs
-  site project (`docs`, `site`, `.venv`, `zensical.toml`, `pyproject.toml`), and Claude's plan
-  artifacts (`^.claude/plans`). Everything else — including `.claude/CLAUDE.md` and
-  `.claude/settings.json` — is stowed into `$HOME`.
+  `package-lock.json`, `.markdownlint-cli2.yaml`, `node_modules`, the `.*ignore` files),
+  installation scripts and hack utilities, the docs site project (`docs`, `site`, `.venv`,
+  `zensical.toml`, `pyproject.toml`), and Claude's plan artifacts (`^.claude/plans`). Everything
+  else — including `.claude/CLAUDE.md` and `.claude/settings.json` — is stowed into `$HOME`.
 
 !!! warning "How `--ignore` matches, and why patterns are anchored"
 

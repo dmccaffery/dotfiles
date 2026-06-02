@@ -19,6 +19,7 @@
 --ignore=.gitattributes
 --ignore=.gitignore
 --ignore=.release-please-manifest.json
+--ignore=.markdownlint-cli2.yaml
 --ignore=.stowrc
 --ignore=.venv
 
