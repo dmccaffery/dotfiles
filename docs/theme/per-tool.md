@@ -17,7 +17,7 @@ to each tool's other config.
 | lazygit     | `.config/lazygit/config.yml`                           | Colors + delta pager.                                                    |
 | yazi        | `.config/yazi/theme.toml`                              | Includes bat syntax theme.                                               |
 | k9s         | `.config/k9s/skins/cyberdream.yaml`                    | Selected as the active skin.                                             |
-| opencode    | `.config/opencode/themes/cyberdream.json`              | —                                                                        |
+| opencode    | `.config/opencode/themes/cyberdream.json`              | Terminal-default background.                                             |
 | vivid       | `.config/vivid/themes/cyberdream.yaml`                 | Generates `LS_COLORS`; `VIVID_THEME` env points here.                    |
 | lsd         | `.config/lsd/config.yaml`                              | `color: { theme: custom }` driven by `LS_COLORS`.                        |
 | Claude Code | `.claude/themes/cyberdream.json`                       | Selected via `"theme": "custom:cyberdream"`.                             |

@@ -26,26 +26,28 @@ OpenCode's supported `permission` schema allows.
 
 The mapping follows the sandbox in `.claude/settings.json`:
 
-| Claude Code setting             | OpenCode mapping                                                              |
-| ------------------------------- | ----------------------------------------------------------------------------- |
-| `filesystem.allowRead`          | `permission.external_directory` allow rules for `~/Repos`, `~/.config`,       |
-|                                 | `~/.cache`, `~/.local/runtime`, `~/.local/share`, `~/.npm`, `/opt/homebrew`,  |
-|                                 | and `/tmp`.                                                                   |
-| `filesystem.allowWrite`         | `permission.edit` prompts for repo/tool cache writes and allows scratch or    |
-|                                 | agent-worktree writes.                                                        |
-| `filesystem.denyRead`           | `permission.read`, `permission.list`, `permission.glob`, `permission.edit`,   |
-|                                 | and `permission.external_directory` deny `~/.aws`, `~/.config/gcloud`,        |
-|                                 | `~/.ssh`, `~/.gnupg`, and dotenv files.                                       |
-| Claude `permissions.allow` Bash | `permission.bash` pre-approves the same inspection, Homebrew, and Git command |
-| allowlist                       | patterns, then adds final deny patterns for credential and dotenv paths.      |
-| Claude `WebSearch` allow        | `permission.websearch = "allow"`; `webfetch` still prompts.                   |
+| Claude Code setting             | OpenCode mapping                                                             |
+| ------------------------------- | ---------------------------------------------------------------------------- |
+| `filesystem.allowRead`          | `permission.external_directory` allow rules for `~/Repos`, `~/.config`,      |
+|                                 | `~/.cache`, `~/.local/runtime`, `~/.local/share`, `~/.npm`, `/opt/homebrew`, |
+|                                 | and `/tmp`.                                                                  |
+| `filesystem.allowWrite`         | `permission.edit` prompts for repo/tool cache writes and allows scratch or   |
+|                                 | agent-worktree writes.                                                       |
+| `filesystem.denyRead`           | `permission.read`, `permission.list`, `permission.glob`, `permission.edit`,  |
+|                                 | and `permission.external_directory` deny `~/.aws`, `~/.config/gcloud`,       |
+|                                 | `~/.ssh`, `~/.gnupg`, and dotenv files.                                      |
+| Claude `permissions.allow` Bash | `permission.bash` pre-approves the same inspection, Homebrew, Git, and       |
+| allowlist                       | commit-script chmod patterns, then adds final deny patterns for credential   |
+|                                 | and dotenv paths.                                                            |
+| Claude `WebSearch` allow        | `permission.websearch = "allow"`; `webfetch` still prompts.                  |
 
 OpenCode permission objects use last-match-wins ordering, so the config keeps broad rules
 first and narrower allow/deny rules later. The catch-all `"*": "ask"` also changes
 OpenCode's permissive default so any unmapped tool or command requires approval.
 
-`grep` remains prompt-gated because OpenCode's `grep` permission matches the searched regex,
-not the target path, so it cannot safely mirror Claude's path-based `denyRead` boundary.
+`grep` is allowed for routine searches even though OpenCode matches `grep` permissions against
+the searched regex, not the target path. The path boundaries stay on `read`, `list`, `glob`,
+`edit`, and `external_directory`.
 
 ## Limits
 
@@ -67,3 +69,6 @@ After changing `opencode.jsonc`, quit and restart OpenCode; config is loaded at 
     "theme": "cyberdream"
 }
 ```
+
+The theme keeps `defs.bg` set to `"none"` so OpenCode uses the terminal background instead of
+painting its own main panel color.
