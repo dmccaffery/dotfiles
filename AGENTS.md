@@ -29,7 +29,7 @@ Use this map to find the right page (extend as new sections are added):
 | `.config/zsh/**`                                         | `docs/terminal/shell.md`                                              |
 | `.config/oh-my-posh/**`                                  | `docs/terminal/oh-my-posh.md`                                         |
 | `.config/tmux/**`                                        | `docs/terminal/tmux.md`                                               |
-| `.config/opencode/{opencode,tui}.json`                   | `docs/terminal/opencode.md`                                           |
+| `.config/opencode/{opencode.jsonc,tui.json,AGENTS.md}`   | `docs/terminal/opencode.md`                                           |
 | `.config/opencode/themes/**`                             | `docs/theme/per-tool.md` + `docs/terminal/opencode.md`                |
 | `setup/darwin/Brewfile.requirements`                     | `docs/terminal/packages.md`                                           |
 | `brew bundle` lifecycle / `HOMEBREW_BUNDLE_*` env vars   | `docs/terminal/brew-bundle.md`                                        |

@@ -5,18 +5,23 @@
 
 ## Files
 
-| File                                      | Purpose                                                                |
-| ----------------------------------------- | ---------------------------------------------------------------------- |
-| `.config/opencode/opencode.json`          | Global runtime config and permission rules.                            |
-| `.config/opencode/tui.json`               | TUI-only settings; selects the `cyberdream` theme.                     |
-| `.config/opencode/themes/cyberdream.json` | Cyberdream palette for the OpenCode TUI.                               |
-| `.config/opencode/.gitignore`             | Keeps local OpenCode package/plugin install artifacts out of the repo. |
+| File                                      | Purpose                                                                 |
+| ----------------------------------------- | ----------------------------------------------------------------------- |
+| `.config/opencode/opencode.jsonc`         | Global runtime config and permission rules (JSONC, comments allowed).   |
+| `.config/opencode/tui.json`               | TUI-only settings; selects the `cyberdream` theme.                      |
+| `.config/opencode/AGENTS.md`              | Symlink to `~/.claude/CLAUDE.md`; shares one set of global agent rules. |
+| `.config/opencode/themes/cyberdream.json` | Cyberdream palette for the OpenCode TUI.                                |
+| `.config/opencode/.gitignore`             | Keeps local OpenCode package/plugin install artifacts out of the repo.  |
+
+`AGENTS.md` is a symlink to the Claude Code user memory at `~/.claude/CLAUDE.md`, so OpenCode and
+Claude Code read the same global agent instructions (temp-file, commit-message, and signing
+conventions) from a single source — edit `.claude/CLAUDE.md` and both pick the change up.
 
 ## Permission Sandbox
 
 OpenCode does **not** currently accept Claude Code's native `sandbox` block in
-`opencode.json`; unknown top-level keys make OpenCode fail config validation. The global
-`.config/opencode/opencode.json` therefore mirrors the Claude Code sandbox as closely as
+`opencode.jsonc`; unknown top-level keys make OpenCode fail config validation. The global
+`.config/opencode/opencode.jsonc` therefore mirrors the Claude Code sandbox as closely as
 OpenCode's supported `permission` schema allows.
 
 The mapping follows the sandbox in `.claude/settings.json`:
@@ -50,7 +55,7 @@ Claude's `network.allowedDomains`, `allowMachLookup`, `allowUnixSockets`, and
 Bash commands are therefore controlled by the Bash allowlist and approval prompts rather than
 by domain-level egress rules.
 
-After changing `opencode.json`, quit and restart OpenCode; config is loaded at startup.
+After changing `opencode.jsonc`, quit and restart OpenCode; config is loaded at startup.
 
 ## TUI Theme
 
