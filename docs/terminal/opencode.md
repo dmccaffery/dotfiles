@@ -1,0 +1,64 @@
+# OpenCode
+
+[OpenCode](https://opencode.ai) is configured as a stow-managed coding-agent TUI under
+`.config/opencode/`.
+
+## Files
+
+| File                                      | Purpose                                                                |
+| ----------------------------------------- | ---------------------------------------------------------------------- |
+| `.config/opencode/opencode.json`          | Global runtime config and permission rules.                            |
+| `.config/opencode/tui.json`               | TUI-only settings; selects the `cyberdream` theme.                     |
+| `.config/opencode/themes/cyberdream.json` | Cyberdream palette for the OpenCode TUI.                               |
+| `.config/opencode/.gitignore`             | Keeps local OpenCode package/plugin install artifacts out of the repo. |
+
+## Permission Sandbox
+
+OpenCode does **not** currently accept Claude Code's native `sandbox` block in
+`opencode.json`; unknown top-level keys make OpenCode fail config validation. The global
+`.config/opencode/opencode.json` therefore mirrors the Claude Code sandbox as closely as
+OpenCode's supported `permission` schema allows.
+
+The mapping follows the sandbox in `.claude/settings.json`:
+
+| Claude Code setting             | OpenCode mapping                                                              |
+| ------------------------------- | ----------------------------------------------------------------------------- |
+| `filesystem.allowRead`          | `permission.external_directory` allow rules for `~/Repos`, `~/.config`,       |
+|                                 | `~/.cache`, `~/.local/runtime`, `~/.local/share`, `~/.npm`, `/opt/homebrew`,  |
+|                                 | and `/tmp`.                                                                   |
+| `filesystem.allowWrite`         | `permission.edit` prompts for repo/tool cache writes and allows scratch or    |
+|                                 | agent-worktree writes.                                                        |
+| `filesystem.denyRead`           | `permission.read`, `permission.list`, `permission.glob`, `permission.edit`,   |
+|                                 | and `permission.external_directory` deny `~/.aws`, `~/.config/gcloud`,        |
+|                                 | `~/.ssh`, `~/.gnupg`, and dotenv files.                                       |
+| Claude `permissions.allow` Bash | `permission.bash` pre-approves the same inspection, Homebrew, and Git command |
+| allowlist                       | patterns, then adds final deny patterns for credential and dotenv paths.      |
+| Claude `WebSearch` allow        | `permission.websearch = "allow"`; `webfetch` still prompts.                   |
+
+OpenCode permission objects use last-match-wins ordering, so the config keeps broad rules
+first and narrower allow/deny rules later. The catch-all `"*": "ask"` also changes
+OpenCode's permissive default so any unmapped tool or command requires approval.
+
+`grep` remains prompt-gated because OpenCode's `grep` permission matches the searched regex,
+not the target path, so it cannot safely mirror Claude's path-based `denyRead` boundary.
+
+## Limits
+
+This is a permission-layer sandbox, not the same kernel-enforced boundary Claude Code runs.
+Claude's `network.allowedDomains`, `allowMachLookup`, `allowUnixSockets`, and
+`allowUnsandboxedCommands` fields have no OpenCode config equivalent today. Network-capable
+Bash commands are therefore controlled by the Bash allowlist and approval prompts rather than
+by domain-level egress rules.
+
+After changing `opencode.json`, quit and restart OpenCode; config is loaded at startup.
+
+## TUI Theme
+
+`.config/opencode/tui.json` selects the bundled `cyberdream` theme:
+
+```json title=".config/opencode/tui.json"
+{
+    "$schema": "https://opencode.ai/tui.json",
+    "theme": "cyberdream"
+}
+```
