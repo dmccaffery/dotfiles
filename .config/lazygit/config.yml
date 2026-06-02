@@ -1,5 +1,7 @@
 gui:
   border: rounded
+  showBottomLine: false
+  showRandomTip: false
   theme:
     activeBorderColor:
       - "#5EF1FF"
