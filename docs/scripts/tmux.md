@@ -40,9 +40,9 @@ What it does:
    `opencode` → `claude` → `zsh`, which yields this layout:
     - **Window 1 (` nvim`)** — nvim in the top pane (90%), shell in a small pane below (10%).
     - **Window 2 (` zsh`)** — a plain login shell in the repo root.
-    - **Window 3 (`󰯉  claude (primary)`)** — runs `claude` (Claude Code) in the repo root when
+    - **Window 3 (`󰯉  claude`)** — runs `claude` (Claude Code) in the repo root when
       it is available on `PATH`.
-    - **Window 4 (`󰚩  opencode (primary)`)** — runs `opencode` in the repo root when it is
+    - **Window 4 (`󰚩  opencode`)** — runs `opencode` in the repo root when it is
       available on `PATH`.
 
     The two agent windows are skipped entirely when their CLI isn't on `PATH`, so the trailing
@@ -65,9 +65,9 @@ tmux split-window -t "${editor_pane}" -v -l '10%' -c "${selected}"
 tmux select-pane -t "${editor_pane}"
 
 [ -n "${opencode_bin}" ] && tmux new-window -a -d -t "${editor_window}" -c "${selected}" \
-    -n '󰚩  opencode (primary)' "${opencode_bin}"
+    -n '󰚩  opencode' "${opencode_bin}"
 [ -n "${claude_bin}" ] && tmux new-window -a -d -t "${editor_window}" -c "${selected}" \
-    -n '󰯉  claude (primary)' "${claude_bin}"
+    -n '󰯉  claude' "${claude_bin}"
 
 tmux new-window -a -d -t "${editor_window}" -n ' zsh' -c "${selected}"
 ```

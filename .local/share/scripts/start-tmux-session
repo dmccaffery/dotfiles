@@ -47,11 +47,11 @@ if ! tmux has-session -t "${name}" 2> /dev/null; then
 	tmux select-pane -t "${editor_pane}"
 
 	if [ -n "${opencode_bin}" ]; then
-		tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󰚩  opencode (primary)' "${opencode_bin}"
+		tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󰚩  opencode' "${opencode_bin}"
 	fi
 
 	if [ -n "${claude_bin}" ]; then
-		tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󰯉  claude (primary)' "${claude_bin}"
+		tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󰯉  claude' "${claude_bin}"
 	fi
 
 	tmux new-window -a -d -t "${editor_window}" -n ' zsh' -c "${selected}"
