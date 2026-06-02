@@ -16,7 +16,7 @@ else
 	xcode-select --install
 	sudo xcodebuild -license accept
 fi
-if hash brew 1> /dev/null 2>&1; then
+if command -v brew 1> /dev/null 2>&1; then
 	warn "homebrew already installed"
 else
 	info "installing homebrew"

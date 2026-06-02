@@ -32,21 +32,25 @@ set -g prefix C-a
 bind C-a send-prefix
 ```
 
-| Binding                                  | Action                                             |
-| ---------------------------------------- | -------------------------------------------------- |
-| ++ctrl+a++                               | Prefix (sent through with ++ctrl+a++ ++ctrl+a++).  |
-| ++ctrl+a++ ++bar++                       | Split window horizontally, preserve cwd.           |
-| ++ctrl+a++ ++minus++                     | Split window vertically, preserve cwd.             |
-| ++ctrl+a++ ++ctrl+p++                    | Previous window.                                   |
-| ++ctrl+a++ ++ctrl+n++                    | Next window.                                       |
-| ++ctrl+a++ ++shift+c++                   | New window running Claude Code at the repo root.   |
-| ++ctrl+a++ ++h++ / ++j++ / ++k++ / ++l++ | Resize pane left / down / up / right (repeatable). |
-| ++ctrl+a++ ++m++                         | Toggle pane zoom.                                  |
-| ++ctrl+a++ ++backspace++                 | Kill current session.                              |
-| ++ctrl+a++ ++f++                         | Kill current session (alias).                      |
+| Binding                                  | Action                                                        |
+| ---------------------------------------- | ------------------------------------------------------------- |
+| ++ctrl+a++                               | Prefix (sent through with ++ctrl+a++ ++ctrl+a++).             |
+| ++ctrl+a++ ++bar++                       | Split window horizontally, preserve cwd.                      |
+| ++ctrl+a++ ++minus++                     | Split window vertically, preserve cwd.                        |
+| ++ctrl+a++ ++ctrl+p++                    | Previous window.                                              |
+| ++ctrl+a++ ++ctrl+n++                    | Next window.                                                  |
+| ++ctrl+a++ ++shift+c++                   | New window running Claude Code at the repo root if available. |
+| ++ctrl+a++ ++shift+o++                   | New window running OpenCode at the repo root if available.    |
+| ++ctrl+a++ ++h++ / ++j++ / ++k++ / ++l++ | Resize pane left / down / up / right (repeatable).            |
+| ++ctrl+a++ ++m++                         | Toggle pane zoom.                                             |
+| ++ctrl+a++ ++backspace++                 | Kill current session.                                         |
+| ++ctrl+a++ ++f++                         | Kill current session (alias).                                 |
 
 Copy mode uses vi keys (`v` to start selection, `y` to copy). Mouse drag-select does _not_ exit
 copy mode, so you can refine a selection after dragging.
+
+The agent bindings show a tmux message instead of opening a broken window when their CLI is
+missing from `PATH`.
 
 ## Options
 

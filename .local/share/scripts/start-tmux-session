@@ -14,6 +14,8 @@ sanitize() {
 REPOS_DIR="${REPOS_DIR:-${HOME}/Repos}"
 selected="${1:-}"
 worktree="${2:-}"
+claude_bin=$(command -v claude 2> /dev/null || true)
+opencode_bin=$(command -v opencode 2> /dev/null || true)
 
 if [ ! -d "${REPOS_DIR:-}" ]; then
 	REPOS_DIR='.'
@@ -39,11 +41,18 @@ else
 fi
 
 if ! tmux has-session -t "${name}" 2> /dev/null; then
-	tmux -u new-session -d -s "${name}" -n ' nvim' -c "${selected}" -x - -y - "${EDITOR}" . \; \
-		split-window -v -l '10%' -c "${selected}" \; \
-		select-pane -t 1 \; \
-		new-window -a -d -c "${selected}" -n '󰯉 claude (primary)' claude \; \
-		new-window -a -d -c "${selected}" -n '󰚩 opencode (primary)' opencode
+	editor_pane=$(tmux -u new-session -d -P -F '#{pane_id}' -s "${name}" -n ' nvim' -c "${selected}" -x - -y - "${EDITOR}" .)
+	editor_window=$(tmux display-message -p -t "${editor_pane}" '#{window_id}')
+	tmux split-window -t "${editor_pane}" -v -l '10%' -c "${selected}"
+	tmux select-pane -t "${editor_pane}"
+
+	if [ -n "${claude_bin}" ]; then
+		tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󰯉 claude (primary)' "${claude_bin}"
+	fi
+
+	if [ -n "${opencode_bin}" ]; then
+		tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󰚩 opencode (primary)' "${opencode_bin}"
+	fi
 fi
 
 # Set the terminal window/tab title to the session name (OSC 0), otherwise the

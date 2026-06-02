@@ -8,7 +8,7 @@ SCRIPT_DIR=$(dirname "$(readlink -f -- "$0")")
 BACKUPS_DIR="${SCRIPT_DIR}/backups"
 query="${1:-}"
 
-if ! hash fzf 1> /dev/null 2>&1; then
+if ! command -v fzf 1> /dev/null 2>&1; then
 	error "fzf could not be found; install via 'brew install fzf' first"
 	exit 1
 fi
@@ -50,7 +50,7 @@ y | Y | yes | YES) ;;
 	;;
 esac
 
-if hash stow 1> /dev/null 2>&1; then
+if command -v stow 1> /dev/null 2>&1; then
 	info "removing existing stow symlinks..."
 	(cd "${SCRIPT_DIR}" && stow -D .)
 else

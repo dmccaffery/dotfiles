@@ -32,6 +32,6 @@ fi
 # shellcheck disable=SC2016
 COMPLETION_DIR=$(${ZSH_BIN} -lc 'echo "${fpath// /\n}" | grep -i completion')
 
-if hash flux 1> /dev/null 2>&1; then
+if command -v flux 1> /dev/null 2>&1; then
 	flux completion zsh > "${COMPLETION_DIR}/_flux"
 fi

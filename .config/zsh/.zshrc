@@ -9,7 +9,7 @@ fi
 export LS_COLORS="$(vivid generate ${VIVID_THEME:-cyberdream})"
 
 # ensure that brew is configured
-if hash brew &> /dev/null; then
+if command -v brew &> /dev/null; then
 	eval "$(brew shellenv)"
 elif [ -x '/opt/homebrew/bin/brew' ]; then
 	eval "$(/opt/homebrew/bin/brew shellenv)"
