@@ -197,5 +197,6 @@
   "autoMemoryEnabled": true,
   "theme": "custom:cyberdream",
   "editorMode": "vim",
-  "effortLevel": "high"
+  "effortLevel": "high",
+  "defaultMode": "auto"
 }

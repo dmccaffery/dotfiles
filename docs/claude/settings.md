@@ -17,6 +17,8 @@ and opinionated:
     "autoMemoryEnabled": true,
     "cleanupPeriodDays": 7,
     "editorMode": "vim",
+    "defaultMode": "auto",
+    "effortLevel": "high",
     "attribution": { "commit": "", "pr": "" },
     "autoUpdatesChannel": "stable",
     "includeGitInstructions": false,
@@ -131,6 +133,27 @@ garbage-collected.
 ```
 
 Vim-style modal editing in the message composer.
+
+### Default permission mode
+
+```json
+"defaultMode": "auto"
+```
+
+Sets the permission mode each session starts in. `auto` lets Claude Code pick the mode based on
+context rather than always opening in the default prompt-for-everything mode — sandbox-safe
+commands run without a prompt while the [sandbox](#sandbox) and the [permission](#permissions)
+`deny`/`denyRead` lists remain the real boundary. Cycle modes mid-session with ++shift+tab++.
+
+### Effort level
+
+```json
+"effortLevel": "high"
+```
+
+Biases the model toward more thorough reasoning on each turn. `high` favours deeper analysis
+over latency — the right default for the configuration and infrastructure work this repo is
+mostly used for.
 
 ### Attribution
 
