@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.10.0](https://github.com/dmccaffery/dotfiles/compare/v3.9.0...v3.10.0) (2026-06-02)
+
+
+### Features
+
+* **claude:** indicate when Claude Code is waiting for input ([5fd1f8b](https://github.com/dmccaffery/dotfiles/commit/5fd1f8b4930553648b1610bb8f2dab5a8b7749e2))
+* **claude:** louder tmux indicator for Notification vs Stop ([90be565](https://github.com/dmccaffery/dotfiles/commit/90be56577eb4d62a279f2ba4a12b9eef0083b26b))
+* **docs:** nerd-font demo rendering and a guided recording workflow ([5c272a8](https://github.com/dmccaffery/dotfiles/commit/5c272a801b47102c1cf8b4f43d7701575b569025))
+* **tmux:** share agent status indicator with opencode ([0ecfd4c](https://github.com/dmccaffery/dotfiles/commit/0ecfd4c70fefa74f916290fb14c6834d68e42768))
+
 ## [3.9.0](https://github.com/dmccaffery/dotfiles/compare/v3.8.0...v3.9.0) (2026-06-02)
 
 
