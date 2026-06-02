@@ -4,6 +4,9 @@ return {
     opts = {
       servers = {
         gopls = {
+          init_options = {
+            semanticTokens = true,
+          },
           settings = {
             gopls = {
               directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules", "-**/.terraform" },
