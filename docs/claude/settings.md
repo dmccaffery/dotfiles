@@ -415,16 +415,16 @@ See [Terminal → oh-my-posh](../terminal/oh-my-posh.md#claude-code-status-line)
     { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/end-worktree" }] }
   ],
   "Stop": [
-    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status waiting" }] }
+    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status waiting" }] }
   ],
   "Notification": [
-    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status attention" }] }
+    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status attention" }] }
   ],
   "UserPromptSubmit": [
-    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status clear" }] }
+    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status clear" }] }
   ],
   "SessionEnd": [
-    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status clear" }] }
+    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status clear" }] }
   ]
 }
 ```
@@ -439,9 +439,10 @@ the [`start-tmux-session`](../scripts/tmux.md#start-tmux-session) and
   down once Claude is done and kills any matching tmux session.
 
 Four more hooks drive the "Claude is waiting for you" indicator via
-[`claude-tmux-status`](hooks-skills.md#claude-is-waiting-indicator) — `Stop` raises a calm
+[`agent-tmux-status`](hooks-skills.md#claude-is-waiting-indicator) — `Stop` raises a calm
 `waiting` state (peach `●`) and `Notification` a louder `attention` one (bold red `󰂚`);
-`UserPromptSubmit` and `SessionEnd` clear it (you replied, or the session ended).
+`UserPromptSubmit` and `SessionEnd` clear it (you replied, or the session ended). The same
+script is shared with opencode's [status-indicator plugin](../terminal/opencode.md#status-indicator).
 
 ### Worktree
 

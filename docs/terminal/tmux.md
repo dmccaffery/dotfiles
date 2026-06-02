@@ -121,22 +121,22 @@ on first run.
 The status bar shows: current pane command + cwd (left) and session name (right, recoloured
 red while the prefix is held).
 
-### Claude-is-waiting indicator { #claude-status }
+### Agent-is-waiting indicator { #agent-status }
 
-`theme.conf` makes the `window-status` format react to a per-window `@claude_status` user
-option that holds a **state token** so a window can flag what Claude Code needs. Both
-`window-status-format` and `window-status-current-format` gain a leading conditional segment
-that maps the token to a style:
+`theme.conf` makes the `window-status` format react to a per-window `@agent_status` user
+option that holds a **state token** so a window can flag what a coding agent (Claude Code or
+opencode) needs. Both `window-status-format` and `window-status-current-format` gain a leading
+conditional segment that maps the token to a style:
 
 ```text title=".config/tmux/conf/theme.conf (style segment)"
-#{?@claude_status,#{?#{==:#{@claude_status},attention},#[bg=#{@thm_red}#,fg=#{@thm_bg}#,bold],#[bg=#{@thm_peach}#,fg=#{@thm_bg}]},}
+#{?@agent_status,#{?#{==:#{@agent_status},attention},#[bg=#{@thm_red}#,fg=#{@thm_bg}#,bold],#[bg=#{@thm_peach}#,fg=#{@thm_bg}]},}
 ```
 
-| Token       | Set by                 | Look                           |
-| ----------- | ---------------------- | ------------------------------ |
-| _(empty)_   | cleared                | base `window-status-style`     |
-| `waiting`   | `Stop` (turn finished) | calm **peach** background, `●` |
-| `attention` | `Notification` (needs) | bold **red** background, `󰂚`   |
+| Token       | Set when                          | Look                           |
+| ----------- | --------------------------------- | ------------------------------ |
+| _(empty)_   | cleared                           | base `window-status-style`     |
+| `waiting`   | turn finished (your move)         | calm **peach** background, `●` |
+| `attention` | blocked on permission / attention | bold **red** background, `󰂚`   |
 
 A matching glyph segment appends `●` or `󰂚` after the window name via the same
 `#{==:…,attention}` test. The literal commas inside `#[…]` are escaped as `#,` because `,`
@@ -146,9 +146,10 @@ on the **focused** window reads mostly through its `●` glyph (the colour is id
 colour cue is most useful from another window, which is the point. Swap `@thm_peach` for, say,
 `@thm_yellow` if you want it to pop even on the active window.
 
-The option is toggled by the [`claude-tmux-status`](../scripts/tmux.md#claude-tmux-status)
+The option is toggled by the [`agent-tmux-status`](../scripts/tmux.md#agent-tmux-status)
 script, wired into Claude Code's
-[`Stop`/`Notification`/`UserPromptSubmit`/`SessionEnd` hooks](../claude/hooks-skills.md#claude-is-waiting-indicator).
+[`Stop`/`Notification`/`UserPromptSubmit`/`SessionEnd` hooks](../claude/hooks-skills.md#claude-is-waiting-indicator)
+and opencode's [status-indicator plugin](opencode.md#status-indicator).
 
 ## Companion scripts
 

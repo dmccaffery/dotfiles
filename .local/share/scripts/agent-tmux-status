@@ -2,8 +2,9 @@
 
 set -eu
 
-# Glyphs for the OSC (non-tmux) terminal-title fallback. Inside tmux the glyph and
-# colour are chosen by theme.conf from the @claude_status state token set below.
+# Shared status indicator for coding agents (Claude Code hooks, opencode plugin). Glyphs
+# for the OSC (non-tmux) terminal-title fallback. Inside tmux the glyph and colour are
+# chosen by theme.conf from the @agent_status state token set below.
 waiting_glyph='● '
 attention_glyph='󰂚 '
 
@@ -12,18 +13,18 @@ state="${1:-clear}"
 if [ -n "${TMUX:-}" ]; then
 	# Inside tmux: tmux swallows OSC title sequences (set-titles is off), so flag the
 	# window via a per-window option holding a state token (waiting | attention) that
-	# theme.conf maps to a colour + glyph. Target the pane Claude runs in via $TMUX_PANE.
+	# theme.conf maps to a colour + glyph. Target the pane the agent runs in via $TMUX_PANE.
 	case "${state}" in
 	waiting | attention)
-		tmux set-window-option -t "${TMUX_PANE:-}" @claude_status "${state}" 2> /dev/null || true
+		tmux set-window-option -t "${TMUX_PANE:-}" @agent_status "${state}" 2> /dev/null || true
 		;;
 	*)
-		tmux set-window-option -t "${TMUX_PANE:-}" -u @claude_status 2> /dev/null || true
+		tmux set-window-option -t "${TMUX_PANE:-}" -u @agent_status 2> /dev/null || true
 		;;
 	esac
 else
 	# Outside tmux: set the terminal (e.g. Ghostty) tab title via OSC 0, routed to the
-	# controlling tty since the hook's stdout is captured by Claude Code.
+	# controlling tty since the agent may capture the caller's stdout.
 	title=$(basename -- "${PWD}")
 	case "${state}" in
 	waiting)

@@ -96,21 +96,23 @@ touches branches it can identify as throwaway agent state.
 ### Claude-is-waiting indicator { #claude-is-waiting-indicator }
 
 Four hooks drive a "Claude is waiting for input" indicator, all pointing at the same leaf
-script [`claude-tmux-status`](../scripts/tmux.md#claude-tmux-status) with a state argument:
+script [`agent-tmux-status`](../scripts/tmux.md#agent-tmux-status) with a state argument
+(opencode drives the very same script from its
+[status-indicator plugin](../terminal/opencode.md#status-indicator)):
 
 ```json
 "hooks": {
     "Stop": [
-        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status waiting" }] }
+        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status waiting" }] }
     ],
     "Notification": [
-        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status attention" }] }
+        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status attention" }] }
     ],
     "UserPromptSubmit": [
-        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status clear" }] }
+        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status clear" }] }
     ],
     "SessionEnd": [
-        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status clear" }] }
+        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status clear" }] }
     ]
 }
 ```
@@ -127,9 +129,9 @@ script [`claude-tmux-status`](../scripts/tmux.md#claude-tmux-status) with a stat
 `waiting` naturally escalates to `attention`.
 
 The script branches on `$TMUX`: inside tmux it stores the state token in a per-window
-`@claude_status` option that [`theme.conf`](../terminal/tmux.md#claude-status) maps to a colour
+`@agent_status` option that [`theme.conf`](../terminal/tmux.md#agent-status) maps to a colour
 and glyph; outside tmux it falls back to an `OSC 0` terminal title. See
-[scripts/tmux → `claude-tmux-status`](../scripts/tmux.md#claude-tmux-status) for the details.
+[scripts/tmux → `agent-tmux-status`](../scripts/tmux.md#agent-tmux-status) for the details.
 
 ## Skills
 

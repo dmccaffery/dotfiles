@@ -5,13 +5,14 @@
 
 ## Files
 
-| File                                      | Purpose                                                                 |
-| ----------------------------------------- | ----------------------------------------------------------------------- |
-| `.config/opencode/opencode.jsonc`         | Global runtime config and permission rules (JSONC, comments allowed).   |
-| `.config/opencode/tui.json`               | TUI-only settings; selects the `cyberdream` theme.                      |
-| `.config/opencode/AGENTS.md`              | Symlink to `~/.claude/CLAUDE.md`; shares one set of global agent rules. |
-| `.config/opencode/themes/cyberdream.json` | Cyberdream palette for the OpenCode TUI.                                |
-| `.config/opencode/.gitignore`             | Keeps local OpenCode package/plugin install artifacts out of the repo.  |
+| File                                           | Purpose                                                                 |
+| ---------------------------------------------- | ----------------------------------------------------------------------- |
+| `.config/opencode/opencode.jsonc`              | Global runtime config and permission rules (JSONC, comments allowed).   |
+| `.config/opencode/tui.json`                    | TUI-only settings; selects the `cyberdream` theme.                      |
+| `.config/opencode/AGENTS.md`                   | Symlink to `~/.claude/CLAUDE.md`; shares one set of global agent rules. |
+| `.config/opencode/themes/cyberdream.json`      | Cyberdream palette for the OpenCode TUI.                                |
+| `.config/opencode/plugin/agent-tmux-status.js` | Status-indicator plugin; flags the tmux window when OpenCode needs you. |
+| `.config/opencode/.gitignore`                  | Keeps local OpenCode package/plugin install artifacts out of the repo.  |
 
 `AGENTS.md` is a symlink to the Claude Code user memory at `~/.claude/CLAUDE.md`, so OpenCode and
 Claude Code read the same global agent instructions (temp-file, commit-message, and signing
@@ -72,3 +73,25 @@ After changing `opencode.jsonc`, quit and restart OpenCode; config is loaded at 
 
 The theme keeps `defs.bg` set to `"none"` so OpenCode uses the terminal background instead of
 painting its own main panel color.
+
+## Status indicator { #status-indicator }
+
+`.config/opencode/plugin/agent-tmux-status.js` flags the tmux window (or terminal title) when
+OpenCode is waiting on you, reusing the shared
+[`agent-tmux-status`](../scripts/tmux.md#agent-tmux-status) leaf script that Claude Code drives
+from [its hooks](../claude/hooks-skills.md#claude-is-waiting-indicator). OpenCode auto-loads
+every `plugin/*.{js,ts}` file under `~/.config/opencode/`, so dropping the file in is the whole
+wiring — there is no entry to add to `opencode.jsonc`.
+
+The plugin subscribes to OpenCode's [event bus](https://opencode.ai/docs/plugins/) and maps
+each event to a state token the script hands to [`theme.conf`](tmux.md#agent-status):
+
+| OpenCode event                | State       | Look                           |
+| ----------------------------- | ----------- | ------------------------------ |
+| `session.idle`                | `waiting`   | calm **peach** background, `●` |
+| `permission.updated`          | `attention` | bold **red** background, `󰂚`   |
+| `message.updated` (user role) | `clear`     | indicator removed              |
+
+It shells out via the plugin's Bun `$` helper with `.quiet().nothrow()` and wraps the call in a
+`try`/`catch`, so a status blip can never disrupt a session. The pane is targeted by `$TMUX_PANE`,
+inherited from the shell OpenCode launched in.

@@ -114,7 +114,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.local/share/scripts/claude-tmux-status waiting"
+            "command": "~/.local/share/scripts/agent-tmux-status waiting"
           }
         ]
       }
@@ -124,7 +124,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.local/share/scripts/claude-tmux-status attention"
+            "command": "~/.local/share/scripts/agent-tmux-status attention"
           }
         ]
       }
@@ -134,7 +134,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.local/share/scripts/claude-tmux-status clear"
+            "command": "~/.local/share/scripts/agent-tmux-status clear"
           }
         ]
       }
@@ -144,7 +144,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.local/share/scripts/claude-tmux-status clear"
+            "command": "~/.local/share/scripts/agent-tmux-status clear"
           }
         ]
       }
