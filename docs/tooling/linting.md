@@ -89,6 +89,7 @@ config:
 ignores:
     - CHANGELOG.md
     - node_modules/
+    - "**/node_modules/**"
     - .venv/
     - .cache/
     - site/
@@ -115,8 +116,9 @@ ignores:
 - **`link-fragments: false`** — pymdownx `attr_list` IDs (`## Heading { #anchor }`) render
   in zensical but markdownlint can't resolve them.
 - **`CHANGELOG.md` is ignored** — release-please writes it. The remaining `ignores` entries
-  keep markdownlint out of build/runtime artifacts (markdownlint-cli2 does not honor
-  `.gitignore` automatically, so these need to be listed explicitly).
+  keep markdownlint out of build/runtime artifacts, including nested package installs like
+  `.config/opencode/node_modules/` (markdownlint-cli2 does not honor `.gitignore`
+  automatically, so these need to be listed explicitly).
 
 ## shellcheck
 
