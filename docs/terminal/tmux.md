@@ -141,10 +141,10 @@ conditional segment that maps the token to a style:
 A matching glyph segment appends `●` or `󰂚` after the window name via the same
 `#{==:…,attention}` test. The literal commas inside `#[…]` are escaped as `#,` because `,`
 separates the conditional's branches; the commas inside nested `#{…}` are protected by the
-braces and left bare. Because `window-status-current-style` is already peach, a `waiting` entry
-on the **focused** window reads mostly through its `●` glyph (the colour is identical) — the
-colour cue is most useful from another window, which is the point. Swap `@thm_peach` for, say,
-`@thm_yellow` if you want it to pop even on the active window.
+braces and left bare. The active and last-window styles use `@thm_blue` (not the indicator's
+`@thm_peach`/`@thm_red`), so a `waiting` or `attention` window pops by colour even when it is the
+focused one — no overlap between the "this is the current window" cue and the "this window needs
+you" cue.
 
 The option is toggled by the [`agent-tmux-status`](../scripts/tmux.md#agent-tmux-status)
 script, wired into Claude Code's
