@@ -104,7 +104,7 @@ script [`claude-tmux-status`](../scripts/tmux.md#claude-tmux-status) with a stat
         { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status waiting" }] }
     ],
     "Notification": [
-        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status waiting" }] }
+        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status attention" }] }
     ],
     "UserPromptSubmit": [
         { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status clear" }] }
@@ -115,16 +115,20 @@ script [`claude-tmux-status`](../scripts/tmux.md#claude-tmux-status) with a stat
 }
 ```
 
-| Event              | Arg       | When it fires                                |
-| ------------------ | --------- | -------------------------------------------- |
-| `Stop`             | `waiting` | Claude finished a turn and is awaiting input |
-| `Notification`     | `waiting` | Claude needs permission or attention         |
-| `UserPromptSubmit` | `clear`   | You submitted a reply — Claude is busy again |
-| `SessionEnd`       | `clear`   | Session ended — don't leave the flag stuck   |
+| Event              | Arg         | When it fires                                | Look         |
+| ------------------ | ----------- | -------------------------------------------- | ------------ |
+| `Stop`             | `waiting`   | Claude finished a turn and is awaiting input | peach `●`    |
+| `Notification`     | `attention` | Claude needs permission or attention         | bold red `󰂚` |
+| `UserPromptSubmit` | `clear`     | You submitted a reply — Claude is busy again | cleared      |
+| `SessionEnd`       | `clear`     | Session ended — don't leave the flag stuck   | cleared      |
 
-The script branches on `$TMUX`: inside tmux it sets a per-window `@claude_status` option that
-[`theme.conf`](../terminal/tmux.md#claude-status) renders as a red status-bar entry; outside
-tmux it falls back to an `OSC 0` terminal title. See
+`Notification` is the louder of the two because a permission prompt actively needs you, whereas
+`Stop` just means it's your turn. `Notification` also fires after ~60s idle, so a long-idle
+`waiting` naturally escalates to `attention`.
+
+The script branches on `$TMUX`: inside tmux it stores the state token in a per-window
+`@claude_status` option that [`theme.conf`](../terminal/tmux.md#claude-status) maps to a colour
+and glyph; outside tmux it falls back to an `OSC 0` terminal title. See
 [scripts/tmux → `claude-tmux-status`](../scripts/tmux.md#claude-tmux-status) for the details.
 
 ## Skills

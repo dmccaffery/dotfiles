@@ -127,25 +127,29 @@ matching PR (if any) keeps working off the remote branch even after the local on
 ## `claude-tmux-status` { #claude-tmux-status }
 
 ```sh
-claude-tmux-status waiting   # raise the "Claude is waiting" indicator
-claude-tmux-status clear     # lower it (also the default with no/unknown arg)
+claude-tmux-status waiting     # turn finished — your turn (calm)
+claude-tmux-status attention   # Claude needs you now — permission / notification (urgent)
+claude-tmux-status clear       # lower the indicator (also the default with no/unknown arg)
 ```
 
 A no-op-safe leaf script wired into four
 [Claude Code hooks](../claude/hooks-skills.md#claude-is-waiting-indicator) so the indicator
-tracks whether Claude is waiting on you: `Stop`/`Notification` call it with `waiting`,
-`UserPromptSubmit`/`SessionEnd` call it with `clear`. It branches on `$TMUX`:
+tracks whether Claude is waiting on you: `Stop` calls it with `waiting`, `Notification` with
+`attention`, and `UserPromptSubmit`/`SessionEnd` with `clear`. It branches on `$TMUX`:
 
-- **Inside tmux** — sets a per-window user option on the pane Claude runs in
-  (`tmux set-window-option -t "$TMUX_PANE" @claude_status ●`, unset on clear). tmux swallows
-  `OSC` title sequences from inside a session (`set-titles` is off), so the option is the
-  reliable channel. [`theme.conf`](../terminal/tmux.md#claude-status) renders the option as a
-  **red** `window-status` entry, so the waiting window stands out at a glance — and only that
-  window, since user options resolve per-window.
+- **Inside tmux** — stores the **state token** (`waiting` or `attention`) in a per-window user
+  option on the pane Claude runs in (`tmux set-window-option -t "$TMUX_PANE" @claude_status …`,
+  unset on clear). tmux swallows `OSC` title sequences from inside a session (`set-titles` is
+  off), so the option is the reliable channel. [`theme.conf`](../terminal/tmux.md#claude-status)
+  maps the token to a colour and glyph in the `window-status` format — calm **peach `●`** for
+  `waiting`, bold **red `󰂚`** for `attention` — and only that window changes, since user options
+  resolve per-window.
 - **Outside tmux** — falls back to an `OSC 0` terminal title written to `/dev/tty` (the same
   trick [`start-tmux-session`](#start-tmux-session) uses, since a hook's stdout is captured by
-  Claude Code), prefixing the cwd basename with `●` while waiting and dropping it on clear.
+  Claude Code), prefixing the cwd basename with `●` (waiting) or `󰂚` (attention) and dropping it
+  on clear.
 
 Every `tmux`/`printf` call is guarded with `|| true` and the script never exits non-zero, so a
-missing tmux server or detached tty can't fail a Claude turn. Change the glyph by editing the
-single `indicator=` line at the top.
+missing tmux server or detached tty can't fail a Claude turn. The fallback glyphs live in the
+`waiting_glyph` / `attention_glyph` lines at the top of the script; the in-tmux colours and
+glyphs live in [`theme.conf`](../terminal/tmux.md#claude-status).

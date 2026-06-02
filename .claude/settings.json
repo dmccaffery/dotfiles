@@ -124,7 +124,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.local/share/scripts/claude-tmux-status waiting"
+            "command": "~/.local/share/scripts/claude-tmux-status attention"
           }
         ]
       }

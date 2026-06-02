@@ -418,7 +418,7 @@ See [Terminal → oh-my-posh](../terminal/oh-my-posh.md#claude-code-status-line)
     { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status waiting" }] }
   ],
   "Notification": [
-    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status waiting" }] }
+    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status attention" }] }
   ],
   "UserPromptSubmit": [
     { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status clear" }] }
@@ -439,9 +439,9 @@ the [`start-tmux-session`](../scripts/tmux.md#start-tmux-session) and
   down once Claude is done and kills any matching tmux session.
 
 Four more hooks drive the "Claude is waiting for you" indicator via
-[`claude-tmux-status`](hooks-skills.md#claude-is-waiting-indicator) — `Stop` and `Notification`
-raise it (Claude finished a turn or needs attention); `UserPromptSubmit` and `SessionEnd` clear
-it (you replied, or the session ended).
+[`claude-tmux-status`](hooks-skills.md#claude-is-waiting-indicator) — `Stop` raises a calm
+`waiting` state (peach `●`) and `Notification` a louder `attention` one (bold red `󰂚`);
+`UserPromptSubmit` and `SessionEnd` clear it (you replied, or the session ended).
 
 ### Worktree
 

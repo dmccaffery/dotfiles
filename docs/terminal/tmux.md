@@ -124,17 +124,27 @@ red while the prefix is held).
 ### Claude-is-waiting indicator { #claude-status }
 
 `theme.conf` makes the `window-status` format react to a per-window `@claude_status` user
-option so a window can flag that Claude Code is waiting for input. Both
-`window-status-format` and `window-status-current-format` gain a leading conditional segment:
+option that holds a **state token** so a window can flag what Claude Code needs. Both
+`window-status-format` and `window-status-current-format` gain a leading conditional segment
+that maps the token to a style:
 
-```text title=".config/tmux/conf/theme.conf (segment)"
-#{?@claude_status,#[bg=#{@thm_red}#,fg=#{@thm_bg}#,bold],}
+```text title=".config/tmux/conf/theme.conf (style segment)"
+#{?@claude_status,#{?#{==:#{@claude_status},attention},#[bg=#{@thm_red}#,fg=#{@thm_bg}#,bold],#[bg=#{@thm_peach}#,fg=#{@thm_bg}]},}
 ```
 
-When `@claude_status` is empty the conditional's false branch is empty, so the base
-`window-status-style` applies unchanged. When it's set, the whole entry renders **red** and the
-option's value (a `●` glyph) is appended after the window name. The literal commas inside
-`#[…]` are escaped as `#,` because `,` separates the conditional's branches.
+| Token       | Set by                 | Look                           |
+| ----------- | ---------------------- | ------------------------------ |
+| _(empty)_   | cleared                | base `window-status-style`     |
+| `waiting`   | `Stop` (turn finished) | calm **peach** background, `●` |
+| `attention` | `Notification` (needs) | bold **red** background, `󰂚`   |
+
+A matching glyph segment appends `●` or `󰂚` after the window name via the same
+`#{==:…,attention}` test. The literal commas inside `#[…]` are escaped as `#,` because `,`
+separates the conditional's branches; the commas inside nested `#{…}` are protected by the
+braces and left bare. Because `window-status-current-style` is already peach, a `waiting` entry
+on the **focused** window reads mostly through its `●` glyph (the colour is identical) — the
+colour cue is most useful from another window, which is the point. Swap `@thm_peach` for, say,
+`@thm_yellow` if you want it to pop even on the active window.
 
 The option is toggled by the [`claude-tmux-status`](../scripts/tmux.md#claude-tmux-status)
 script, wired into Claude Code's
