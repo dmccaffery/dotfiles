@@ -93,6 +93,40 @@ also invoked per selection by [`end-tmux-session`](../scripts/tmux.md#end-tmux-s
 The `agent/`-prefix guard is intentional: branch deletion is destructive, so the hook only
 touches branches it can identify as throwaway agent state.
 
+### Claude-is-waiting indicator { #claude-is-waiting-indicator }
+
+Four hooks drive a "Claude is waiting for input" indicator, all pointing at the same leaf
+script [`claude-tmux-status`](../scripts/tmux.md#claude-tmux-status) with a state argument:
+
+```json
+"hooks": {
+    "Stop": [
+        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status waiting" }] }
+    ],
+    "Notification": [
+        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status waiting" }] }
+    ],
+    "UserPromptSubmit": [
+        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status clear" }] }
+    ],
+    "SessionEnd": [
+        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status clear" }] }
+    ]
+}
+```
+
+| Event              | Arg       | When it fires                                |
+| ------------------ | --------- | -------------------------------------------- |
+| `Stop`             | `waiting` | Claude finished a turn and is awaiting input |
+| `Notification`     | `waiting` | Claude needs permission or attention         |
+| `UserPromptSubmit` | `clear`   | You submitted a reply — Claude is busy again |
+| `SessionEnd`       | `clear`   | Session ended — don't leave the flag stuck   |
+
+The script branches on `$TMUX`: inside tmux it sets a per-window `@claude_status` option that
+[`theme.conf`](../terminal/tmux.md#claude-status) renders as a red status-bar entry; outside
+tmux it falls back to an `OSC 0` terminal title. See
+[scripts/tmux → `claude-tmux-status`](../scripts/tmux.md#claude-tmux-status) for the details.
+
 ## Skills
 
 Same story for skills — none ship in this repo. The default Claude Code install provides

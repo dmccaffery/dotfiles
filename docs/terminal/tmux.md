@@ -121,6 +121,25 @@ on first run.
 The status bar shows: current pane command + cwd (left) and session name (right, recoloured
 red while the prefix is held).
 
+### Claude-is-waiting indicator { #claude-status }
+
+`theme.conf` makes the `window-status` format react to a per-window `@claude_status` user
+option so a window can flag that Claude Code is waiting for input. Both
+`window-status-format` and `window-status-current-format` gain a leading conditional segment:
+
+```text title=".config/tmux/conf/theme.conf (segment)"
+#{?@claude_status,#[bg=#{@thm_red}#,fg=#{@thm_bg}#,bold],}
+```
+
+When `@claude_status` is empty the conditional's false branch is empty, so the base
+`window-status-style` applies unchanged. When it's set, the whole entry renders **red** and the
+option's value (a `●` glyph) is appended after the window name. The literal commas inside
+`#[…]` are escaped as `#,` because `,` separates the conditional's branches.
+
+The option is toggled by the [`claude-tmux-status`](../scripts/tmux.md#claude-tmux-status)
+script, wired into Claude Code's
+[`Stop`/`Notification`/`UserPromptSubmit`/`SessionEnd` hooks](../claude/hooks-skills.md#claude-is-waiting-indicator).
+
 ## Companion scripts
 
 See [scripts/tmux](../scripts/tmux.md) for `start-tmux-session` (fzf-driven repo browser that

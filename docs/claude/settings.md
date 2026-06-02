@@ -413,6 +413,18 @@ See [Terminal → oh-my-posh](../terminal/oh-my-posh.md#claude-code-status-line)
   ],
   "WorktreeRemove": [
     { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/end-worktree" }] }
+  ],
+  "Stop": [
+    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status waiting" }] }
+  ],
+  "Notification": [
+    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status waiting" }] }
+  ],
+  "UserPromptSubmit": [
+    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status clear" }] }
+  ],
+  "SessionEnd": [
+    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/claude-tmux-status clear" }] }
   ]
 }
 ```
@@ -425,6 +437,11 @@ the [`start-tmux-session`](../scripts/tmux.md#start-tmux-session) and
   and `agent/*` branch.
 - `WorktreeRemove` → [`end-worktree`](hooks-skills.md#worktreeremove) tears the worktree back
   down once Claude is done and kills any matching tmux session.
+
+Four more hooks drive the "Claude is waiting for you" indicator via
+[`claude-tmux-status`](hooks-skills.md#claude-is-waiting-indicator) — `Stop` and `Notification`
+raise it (Claude finished a turn or needs attention); `UserPromptSubmit` and `SessionEnd` clear
+it (you replied, or the session ended).
 
 ### Worktree
 

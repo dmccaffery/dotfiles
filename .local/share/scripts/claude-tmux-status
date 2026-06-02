@@ -1,0 +1,34 @@
+#!/usr/bin/env sh
+
+set -eu
+
+# Indicator shown when Claude is waiting for input. Tweak here to change the glyph.
+indicator='● '
+
+state="${1:-clear}"
+
+if [ -n "${TMUX:-}" ]; then
+	# Inside tmux: tmux swallows OSC title sequences (set-titles is off), so flag
+	# the window via a per-window user option that theme.conf renders in the
+	# window-status format. Target the pane Claude runs in via $TMUX_PANE.
+	case "${state}" in
+	waiting)
+		tmux set-window-option -t "${TMUX_PANE:-}" @claude_status "${indicator}" 2> /dev/null || true
+		;;
+	*)
+		tmux set-window-option -t "${TMUX_PANE:-}" -u @claude_status 2> /dev/null || true
+		;;
+	esac
+else
+	# Outside tmux: set the terminal (e.g. Ghostty) tab title via OSC 0, routed to
+	# the controlling tty since the hook's stdout is captured by Claude Code.
+	title=$(basename -- "${PWD}")
+	case "${state}" in
+	waiting)
+		(printf '\033]0;%s %s\007' "${indicator}" "${title}" > /dev/tty) 2> /dev/null || true
+		;;
+	*)
+		(printf '\033]0;%s\007' "${title}" > /dev/tty) 2> /dev/null || true
+		;;
+	esac
+fi
