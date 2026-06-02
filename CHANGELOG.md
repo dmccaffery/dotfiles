@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.9.0](https://github.com/dmccaffery/dotfiles/compare/v3.8.0...v3.9.0) (2026-06-02)
+
+
+### Features
+
+* **ci:** enable auto-merge on release-please PRs ([d5d33b7](https://github.com/dmccaffery/dotfiles/commit/d5d33b7a8ec279cf13729f1dcf655fcbb4ba4017))
+* **oh-my-posh:** show session tokens and cost in claude status line ([a0866e2](https://github.com/dmccaffery/dotfiles/commit/a0866e293d3813e9131276f699f10b9548a15bdd))
+* **opencode:** allow grep and inherit terminal background ([39dd56f](https://github.com/dmccaffery/dotfiles/commit/39dd56fd67aedb4b6823f47b6a457739e8c310bb))
+
+
+### Bug Fixes
+
+* **claude:** nest defaultMode under permissions ([8b5d890](https://github.com/dmccaffery/dotfiles/commit/8b5d8902d46c7f0666fae0c39d80bf6ee268b45d))
+* **lint:** ignore nested node_modules in markdownlint ([346e36b](https://github.com/dmccaffery/dotfiles/commit/346e36b136a9b0a000d2bda4932fe229ba99910e))
+* **stow:** ignore markdownlint config ([59ca98e](https://github.com/dmccaffery/dotfiles/commit/59ca98eb5bc99410385c97df80cd1caacbd43cac))
+* **stow:** symlink opencode config directory ([d685afa](https://github.com/dmccaffery/dotfiles/commit/d685afadd7179ed2451f0b5119366dc6bf6cb958))
+
 ## [3.8.0](https://github.com/dmccaffery/dotfiles/compare/v3.7.0...v3.8.0) (2026-06-02)
 
 
