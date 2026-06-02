@@ -28,7 +28,7 @@
 --ignore=^AGENTS.md
 --ignore=^README.md
 
---ignore=^.commit.sh
+--ignore=^commit.sh
 --ignore=^backup.sh
 --ignore=^install.sh
 --ignore=^Makefile

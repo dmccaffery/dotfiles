@@ -39,7 +39,7 @@ verbatim. Files that should _not_ be symlinked are listed in `.stowrc`.
 --ignore=^AGENTS.md
 --ignore=^README.md
 
---ignore=^.commit.sh
+--ignore=^commit.sh
 --ignore=^backup.sh
 --ignore=^install.sh
 --ignore=^Makefile
@@ -69,8 +69,8 @@ verbatim. Files that should _not_ be symlinked are listed in `.stowrc`.
     - A bare `--ignore=CLAUDE.md` catches both the top-level `CLAUDE.md` symlink _and_
       `.claude/CLAUDE.md`. The latter is meant to stow to `~/.claude/CLAUDE.md` (see
       [Claude → Memory](../claude/memory.md)), so the top-level entry is pinned to the repo root
-      with `^CLAUDE.md`. The transient [`.commit.sh`](../claude/memory.md#what-it-covers) is
-      anchored the same way (`^.commit.sh`).
+      with `^CLAUDE.md`. The transient [`commit.sh`](../claude/memory.md#what-it-covers) is
+      anchored the same way (`^commit.sh`).
     - The old broad `--ignore=.*.json` / `--ignore=.*.yaml` matched _every_ JSON/YAML by that suffix
       rule. Nested configs under `.config/**` survived only because `stow` **folds** a whole
       directory into a single symlink when the target dir doesn't exist yet — the per-file ignore

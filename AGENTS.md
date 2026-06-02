@@ -99,15 +99,6 @@ re-runs the docs build (`prettier --check` + `markdownlint-cli2` + `zensical bui
 smoke test (no deploy). The actual deploy runs only when release-please cuts a release on
 `main`, via the `publish-docs` job in `.github/workflows/release-main.yaml`.
 
-## Creating commits
-
-The Conventional-Commits format and the `.commit.sh` signing-handoff workflow are
-machine-wide conventions, documented in the user-level
-[`~/.claude/CLAUDE.md`](.claude/CLAUDE.md). Repo-specific notes: `.commit.sh` is matched by
-the top-level `.*` rule in [`.gitignore`](.gitignore), and the
-[`git resign`](docs/scripts/security-keys.md#git-resign) helper is the re-sign step for
-worktree commits.
-
 ## Authoring conventions
 
 - **Lead with a one-line summary** of what the page covers.
