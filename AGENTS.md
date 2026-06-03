@@ -29,9 +29,11 @@ Use this map to find the right page (extend as new sections are added):
 | `.config/zsh/**`                                         | `docs/terminal/shell.md`                                              |
 | `.config/oh-my-posh/**`                                  | `docs/terminal/oh-my-posh.md`                                         |
 | `.config/tmux/**`                                        | `docs/terminal/tmux.md`                                               |
-| `.config/opencode/{opencode.jsonc,tui.json,AGENTS.md}`   | `docs/terminal/opencode.md`                                           |
-| `.config/opencode/plugin/**`                             | `docs/terminal/opencode.md`                                           |
-| `.config/opencode/themes/**`                             | `docs/theme/per-tool.md` + `docs/terminal/opencode.md`                |
+| `.config/opencode/opencode.jsonc`                        | `docs/opencode/permissions.md`                                        |
+| `.config/opencode/tui.json`                              | `docs/opencode/theme.md`                                              |
+| `.config/opencode/AGENTS.md`                             | `docs/opencode/memory.md`                                             |
+| `.config/opencode/plugin/**`                             | `docs/opencode/plugins.md`                                            |
+| `.config/opencode/themes/**`                             | `docs/theme/per-tool.md` + `docs/opencode/theme.md`                   |
 | `setup/darwin/Brewfile.requirements`                     | `docs/terminal/packages.md`                                           |
 | `brew bundle` lifecycle / `HOMEBREW_BUNDLE_*` env vars   | `docs/terminal/brew-bundle.md`                                        |
 | `.config/nvim/lua/config/lazy.lua`                       | `docs/neovim/lazyvim.md` + `docs/neovim/extras.md`                    |

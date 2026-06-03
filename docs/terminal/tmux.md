@@ -149,7 +149,7 @@ you" cue.
 The option is toggled by the [`agent-tmux-status`](../scripts/tmux.md#agent-tmux-status)
 script, wired into Claude Code's
 [`Stop`/`Notification`/`UserPromptSubmit`/`SessionEnd` hooks](../claude/hooks-skills.md#claude-is-waiting-indicator)
-and opencode's [status-indicator plugin](opencode.md#status-indicator).
+and opencode's [status-indicator plugin](../opencode/plugins.md#status-indicator).
 
 ## Companion scripts
 

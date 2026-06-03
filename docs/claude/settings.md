@@ -442,7 +442,7 @@ Four more hooks drive the "Claude is waiting for you" indicator via
 [`agent-tmux-status`](hooks-skills.md#claude-is-waiting-indicator) — `Stop` raises a calm
 `waiting` state (peach `●`) and `Notification` a louder `attention` one (bold red `󰂚`);
 `UserPromptSubmit` and `SessionEnd` clear it (you replied, or the session ended). The same
-script is shared with opencode's [status-indicator plugin](../terminal/opencode.md#status-indicator).
+script is shared with opencode's [status-indicator plugin](../opencode/plugins.md#status-indicator).
 
 ### Worktree
 

@@ -15,6 +15,5 @@ for sessions, and the cyberdream-skinned CLI tools the Brewfile installs.
 | [Shell](shell.md)             | Zsh layout — `.zshenv`, `.zshrc`, plugins, aliases.                     |
 | [oh-my-posh](oh-my-posh.md)   | Prompt config and the Claude Code status-line variant.                  |
 | [tmux](tmux.md)               | tmux config split across modular files under `.config/tmux/conf/`.      |
-| [OpenCode](opencode.md)       | OpenCode TUI theme and permission sandbox configuration.                |
 | [Packages](packages.md)       | Locked-in baseline of formulae, taps, and casks every profile inherits. |
 | [Brew bundle](brew-bundle.md) | Day-2 management of the global Brewfile.                                |

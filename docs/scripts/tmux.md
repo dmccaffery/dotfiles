@@ -139,7 +139,7 @@ waiting on you:
   [hooks](../claude/hooks-skills.md#claude-is-waiting-indicator) — `Stop` calls it with
   `waiting`, `Notification` with `attention`, and `UserPromptSubmit`/`SessionEnd` with `clear`.
 - **opencode** drives it through the
-  [`agent-tmux-status` plugin](../terminal/opencode.md#status-indicator) — `session.idle` →
+  [`agent-tmux-status` plugin](../opencode/plugins.md#status-indicator) — `session.idle` →
   `waiting`, `permission.updated` → `attention`, a new user message → `clear`.
 
 It branches on `$TMUX`:

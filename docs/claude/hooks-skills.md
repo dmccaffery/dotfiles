@@ -98,7 +98,7 @@ touches branches it can identify as throwaway agent state.
 Four hooks drive a "Claude is waiting for input" indicator, all pointing at the same leaf
 script [`agent-tmux-status`](../scripts/tmux.md#agent-tmux-status) with a state argument
 (opencode drives the very same script from its
-[status-indicator plugin](../terminal/opencode.md#status-indicator)):
+[status-indicator plugin](../opencode/plugins.md#status-indicator)):
 
 ```json
 "hooks": {

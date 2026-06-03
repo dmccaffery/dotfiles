@@ -32,7 +32,6 @@ nav = [
         "terminal/shell.md",
         "terminal/oh-my-posh.md",
         "terminal/tmux.md",
-        "terminal/opencode.md",
         "terminal/packages.md",
         "terminal/brew-bundle.md",
     ] },
@@ -75,6 +74,13 @@ nav = [
         "claude/memory.md",
         "claude/theme.md",
         "claude/hooks-skills.md",
+    ] },
+    { "OpenCode" = [
+        "opencode/index.md",
+        "opencode/permissions.md",
+        "opencode/memory.md",
+        "opencode/theme.md",
+        "opencode/plugins.md",
     ] },
     { "Contribution Guide" = [
         "tooling/index.md",
