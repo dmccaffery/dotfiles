@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.11.0](https://github.com/dmccaffery/dotfiles/compare/v3.10.0...v3.11.0) (2026-06-03)
+
+
+### Features
+
+* add profile for work ([00fd210](https://github.com/dmccaffery/dotfiles/commit/00fd2107e274edb849592753ff5afd0711a6cc82))
+* **scripts,git:** add gh-switch-user per-repo auto-account wrapper ([9006c71](https://github.com/dmccaffery/dotfiles/commit/9006c715d614681c56c444eb68b8cc7d81404ea4))
+* **scripts:** rework git-github-auth, add new-account fzf entry ([682e93f](https://github.com/dmccaffery/dotfiles/commit/682e93f1e933d19bf4efbf846b8a46cc6d8a8f86))
+
 ## [3.10.0](https://github.com/dmccaffery/dotfiles/compare/v3.9.0...v3.10.0) (2026-06-02)
 
 
