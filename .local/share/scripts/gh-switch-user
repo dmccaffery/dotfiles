@@ -1,0 +1,16 @@
+#! /usr/bin/env sh
+
+set -eu
+
+target=$(git config github.account 2> /dev/null)
+
+if [ -n "${target:-}" ]; then
+
+	active=$(command gh auth status --active --json hosts --jq '.hosts["github.com"][0].login' 2> /dev/null)
+
+	if [ "${target:-}" != "${active:-}" ]; then
+		command gh auth switch --user "${target:-}" 1> /dev/null 2>&1
+	fi
+fi
+
+command gh "$@"

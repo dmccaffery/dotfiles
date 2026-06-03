@@ -1,9 +1,10 @@
-[credential]
-	gitHubAuthModes = oauth
-	gitHubAccountFiltering = false
-
 [credential "https://github.com"]
-	provider = github
+	helper =
+	helper = !gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper =
+	helper = !gh auth git-credential
 
 [gpg "ssh"]
 	defaultKeyCommand = "git-github-sk"
