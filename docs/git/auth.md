@@ -12,26 +12,39 @@ Git authentication is handled differently per host. The strategy:
 
 ## GitHub
 
-The repo's main config sets:
+GitHub credentials are served by `gh` itself rather than GCM. `.config/git/github.gitconfig`
+(conditionally included for `github.com` remotes) configures this:
 
-```ini title=".config/git/config"
-[credential]
-    gitHubAuthModes = oauth
-    namespace = personal
-    helper =
-    helper = /usr/local/share/gcm-core/git-credential-manager
-
+```ini title=".config/git/github.gitconfig"
 [credential "https://github.com"]
-    provider = github
+    helper =
+    helper = !gh auth git-credential
+
+[credential "https://gist.github.com"]
+    helper =
+    helper = !gh auth git-credential
 ```
+
+The empty `helper =` line clears any previously inherited credential helper before setting the
+`gh`-backed one, so GCM never intercepts GitHub requests.
 
 For programmatic CLI access, use [`git-github-auth`](../scripts/security-keys.md#git-github-auth) —
 a helper script that validates `gh auth status` and ensures the required scopes are present:
 
-> `gist`, `workflow`, `repo`, `user`, `read:org`, `read:public_key`, `read:ssh_signing_key`,
-> `delete_repo`
+> `gist`, `notifications`, `project`, `repo`, `user`, `workflow`, `read:org`,
+> `read:public_key`, `read:ssh_signing_key`
 
 If any scope is missing the script re-runs `gh auth refresh` with the full set.
+
+### Per-repo account switching
+
+The [`gh-switch-user`](../scripts/security-keys.md#gh-switch-user) wrapper (aliased as `gh` in
+`.zshrc`) reads `git config github.account` and switches the active `gh` session automatically
+before every `gh` command. Set it once per clone:
+
+```sh
+git config github.account <login>
+```
 
 ## Codeberg / Forgejo
 
@@ -78,9 +91,12 @@ keychain.
 `git-github-auth` can also switch between authenticated GitHub accounts:
 
 ```sh
-git-github-auth                # interactive picker, switches via `gh auth switch`
+git-github-auth                # interactive picker — choose an account or "new account"
 git-github-auth <login>        # switch to a specific account
 ```
+
+The picker lists every account already authenticated on this machine, plus a **`new account`** entry. Select
+`new account` to run a fresh `gh auth login` for an account that has never been authenticated here.
 
 ## See also
 

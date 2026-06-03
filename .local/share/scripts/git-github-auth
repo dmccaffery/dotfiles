@@ -31,7 +31,30 @@ function join_by {
 account="${1:-}"
 required_scopes=('gist' 'notifications' 'project' 'repo' 'user' 'workflow' 'read:org' 'read:public_key' 'read:ssh_signing_key')
 
-if ! gh auth status --active 1> /dev/null 2>&1; then
+if [ -z "${account:-}" ]; then
+	account=$(
+		{
+			command gh auth status --json 'hosts' --jq '.hosts."github.com".[].login' 2> /dev/null || true
+			printf 'new account\n'
+		} |
+			fzf --header='select github account' --select-1
+	)
+
+	if [ "${account}" = "new account" ]; then
+		gh auth login \
+			--git-protocol https \
+			--hostname github.com \
+			--scopes "$(join_by ',' "${required_scopes[@]}")" \
+			--web \
+			--clipboard
+
+		exit 0
+	fi
+
+	command gh auth switch --user "${account}"
+fi
+
+if ! command gh auth status --json 'hosts' --jq ".hosts.\"github.com\".[] | select(.login == \"${account}\") | .active" 1> /dev/null 2>&1; then
 	warn "not logged into github, will login now..."
 	gh auth login \
 		--git-protocol https \
@@ -43,11 +66,10 @@ if ! gh auth status --active 1> /dev/null 2>&1; then
 	exit 0
 fi
 
-account="${1:-}"
+active=$(command gh auth status --active --json hosts --jq '.hosts["github.com"][0].login' 2> /dev/null)
 
-if [ -z "${account:-}" ]; then
-	account=$(command gh auth status --json 'hosts' --jq '.hosts."github.com".[].login' | fzf --header='select github account' --select-1)
-	command gh auth switch --user "${account}"
+if [ "${account:-}" != "${active:-}" ]; then
+	command gh auth switch --user "${account:-}" 1> /dev/null 2>&1
 fi
 
 scopes=$(command gh auth status --active --json 'hosts' --jq '.hosts."github.com".[] | .scopes' 2> /dev/null)

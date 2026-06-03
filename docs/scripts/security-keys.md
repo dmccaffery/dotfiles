@@ -83,6 +83,28 @@ The Forgejo counterpart to [`git-github-sk`](#git-github-sk) — used as
 
 Exits non-zero with a useful error if either set is empty or there's no match.
 
+## `gh-switch-user` { #gh-switch-user }
+
+```sh
+gh-switch-user <gh-args…>   # called automatically via alias gh='gh-switch-user'
+```
+
+A thin `gh` wrapper that reads `git config github.account` from the current repository and, if
+the named account is not already the active `gh` session, calls `gh auth switch --user <account>`
+before forwarding all arguments to `command gh`.
+
+Configured as the shell-wide `gh` alias in `.zshrc` so that every `gh` invocation in a repo with
+`github.account` set automatically operates under the right identity — no manual switching needed.
+
+Set a per-repo account with:
+
+```sh
+git config github.account <login>
+```
+
+If `github.account` is not set (e.g., outside a repo or in a repo without the key), `gh` runs
+unmodified against whichever account is currently active.
+
 ## `git-github-auth` { #git-github-auth }
 
 ```sh
@@ -92,14 +114,18 @@ git-github-auth <login>      # target a specific account
 
 Ensures `gh` is logged in with the scopes this dotfiles setup needs:
 
-> `gist`, `workflow`, `repo`, `user`, `read:org`, `read:public_key`, `read:ssh_signing_key`,
-> `delete_repo`
+> `gist`, `notifications`, `project`, `repo`, `user`, `workflow`, `read:org`,
+> `read:public_key`, `read:ssh_signing_key`
 
 Behaviour:
 
 - Not logged in → starts `gh auth login --web --git-protocol https --scopes <set>`.
 - Logged in but wrong account → `gh auth switch --user <login>`.
 - Missing scopes → `gh auth refresh --scopes <set>`.
+
+When no `<login>` argument is provided, the script presents an fzf picker listing every account already authenticated
+on this machine, plus a **`new account`** entry at the bottom. Selecting `new account` runs `gh auth login` so you can
+authenticate a GitHub account that has never been used on this machine.
 
 ## `git-resign` { #git-resign }
 
