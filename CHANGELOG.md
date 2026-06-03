@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.11.1](https://github.com/dmccaffery/dotfiles/compare/v3.11.0...v3.11.1) (2026-06-03)
+
+
+### Bug Fixes
+
+* **claude:** clear attention indicator on PostToolUse ([f22687d](https://github.com/dmccaffery/dotfiles/commit/f22687d1654278c8ca369dab0ad8b6c53c071484))
+
 ## [3.11.0](https://github.com/dmccaffery/dotfiles/compare/v3.10.0...v3.11.0) (2026-06-03)
 
 
