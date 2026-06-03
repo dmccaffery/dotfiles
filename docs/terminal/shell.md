@@ -110,6 +110,7 @@ alias kts='tmux kill-server'
 
 alias vim='nvim'
 alias vi='nvim'
+alias gh='gh-switch-user'
 ```
 
 ### Shell integrations

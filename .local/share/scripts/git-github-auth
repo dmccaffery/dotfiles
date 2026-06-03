@@ -28,9 +28,10 @@ function join_by {
 	fi
 }
 
-required_scopes=('gist' 'workflow' 'repo' 'user' 'read:org' 'read:public_key' 'read:ssh_signing_key' 'delete_repo')
+account="${1:-}"
+required_scopes=('gist' 'notifications' 'project' 'repo' 'user' 'workflow' 'read:org' 'read:public_key' 'read:ssh_signing_key')
 
-if ! gh auth status 1> /dev/null 2>&1; then
+if ! gh auth status --active 1> /dev/null 2>&1; then
 	warn "not logged into github, will login now..."
 	gh auth login \
 		--git-protocol https \
@@ -45,16 +46,16 @@ fi
 account="${1:-}"
 
 if [ -z "${account:-}" ]; then
-	account=$(gh auth status --json 'hosts' --jq '.hosts."github.com".[].login' | fzf --header='select github account' --select-1)
-	gh auth switch --user "${account}"
+	account=$(command gh auth status --json 'hosts' --jq '.hosts."github.com".[].login' | fzf --header='select github account' --select-1)
+	command gh auth switch --user "${account}"
 fi
 
-scopes=$(gh auth status --json 'hosts' --jq ".hosts.\"github.com\".[] | select(.login == \"${account}\") | .scopes" 2> /dev/null)
+scopes=$(command gh auth status --active --json 'hosts' --jq '.hosts."github.com".[] | .scopes' 2> /dev/null)
 
 for scope in "${required_scopes[@]}"; do
 	if ! echo "${scopes:-}" | grep -F -q "${scope}" 1> /dev/null 2>&1; then
-		warn "not logged into github with the read:public_key and read:ssh_signing_key scopes..."
-		gh auth refresh \
+		warn "not logged into github with the required scopes..."
+		command gh auth refresh \
 			--hostname github.com \
 			--scopes "$(join_by ',' "${required_scopes[@]}")" \
 			--clipboard
@@ -62,4 +63,4 @@ for scope in "${required_scopes[@]}"; do
 	fi
 done
 
-success "logged into github with the appropriate scopes"
+success "logged into github with the required scopes"

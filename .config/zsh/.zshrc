@@ -90,6 +90,7 @@ alias kts='tmux kill-server'
 
 alias vim='nvim'
 alias vi='nvim'
+alias gh='gh-switch-user'
 
 # setup the prompt
 eval "$(oh-my-posh init zsh --config "${POSH_THEME:-${XDG_CONFIG_HOME}/oh-my-posh/prompt.yaml}")"
