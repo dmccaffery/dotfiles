@@ -76,8 +76,8 @@ and opinionated:
         "command": "oh-my-posh claude --config ~/.config/oh-my-posh/claude.yaml"
     },
     "hooks": {
-        "WorktreeCreate": [{ "hooks": [{ "type": "command", "command": "~/.local/share/scripts/start-worktree" }] }],
-        "WorktreeRemove": [{ "hooks": [{ "type": "command", "command": "~/.local/share/scripts/end-worktree" }] }]
+        "WorktreeCreate": [{ "hooks": [{ "type": "command", "command": "~/.local/share/scripts/worktree start" }] }],
+        "WorktreeRemove": [{ "hooks": [{ "type": "command", "command": "~/.local/share/scripts/worktree end" }] }]
     },
     "worktree": { "baseRef": "head" },
     "env": {
@@ -409,10 +409,10 @@ See [Terminal → oh-my-posh](../terminal/oh-my-posh.md#claude-code-status-line)
 ```json
 "hooks": {
   "WorktreeCreate": [
-    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/start-worktree" }] }
+    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/worktree start" }] }
   ],
   "WorktreeRemove": [
-    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/end-worktree" }] }
+    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/worktree end" }] }
   ],
   "Stop": [
     { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status waiting" }] }
@@ -433,12 +433,12 @@ See [Terminal → oh-my-posh](../terminal/oh-my-posh.md#claude-code-status-line)
 ```
 
 Two hooks bracket Claude Code's worktree lifecycle, both pointing at the same shared scripts
-the [`start-tmux-session`](../scripts/tmux.md#start-tmux-session) and
-[`end-tmux-session`](../scripts/tmux.md#end-tmux-session) wrappers use:
+the [`tmux-session start`](../scripts/tmux.md#tmux-session-start) and
+[`tmux-session end`](../scripts/tmux.md#tmux-session-end) wrappers use:
 
-- `WorktreeCreate` → [`start-worktree`](hooks-skills.md#worktreecreate) creates the worktree
+- `WorktreeCreate` → [`worktree start`](hooks-skills.md#worktreecreate) creates the worktree
   and `agent/*` branch.
-- `WorktreeRemove` → [`end-worktree`](hooks-skills.md#worktreeremove) tears the worktree back
+- `WorktreeRemove` → [`worktree end`](hooks-skills.md#worktreeremove) tears the worktree back
   down once Claude is done and kills any matching tmux session.
 
 Five more hooks drive the "Claude is waiting for you" indicator via

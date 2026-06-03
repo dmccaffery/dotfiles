@@ -1,0 +1,117 @@
+#!/usr/bin/env sh
+
+set -eu
+
+default_color=$(tput sgr 0 2> /dev/null || true)
+blue=$(tput setaf 4 2> /dev/null || true)
+yellow=$(tput setaf 3 2> /dev/null || true)
+red=$(tput setaf 1 2> /dev/null || true)
+
+info() {
+	printf "%s==> %s%s\n" "$blue" "$1" "$default_color"
+}
+
+warn() {
+	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color" >&2
+}
+
+error() {
+	printf "%s==> %s%s\n" "$red" "$1" "$default_color" >&2
+}
+
+LAUNCH_DAEMONS=/Library/LaunchDaemons
+ZSCALER_SERVICE="${LAUNCH_DAEMONS}/com.zscaler.service.plist"
+ZSCALER_TUNNEL="${LAUNCH_DAEMONS}/com.zscaler.tunnel.plist"
+
+usage() {
+	cat >&2 <<-'EOF'
+		usage: zs <command> [args]
+
+		commands:
+		  enable                load the zscaler service + tunnel launch daemons
+		  disable               unload the zscaler tunnel + service
+		  certs -- <cmd> [..]   run <cmd> with the zscaler root CA injected as an extra trust anchor
+	EOF
+}
+
+# Load the zscaler service and tunnel launch daemons if they aren't running.
+do_enable() {
+	started=
+
+	if [ -f "${ZSCALER_SERVICE}" ] && ! sudo launchctl list | grep 'com.zscaler.service' > /dev/null; then
+		warn "enabling zscaler service..."
+		sudo launchctl load "${ZSCALER_SERVICE}"
+		started=1
+	fi
+
+	if [ -f "${ZSCALER_TUNNEL}" ] && ! sudo launchctl list | grep 'com.zscaler.tunnel' > /dev/null; then
+		warn "enabling zscaler tunnel..."
+		sudo launchctl load "${ZSCALER_TUNNEL}"
+		started=1
+	fi
+
+	if [ -n "${started:-}" ]; then
+		warn "waiting for tunnel..."
+		sleep 10
+	fi
+}
+
+# Unload both daemons (tunnel first, service second).
+do_disable() {
+	if [ -f "${ZSCALER_TUNNEL}" ] && sudo launchctl list | grep 'com.zscaler.tunnel' > /dev/null; then
+		warn "disabling zscaler tunnel..."
+		sudo launchctl unload "${ZSCALER_TUNNEL}"
+	fi
+
+	if [ -f "${ZSCALER_SERVICE}" ] && sudo launchctl list | grep 'com.zscaler.service' > /dev/null; then
+		warn "disabling zscaler service..."
+		sudo launchctl unload "${ZSCALER_SERVICE}"
+	fi
+}
+
+# Run a command with the zscaler root CA exported via NODE_EXTRA_CA_CERTS,
+# caching the cert pulled from the system keychain on first use.
+do_certs() {
+	if [ "${1:-}" != "--" ]; then
+		error "expected '--' before the command to run"
+		usage
+		exit 1
+	fi
+	shift
+
+	cert="${HOME}/.local/share/certificates/zscaler.pem"
+
+	if [ -f "${cert}" ]; then
+		info "found existing certificate at: ${cert}..."
+	else
+		mkdir -p "$(dirname "${cert}")"
+		cert_temp=$(mktemp)
+		if security find-certificate -c "Zscaler Root CA" -p /Library/Keychains/System.keychain 1> "${cert_temp}" 2>&1; then
+			mv "${cert_temp}" "${cert}"
+		else
+			rm -f "${cert_temp}"
+			warn "no certificate could be found in keychain; running command without certificates..."
+			exec "$@"
+		fi
+	fi
+
+	export ZSCALER_CERTIFICATE="${cert}"
+	export NODE_EXTRA_CA_CERTS="${cert}"
+
+	exec "$@"
+}
+
+cmd="${1:-}"
+[ "$#" -gt 0 ] && shift || true
+
+case "${cmd}" in
+enable) do_enable "$@" ;;
+disable) do_disable "$@" ;;
+certs) do_certs "$@" ;;
+'' | -h | --help | help) usage ;;
+*)
+	error "unknown command: ${cmd}"
+	usage
+	exit 1
+	;;
+esac

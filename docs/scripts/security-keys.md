@@ -4,75 +4,89 @@ icon: lucide/shield-check
 
 # Security key scripts
 
-Six scripts cover the YubiKey-resident SSH workflow end-to-end, plus one helper for
-re-signing committed history.
+The `ssh-sk` command drives the YubiKey-resident SSH signing workflow end-to-end. A handful of
+standalone helpers round it out: `gh-switch-user` and `git-github-auth` for GitHub accounts,
+`git-resign` for re-signing committed history, and `ssh-askpass` for PIN entry.
 
-## `gen-sk-ssh` { #gen-sk-ssh }
+## `ssh-sk` { #ssh-sk }
+
+A single dispatcher with two verbs. `gen` creates a resident key; `get` loads resident keys and
+updates the git allowed-signers file. The `get --github` / `get --forgejo` flags narrow `get` to
+just resolving and printing one provider's signing key — the form git's `defaultKeyCommand`
+consumes.
+
+### `ssh-sk gen` { #ssh-sk-gen }
 
 ```sh
-gen-sk-ssh "optional comment"
+ssh-sk gen <user>
 ```
 
-Generates **two** resident keys on the YubiKey — `ecdsa-sk` and `ed25519-sk`. Each is created
-with:
+The `<user>` argument is **required** — it becomes the key comment (`-C`). The command exits with
+a `usage: ssh-sk gen <user>` error if it's omitted.
+
+Generates a resident `ed25519-sk` key on the YubiKey:
 
 ```sh
 ssh-keygen \
-    -t ecdsa-sk \
+    -t ed25519-sk \
     -O resident \
     -O verify-required \
     -O no-touch-required \
-    -O application=ssh:key-touch-required \
-    -C "<comment>"
+    -O application=ssh:<user> \
+    -O user=<user> \
+    -C "<user>"
 ```
 
-After both keys are generated, the script calls [`get-sk-ssh`](#get-sk-ssh) to load them.
+The `<user>` is woven into `application`, `user`, and the comment so that **multiple** resident
+keys can coexist on one YubiKey. FIDO2 resident credentials are keyed by `(application,
+user-handle)`, so a fixed application string would make each new key overwrite the previous one.
+Namespacing the application by user also gives `ssh-keygen -K` (run via [`ssh-sk get`](#ssh-sk-get))
+distinct extraction filenames per user.
 
-!!! note "Why two keys?"
+After the key is generated, the command calls [`ssh-sk get`](#ssh-sk-get) to load it.
 
-    Different services accept different key types. Shipping both means the same YubiKey works
-    everywhere without re-running `gen-sk-ssh`.
-
-## `get-sk-ssh` { #get-sk-ssh }
+### `ssh-sk get` { #ssh-sk-get }
 
 ```sh
-get-sk-ssh
+ssh-sk get
 ```
 
 1. If `ssh-add -L` shows no keys, runs `ssh-add -K` to extract resident keys from the
    YubiKey into the running agent.
-2. Resolves the user's signing key by trying [`git-github-sk`](#git-github-sk) first and
-   falling back to [`git-forgejo-sk`](#git-forgejo-sk).
+2. Resolves the user's signing key by trying [`ssh-sk get --github`](#ssh-sk-get-github) first and
+   falling back to [`ssh-sk get --forgejo`](#ssh-sk-get-forgejo).
 3. Appends the public key to `~/.ssh/.git_allowed_signers` in the
    `<email> namespaces="git" <pubkey>` format git expects, skipping the write if an
    identical line is already present.
 
-Run this after `gen-sk-ssh`, after `ssh-agent` restarts, or after switching YubiKeys.
+Run this after `ssh-sk gen`, after `ssh-agent` restarts, or after switching YubiKeys.
 
-## `git-github-sk` { #git-github-sk }
+### `ssh-sk get --github` { #ssh-sk-get-github }
 
 ```sh
-git-github-sk        # prints `key::<pubkey>` on stdout
+ssh-sk get --github        # prints `key::<pubkey>` on stdout
 ```
 
-Used as `git.gpg.ssh.defaultKeyCommand` for github.com remotes. The flow:
+Used as `gpg.ssh.defaultKeyCommand` for github.com remotes. The flow:
 
 1. `gh ssh-key list` → all SSH keys associated with the current GitHub user, filtered to
    `signing`-type keys.
-2. `ssh-add -L` → all public keys currently in the local ssh-agent.
+2. `ssh-add -L` → all public keys currently in the local ssh-agent (loading resident keys with
+   `ssh-add -K` first if the agent is empty).
 3. Find the first agent key whose public key blob also appears in the GitHub list.
 4. Emit it as `key::<line>` for git to consume.
 
-Exits non-zero with a useful error if either set is empty or there's no match.
+Exits non-zero with a useful error if either set is empty or there's no match. Only the `key::`
+line goes to stdout, so git reads it cleanly.
 
-## `git-forgejo-sk` { #git-forgejo-sk }
+### `ssh-sk get --forgejo` { #ssh-sk-get-forgejo }
 
 ```sh
-git-forgejo-sk        # prints `key::<pubkey>` on stdout
+ssh-sk get --forgejo        # prints `key::<pubkey>` on stdout
 ```
 
-The Forgejo counterpart to [`git-github-sk`](#git-github-sk) — used as
-`git.gpg.ssh.defaultKeyCommand` for Forgejo remotes. The flow:
+The Forgejo counterpart to [`ssh-sk get --github`](#ssh-sk-get-github) — used as
+`gpg.ssh.defaultKeyCommand` for Forgejo remotes. The flow:
 
 1. `fj user key list --verbose` → all SSH keys associated with the current Forgejo user,
    filtered to entries whose key blob starts with `sk-ssh-` (i.e. security-key-backed keys).

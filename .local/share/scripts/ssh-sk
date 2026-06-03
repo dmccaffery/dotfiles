@@ -1,0 +1,198 @@
+#!/usr/bin/env sh
+
+set -eu
+
+# Security-key SSH workflow. tput is resolved defensively so the provider
+# resolvers stay usable when git invokes `ssh-sk get --github` with no tty.
+default_color=$(tput sgr 0 2> /dev/null || true)
+
+blue=$(tput setaf 4 2> /dev/null || true)
+info() {
+	printf "%s==> %s%s\n" "$blue" "$1" "$default_color"
+}
+
+green=$(tput setaf 2 2> /dev/null || true)
+success() {
+	printf "%s==> %s%s\n" "$green" "$1" "$default_color"
+}
+
+yellow=$(tput setaf 3 2> /dev/null || true)
+warn() {
+	printf "%s==> %s%s\n" "$yellow" "$1" "$default_color"
+}
+
+red=$(tput setaf 1 2> /dev/null || true)
+error() {
+	printf "%s==> %s%s\n" "$red" "$1" "$default_color"
+}
+
+usage() {
+	cat >&2 <<-'EOF'
+		usage: ssh-sk <command> [options]
+
+		commands:
+		  gen <user>       generate a resident ed25519-sk key on the security key, then run `get`
+		  get              load resident keys into the agent and update git allowed_signers
+		  get --github     print the matching GitHub signing key as key::<blob> (defaultKeyCommand)
+		  get --forgejo    print the matching Forgejo signing key as key::<blob> (defaultKeyCommand)
+	EOF
+}
+
+# Print the first ssh-agent key whose blob appears in the newline-separated
+# allowed keys passed as $1, loading resident keys from the security key first
+# if the agent is empty. Emits `key::<line>` on stdout for git to consume.
+match_signing_key() {
+	allowed_keys=$1
+
+	available_keys=$(ssh-add -L 2> /dev/null)
+
+	if [ -z "${available_keys:-}" ]; then
+		ssh-add -K < /dev/null
+		available_keys=$(ssh-add -L 2> /dev/null)
+	fi
+
+	if [ -z "${available_keys:-}" ]; then
+		echo "No keys found in local ssh agent." >&2
+		return 1
+	fi
+
+	matched_key=$(echo "$available_keys" | while IFS= read -r line; do
+		key_blob=$(echo "${line}" | cut -d ' ' -f 2)
+
+		if echo "$allowed_keys" | grep -F -q "${key_blob}"; then
+			echo "$line"
+			break
+		fi
+	done)
+
+	if [ -z "${matched_key:-}" ]; then
+		echo "No local agent key matches the allowed signing keys." >&2
+		return 1
+	fi
+
+	echo "key::${matched_key}"
+}
+
+# Resolve the signing key from the current GitHub user's signing keys.
+resolve_github() {
+	allowed_keys=$(gh ssh-key list | grep signing | cut -f 2)
+
+	if [ -z "${allowed_keys:-}" ]; then
+		echo "No signing keys are available for the currently authenticated user." >&2
+		return 1
+	fi
+
+	match_signing_key "${allowed_keys}"
+}
+
+# Resolve the signing key from the current Forgejo user's security keys.
+resolve_forgejo() {
+	allowed_keys=$(fj user key list --verbose | awk '/^[[:space:]]+(sk-ssh-)/ {print $2}')
+
+	if [ -z "${allowed_keys:-}" ]; then
+		echo "No signing keys are available for the currently authenticated user." >&2
+		return 1
+	fi
+
+	match_signing_key "${allowed_keys}"
+}
+
+# Load resident keys into the agent and append the resolved signing key to the
+# git allowed_signers file.
+setup() {
+	info "setting up ssh agent..."
+
+	if ! ssh-add -L 1> /dev/null 2>&1; then
+		warn "adding resident keys from security key to agent..."
+		ssh-add -K
+		success "keys successfully added to agent!"
+	fi
+
+	info "updating git allowed signers..."
+	email=$(git config --get user.email)
+	allowed_signers="${XDG_CONFIG_HOME}/private/git/allowed_signers"
+	key=$(resolve_github 2> /dev/null || resolve_forgejo 2> /dev/null)
+
+	if [ -z "${email:-}" ]; then
+		error "user email is not set"
+		exit 1
+	fi
+
+	if [ -z "${key:-}" ]; then
+		error "user signing key is not set"
+		exit 1
+	fi
+
+	public_key="${key#key::}"
+
+	mkdir -p "$(dirname "${allowed_signers}")"
+	touch "${allowed_signers}"
+
+	signer_line="${email} namespaces=\"git\" ${public_key}"
+
+	if grep -qxF "${signer_line}" "${allowed_signers}"; then
+		info "${email}: ${public_key} already present in ${allowed_signers}"
+	else
+		info "adding ${email}: ${public_key} to ${allowed_signers}"
+		echo "${signer_line}" >> "${allowed_signers}"
+	fi
+}
+
+# Generate a resident ed25519-sk key namespaced by user so multiple keys can
+# coexist on one security key, then load it via setup.
+gen() {
+	user="${1:-}"
+
+	if [ -z "${user:-}" ]; then
+		echo "usage: ssh-sk gen <user>" >&2
+		exit 1
+	fi
+
+	ssh-keygen \
+		-t ed25519-sk \
+		-O resident \
+		-O verify-required \
+		-O no-touch-required \
+		-O "application=ssh:${user}" \
+		-O "user=${user}" \
+		-C "${user}"
+
+	setup
+}
+
+cmd="${1:-}"
+[ "$#" -gt 0 ] && shift || true
+
+case "${cmd}" in
+gen | generate)
+	gen "$@"
+	;;
+get)
+	provider=
+	for arg in "$@"; do
+		case "${arg}" in
+		--github) provider=github ;;
+		--forgejo) provider=forgejo ;;
+		*)
+			error "unknown option: ${arg}" >&2
+			usage
+			exit 1
+			;;
+		esac
+	done
+
+	case "${provider}" in
+	github) resolve_github ;;
+	forgejo) resolve_forgejo ;;
+	*) setup ;;
+	esac
+	;;
+'' | -h | --help | help)
+	usage
+	;;
+*)
+	error "unknown command: ${cmd}" >&2
+	usage
+	exit 1
+	;;
+esac

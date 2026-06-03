@@ -4,17 +4,17 @@ icon: simple/tmux
 
 # Tmux scripts
 
-Three scripts handle tmux session lifecycle: one for creating a fresh session per repo (or per
-worktree), one for fuzzy-picking an existing session, and one for tearing down agent worktree
-sessions and the worktrees behind them. The worktree create/remove work itself is delegated
-to [`start-worktree`](index.md) / [`end-worktree`](index.md), which are also wired in as
-[Claude Code's `WorktreeCreate`/`WorktreeRemove` hooks](../claude/hooks-skills.md#hooks) so
-the naming convention stays consistent regardless of who created the worktree.
+The `tmux-session` command handles tmux session lifecycle with three verbs: `start` creates a
+fresh session per repo (or per worktree), `attach` fuzzy-picks an existing session, and `end`
+tears down agent worktree sessions and the worktrees behind them. The worktree create/remove
+work itself is delegated to [`worktree start`](index.md) / [`worktree end`](index.md), which are
+also wired in as [Claude Code's `WorktreeCreate`/`WorktreeRemove` hooks](../claude/hooks-skills.md#hooks)
+so the naming convention stays consistent regardless of who created the worktree.
 
-## `start-tmux-session` { #start-tmux-session }
+## `tmux-session start` { #tmux-session-start }
 
 ```sh
-sts                          # alias for start-tmux-session
+sts                          # alias for tmux-session start
 sts <query>                  # pre-fill the fzf query
 sts .                        # operate on $PWD instead of $REPOS_DIR
 sts <query> <worktree-name>  # create/attach a session inside a per-worktree checkout
@@ -28,7 +28,7 @@ What it does:
 3. Sanitises the repo's basename to derive the bare-repo session name (see the
    [shared sanitizer](#sanitizer) below).
 4. **If a second `<worktree-name>` argument is supplied**, hands off to
-   [`start-worktree`](index.md), which creates `~/.cache/agent/worktrees/<repo>-<worktree>`
+   [`worktree start`](index.md), which creates `~/.cache/agent/worktrees/<repo>-<worktree>`
    on branch `agent/<repo>-<worktree>` via `git worktree add` (reusing the path or branch if
    either already exists), then prints the worktree path back. The tmux session is named
    after the worktree directory's basename (`<repo>-<worktree>`) so the
@@ -54,7 +54,7 @@ What it does:
    command `sts dotfiles`. tmux leaves this alone because `set-titles` is off.
 7. Attaches to the session.
 
-```sh title=".local/share/scripts/start-tmux-session (core)"
+```sh title=".local/share/scripts/tmux-session start (core)"
 claude_bin=$(command -v claude 2> /dev/null || true)
 opencode_bin=$(command -v opencode 2> /dev/null || true)
 
@@ -74,7 +74,7 @@ tmux new-window -a -d -t "${editor_window}" -n ' zsh' -c "${selected}"
 
 ### The shared sanitizer { #sanitizer }
 
-Both [`start-tmux-session`](#start-tmux-session) and [`start-worktree`](index.md) run names
+Both [`tmux-session start`](#tmux-session-start) and [`worktree start`](index.md) run names
 through the same `sanitize` helper, so `fix/stow symlinks` becomes `fix-stow-symlinks`. It
 collapses any character outside `A-Za-z0-9_-` to `-`, with special handling for `.`: tmux
 3.5+ rejects `.` in session names (it's the session/window/pane separator), so dots are
@@ -82,10 +82,10 @@ encoded rather than dropped — a leading `.` becomes `dot-`, a trailing `.` bec
 and an interior `.` becomes `-dot-`. So `next.js` becomes `next-dot-js` and `.config`
 becomes `dot-config`, keeping each name unique and tmux-safe.
 
-## `attach-tmux-session` { #attach-tmux-session }
+## `tmux-session attach` { #tmux-session-attach }
 
 ```sh
-ats                  # alias for attach-tmux-session
+ats                  # alias for tmux-session attach
 ats <query>          # pre-fill the fzf query
 ```
 
@@ -95,10 +95,10 @@ outside tmux) or switches client (if inside).
 The Snacks picker in nvim (++leader++ ++f++ ++s++) does the same thing without leaving the
 editor — see [neovim/plugins](../neovim/plugins.md#snackslua).
 
-## `end-tmux-session` { #end-tmux-session }
+## `tmux-session end` { #tmux-session-end }
 
 ```sh
-ets                          # alias for end-tmux-session — fzf multi-select over agent worktrees
+ets                          # alias for tmux-session end — fzf multi-select over agent worktrees
 ets <worktree-name>...       # remove specific worktrees by name (or absolute path)
 ets -f <worktree-name>...    # skip the confirmation prompt when worktrees are dirty
 ```
@@ -113,13 +113,13 @@ What it does:
       (`git rev-list --count HEAD --not --remotes`). This catches both "no upstream set" and
       "upstream set but ahead".
 3. If any selection had warnings and `--force` wasn't passed, prompts once before continuing.
-4. **Destroy pass** — hands each selected path to [`end-worktree`](index.md), which:
+4. **Destroy pass** — hands each selected path to [`worktree end`](index.md), which:
     - Resolves the parent repo via `git rev-parse --git-common-dir`.
     - Kills the matching tmux session (`<repo>-<worktree>` — the worktree dir basename) if
       present.
     - `git worktree remove --force <path>` from the parent repo.
     - `git branch -D <branch>` if the branch is in the `agent/*` namespace (matches the
-      convention used by [`start-worktree`](../claude/hooks-skills.md#worktreecreate)).
+      convention used by [`worktree start`](../claude/hooks-skills.md#worktreecreate)).
 
 Remote branches are never touched — push before removing if you want to keep the work. The
 matching PR (if any) keeps working off the remote branch even after the local one is gone.
@@ -153,7 +153,7 @@ It branches on `$TMUX`:
   `waiting`, bold **red `󰂚`** for `attention` — and only that window changes, since user options
   resolve per-window.
 - **Outside tmux** — falls back to an `OSC 0` terminal title written to `/dev/tty` (the same
-  trick [`start-tmux-session`](#start-tmux-session) uses, since the agent may capture the
+  trick [`tmux-session start`](#tmux-session-start) uses, since the agent may capture the
   caller's stdout), prefixing the cwd basename with `●` (waiting) or `󰂚` (attention) and
   dropping it on clear.
 

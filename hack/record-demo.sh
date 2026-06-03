@@ -168,7 +168,7 @@ EOF
 	copy_step 1 'mkdir demo && cd demo'
 	copy_step 2 'git init'
 	copy_step 3 'git remote add origin https://github.com/dmccaffery/demo'
-	copy_step 4 'start-tmux-session .'
+	copy_step 4 'tmux-session start .'
 	note_step 5 'Navigate to each of the windows within the tmux session; returning to either claude or opencode.'
 	copy_step 6 'Create a golang cli tool that will tell jokes.'
 	note_step 7 'Return to the neovim window and open lazygit to show main.go.'

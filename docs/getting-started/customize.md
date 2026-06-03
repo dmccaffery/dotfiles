@@ -9,7 +9,7 @@ without forking changes upstream.
 
 ## `REPOS_DIR`
 
-[`start-tmux-session`](../scripts/tmux.md) (and `attach-tmux-session`) discover Git repositories
+[`tmux-session start`](../scripts/tmux.md) (and `tmux-session attach`) discover Git repositories
 by walking a directory tree. `.zshenv` exports `REPOS_DIR="${HOME}/Repos"` as the default;
 override it by editing `.config/zsh/.zshenv` (or layering it in via your own private overlay)
 to point elsewhere:

@@ -82,9 +82,9 @@ alias lla='ls -la'
 alias ll='ls -l'
 alias lt='ls --tree'
 
-alias sts='start-tmux-session'
-alias ats='attach-tmux-session'
-alias ets='end-tmux-session'
+alias sts='tmux-session start'
+alias ats='tmux-session attach'
+alias ets='tmux-session end'
 alias lts='tmux list-session'
 alias kts='tmux kill-server'
 

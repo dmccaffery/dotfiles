@@ -6,8 +6,8 @@ icon: lucide/component
 
 This repository ships a Claude Code [settings.json](settings.md), a [theme](theme.md), and
 two worktree-lifecycle hooks. Both hooks point at the same scripts the manual
-[`start-tmux-session`](../scripts/tmux.md#start-tmux-session) /
-[`end-tmux-session`](../scripts/tmux.md#end-tmux-session) wrappers call, so the naming
+[`tmux-session start`](../scripts/tmux.md#tmux-session-start) /
+[`tmux-session end`](../scripts/tmux.md#tmux-session-end) wrappers call, so the naming
 convention stays in lockstep regardless of who triggered the worktree. No user-level
 `skills/` directory is checked in. The [`.claude/plans/`](https://claude.com/claude-code)
 directory is present but is a runtime artifact for plan mode — not configuration.
@@ -26,13 +26,13 @@ Registered in [`settings.json`](settings.md#hooks):
 ```json
 "hooks": {
     "WorktreeCreate": [
-        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/start-worktree" }] }
+        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/worktree start" }] }
     ]
 }
 ```
 
-[`start-worktree`](../scripts/index.md) runs whenever Claude Code creates a worktree, and is
-also invoked directly by [`start-tmux-session`](../scripts/tmux.md#start-tmux-session) when a
+[`worktree start`](../scripts/index.md) runs whenever Claude Code creates a worktree, and is
+also invoked directly by [`tmux-session start`](../scripts/tmux.md#tmux-session-start) when a
 worktree-name argument is passed. It:
 
 1. Picks the repo path from `$1`, falling back to `$CLAUDE_PROJECT_DIR`, then
@@ -55,7 +55,7 @@ environment variables. Bonus: `~/.cache` is already in the sandbox
 extension is needed.
 
 The `agent/` branch prefix is deliberate: it's the signal
-[`end-worktree`](#worktreeremove) uses to decide a branch is safe to delete.
+[`worktree end`](#worktreeremove) uses to decide a branch is safe to delete.
 
 ### WorktreeRemove
 
@@ -64,13 +64,13 @@ Registered in [`settings.json`](settings.md#hooks):
 ```json
 "hooks": {
     "WorktreeRemove": [
-        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/end-worktree" }] }
+        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/worktree end" }] }
     ]
 }
 ```
 
-[`end-worktree`](../scripts/index.md) runs when Claude Code finishes with a worktree, and is
-also invoked per selection by [`end-tmux-session`](../scripts/tmux.md#end-tmux-session). It:
+[`worktree end`](../scripts/index.md) runs when Claude Code finishes with a worktree, and is
+also invoked per selection by [`tmux-session end`](../scripts/tmux.md#tmux-session-end). It:
 
 1. Reads the worktree path from `$1`, falling back to a `worktree_path` field in JSON on
    stdin (the hook protocol).
@@ -87,7 +87,7 @@ also invoked per selection by [`end-tmux-session`](../scripts/tmux.md#end-tmux-s
 6. Removes the worktree (`git worktree remove --force`), swallowing failures so a
    half-broken worktree doesn't block the hook.
 7. Deletes the branch (`git branch -D`) only if it starts with `agent/` — the prefix
-   [`start-worktree`](#worktreecreate) uses. Branches with any other prefix are left in
+   [`worktree start`](#worktreecreate) uses. Branches with any other prefix are left in
    place.
 
 The `agent/`-prefix guard is intentional: branch deletion is destructive, so the hook only

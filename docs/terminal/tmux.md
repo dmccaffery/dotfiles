@@ -153,5 +153,5 @@ and opencode's [status-indicator plugin](../opencode/plugins.md#status-indicator
 
 ## Companion scripts
 
-See [scripts/tmux](../scripts/tmux.md) for `start-tmux-session` (fzf-driven repo browser that
-creates a named session per repo) and `attach-tmux-session`.
+See [scripts/tmux](../scripts/tmux.md) for `tmux-session start` (fzf-driven repo browser that
+creates a named session per repo) and `tmux-session attach`.

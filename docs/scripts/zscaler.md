@@ -4,18 +4,19 @@ icon: lucide/shield
 
 # Zscaler scripts
 
-Three helpers manage the Zscaler corporate proxy when one is installed. All scripts no-op
-cleanly when the relevant Zscaler launchd plists are absent — safe on personal machines.
+The `zs` command manages the Zscaler corporate proxy when one is installed, with three verbs:
+`enable`, `disable`, and `certs`. All no-op cleanly when the relevant Zscaler launchd plists are
+absent — safe on personal machines.
 
-## `enable-zs` { #enable-zs }
+## `zs enable` { #zs-enable }
 
 ```sh
-enable-zs
+zs enable
 ```
 
 Loads the Zscaler service and tunnel launch daemons if they're not already running:
 
-```sh title=".local/share/scripts/enable-zs (core)"
+```sh title=".local/share/scripts/zs enable (core)"
 ZSCALER_SERVICE="/Library/LaunchDaemons/com.zscaler.service.plist"
 ZSCALER_TUNNEL="/Library/LaunchDaemons/com.zscaler.tunnel.plist"
 
@@ -33,18 +34,18 @@ fi
 [ -n "${started:-}" ] && sleep 10
 ```
 
-## `disable-zs` { #disable-zs }
+## `zs disable` { #zs-disable }
 
 ```sh
-disable-zs
+zs disable
 ```
 
 Unloads both daemons (tunnel first, service second).
 
-## `use-zs-certs` { #use-zs-certs }
+## `zs certs` { #zs-certs }
 
 ```sh
-use-zs-certs -- <command> [args...]
+zs certs -- <command> [args...]
 ```
 
 Runs a command with the Zscaler root CA injected into the trust path. Useful for tools like
@@ -60,8 +61,8 @@ Flow:
 4. `exec` the command.
 
 ```sh
-use-zs-certs -- npm install
-use-zs-certs -- curl https://artifactory.example/api/something
+zs certs -- npm install
+zs certs -- curl https://artifactory.example/api/something
 ```
 
 If no certificate is found anywhere, the command still runs — with a warning, but without the

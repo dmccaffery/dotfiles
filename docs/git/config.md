@@ -62,7 +62,7 @@ LFS is required (`required = true`) — clones will fail if the LFS pointer can'
 ## Signing
 
 SSH signing using a hardware security key, with the allowed-signers file managed by the
-[get-sk-ssh](../scripts/security-keys.md#get-sk-ssh) script:
+[`ssh-sk get`](../scripts/security-keys.md#ssh-sk-get) command:
 
 ```ini
 [gpg]

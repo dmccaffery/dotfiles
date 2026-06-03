@@ -1,0 +1,168 @@
+#!/usr/bin/env sh
+
+set -eu
+
+# Agent worktree lifecycle. `start` prints the worktree path on stdout (consumed
+# by tmux-session and Claude Code's WorktreeCreate hook), so all diagnostics go
+# to the tty or stderr to keep stdout clean.
+tty=/dev/tty
+
+default_color=$(tput sgr 0 2> /dev/null || true)
+blue=$(tput setaf 4 2> /dev/null || true)
+green=$(tput setaf 2 2> /dev/null || true)
+yellow=$(tput setaf 3 2> /dev/null || true)
+red=$(tput setaf 1 2> /dev/null || true)
+
+info() {
+	printf '%s==> %s%s\n' "$blue" "$1" "$default_color" > "$tty" 2> /dev/null || true
+}
+
+success() {
+	printf '%s==> %s%s\n' "$green" "$1" "$default_color" > "$tty" 2> /dev/null || true
+}
+
+warn() {
+	printf '%s==> %s%s\n' "$yellow" "$1" "$default_color" >&2
+}
+
+error() {
+	printf '%s==> %s%s\n' "$red" "$1" "$default_color" >&2
+}
+
+sanitize() {
+	# tmux >=3.5 rejects '.' in session names, so encode dots before falling back
+	# to '-' for any other disallowed character: leading '.' -> 'dot-', trailing
+	# '.' -> '-dot', interior '.' -> '-dot-'.
+	printf '%s' "${1}" \
+		| sed -e 's/^\./dot-/' -e 's/\.$/-dot/' -e 's/\./-dot-/g' \
+		| tr -c 'A-Za-z0-9_-' '-'
+}
+
+usage() {
+	cat >&2 <<-'EOF'
+		usage: worktree <command> [args]
+
+		commands:
+		  start [repo] [suffix]   create/reuse a worktree at ~/.cache/agent/worktrees/<repo>-<suffix>
+		  end [path]              remove a worktree, its agent/* branch, and matching tmux session
+
+		Both commands also accept hook JSON on stdin: start reads .name, end reads .worktree_path.
+	EOF
+}
+
+# Create or reuse a worktree on an agent/<name> branch and print its path.
+start() {
+	repo="${1:-${CLAUDE_PROJECT_DIR:-}}"
+	suffix="${2:-}"
+
+	if [ -z "${repo:-}" ]; then
+		warn "no repository specified, attempting to fall back to repository root..."
+		repo=$(git rev-parse --show-toplevel 2> /dev/null || true)
+	fi
+
+	if [ -z "${repo:-}" ]; then
+		error "no repository found; did you forget to specify an argument?"
+		exit 1
+	fi
+
+	if [ -z "${suffix:-}" ] && [ ! -t 0 ]; then
+		input=$(cat)
+		if [ -n "${input:-}" ]; then
+			suffix=$(printf '%s' "${input}" | jq -r '.name // empty' 2> /dev/null || true)
+		fi
+	fi
+
+	if [ -z "${suffix:-}" ]; then
+		warn "no suffix provided; using current timestamp"
+		suffix=$(date -u +%Y%m%d-%H%M%S)
+	fi
+
+	name=$(basename -- "${repo}")
+	name=$(sanitize "${name}-${suffix}")
+
+	worktree="${HOME}/.cache/agent/worktrees/${name}"
+	branch="agent/${name}"
+
+	if [ -d "${worktree}" ]; then
+		warn "worktree already exists at ${worktree}; reusing"
+	elif git -C "${repo}" show-ref --verify --quiet "refs/heads/${branch}"; then
+		info "branch ${branch} exists; checking it out at ${worktree}"
+		git -C "${repo}" worktree add "${worktree}" "${branch}" > /dev/null 2>&1
+	else
+		info "creating worktree ${name} at ${worktree}"
+		git -C "${repo}" worktree add -b "${branch}" "${worktree}" > /dev/null 2>&1
+	fi
+
+	success "worktree ${name} is ready"
+	printf '%s\n' "${worktree}"
+}
+
+# Remove a worktree, kill its tmux session, and delete the agent/* branch.
+end() {
+	worktree_path="${1:-}"
+
+	if [ -z "${worktree_path:-}" ] && [ ! -t 0 ]; then
+		input=$(cat)
+		if [ -n "${input:-}" ]; then
+			worktree_path=$(printf '%s' "${input}" | jq -r '.worktree_path // empty' 2> /dev/null || true)
+		fi
+	fi
+
+	if [ -z "${worktree_path:-}" ]; then
+		error 'worktree end: no worktree path; pass as an argument or pipe JSON {"worktree_path":"..."}'
+		exit 1
+	fi
+
+	if [ ! -d "$worktree_path" ]; then
+		warn "worktree at ${worktree_path} no longer exists; exiting gracefully"
+		exit 0
+	fi
+
+	branch=$(git -C "$worktree_path" rev-parse --abbrev-ref HEAD 2> /dev/null || true)
+	common_dir=$(git -C "$worktree_path" rev-parse --git-common-dir 2> /dev/null || true)
+	main_repo=
+	if [ -n "${common_dir:-}" ]; then
+		main_repo=$(cd "$(dirname "${common_dir}")" && pwd)
+	fi
+
+	uncommitted=$(git -C "$worktree_path" status --porcelain 2> /dev/null | wc -l | tr -d ' ')
+	unpushed=$(git -C "$worktree_path" rev-list --count HEAD --not --remotes 2> /dev/null || echo 0)
+	if [ "${uncommitted}" != "0" ] || [ "${unpushed}" != "0" ]; then
+		warn "${worktree_path} [${branch:-?}] — uncommitted: ${uncommitted}, unpushed: ${unpushed}"
+	fi
+
+	session_name=$(basename -- "${worktree_path}")
+	if command -v tmux > /dev/null 2>&1; then
+		tmux kill-session -t "${session_name}" 2> /dev/null || true
+	fi
+
+	if [ -n "${main_repo:-}" ]; then
+		git -C "${main_repo}" worktree remove --force "${worktree_path}" 2> /dev/null || true
+	else
+		git worktree remove --force "${worktree_path}" 2> /dev/null || true
+	fi
+
+	if [ -n "${branch:-}" ] && [ "${branch}" != "${branch##agent/*}" ]; then
+		if [ -n "${main_repo:-}" ]; then
+			git -C "${main_repo}" branch -D "${branch}" 2> /dev/null || true
+		else
+			git branch -D "${branch}" 2> /dev/null || true
+		fi
+	fi
+
+	success "removed ${session_name}"
+}
+
+cmd="${1:-}"
+[ "$#" -gt 0 ] && shift || true
+
+case "${cmd}" in
+start) start "$@" ;;
+end) end "$@" ;;
+'' | -h | --help | help) usage ;;
+*)
+	error "unknown command: ${cmd}"
+	usage
+	exit 1
+	;;
+esac

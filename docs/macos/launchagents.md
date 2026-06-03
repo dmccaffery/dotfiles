@@ -103,7 +103,7 @@ launchctl bootout  gui/$(id -u)/org.homebrew.ssh-agent
 launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/org.homebrew.ssh-agent.plist
 ```
 
-Note that you'll lose any keys currently loaded into the agent. Re-run [`get-sk-ssh`](../scripts/security-keys.md#get-sk-ssh)
+Note that you'll lose any keys currently loaded into the agent. Re-run [`ssh-sk get`](../scripts/security-keys.md#ssh-sk-get)
 to load them again.
 
 ## See also

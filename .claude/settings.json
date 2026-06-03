@@ -10,7 +10,6 @@
   },
   "includeGitInstructions": false,
   "permissions": {
-    "defaultMode": "auto",
     "allow": [
       "Read(*)",
       "Glob",
@@ -86,7 +85,8 @@
       "Read(~/.ssh)",
       "Read(~/.gnupg)",
       "Read(**/.env*)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
   "hooks": {
     "WorktreeCreate": [
@@ -94,7 +94,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.local/share/scripts/start-worktree"
+            "command": "~/.local/share/scripts/worktree start"
           }
         ]
       }
@@ -104,7 +104,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.local/share/scripts/end-worktree"
+            "command": "~/.local/share/scripts/worktree end"
           }
         ]
       }
@@ -242,11 +242,11 @@
     "enableWeakerNetworkIsolation": false
   },
   "feedbackSurveyRate": 0,
+  "effortLevel": "xhigh",
   "autoUpdatesChannel": "stable",
   "plansDirectory": "./.claude/plans",
   "tui": "fullscreen",
   "autoMemoryEnabled": true,
   "theme": "custom:cyberdream",
-  "editorMode": "vim",
-  "effortLevel": "high"
+  "editorMode": "vim"
 }
