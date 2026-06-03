@@ -95,7 +95,7 @@ touches branches it can identify as throwaway agent state.
 
 ### Claude-is-waiting indicator { #claude-is-waiting-indicator }
 
-Four hooks drive a "Claude is waiting for input" indicator, all pointing at the same leaf
+Five hooks drive a "Claude is waiting for input" indicator, all pointing at the same leaf
 script [`agent-tmux-status`](../scripts/tmux.md#agent-tmux-status) with a state argument
 (opencode drives the very same script from its
 [status-indicator plugin](../opencode/plugins.md#status-indicator)):
@@ -108,6 +108,9 @@ script [`agent-tmux-status`](../scripts/tmux.md#agent-tmux-status) with a state 
     "Notification": [
         { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status attention" }] }
     ],
+    "PostToolUse": [
+        { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status clear" }] }
+    ],
     "UserPromptSubmit": [
         { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status clear" }] }
     ],
@@ -117,16 +120,25 @@ script [`agent-tmux-status`](../scripts/tmux.md#agent-tmux-status) with a state 
 }
 ```
 
-| Event              | Arg         | When it fires                                | Look         |
-| ------------------ | ----------- | -------------------------------------------- | ------------ |
-| `Stop`             | `waiting`   | Claude finished a turn and is awaiting input | peach `●`    |
-| `Notification`     | `attention` | Claude needs permission or attention         | bold red `󰂚` |
-| `UserPromptSubmit` | `clear`     | You submitted a reply — Claude is busy again | cleared      |
-| `SessionEnd`       | `clear`     | Session ended — don't leave the flag stuck   | cleared      |
+| Event              | Arg         | When it fires                                     | Look         |
+| ------------------ | ----------- | ------------------------------------------------- | ------------ |
+| `Stop`             | `waiting`   | Claude finished a turn and is awaiting input      | peach `●`    |
+| `Notification`     | `attention` | Claude needs permission or attention              | bold red `󰂚` |
+| `PostToolUse`      | `clear`     | A tool ran after you approved it — Claude resumed | cleared      |
+| `UserPromptSubmit` | `clear`     | You submitted a reply — Claude is busy again      | cleared      |
+| `SessionEnd`       | `clear`     | Session ended — don't leave the flag stuck        | cleared      |
 
 `Notification` is the louder of the two because a permission prompt actively needs you, whereas
 `Stop` just means it's your turn. `Notification` also fires after ~60s idle, so a long-idle
 `waiting` naturally escalates to `attention`.
+
+The two `clear` triggers cover the two ways Claude resumes from an `attention` state. The
+idle-timeout `Notification` clears via `UserPromptSubmit` (you reply by typing). A **permission**
+`Notification` resumes differently: you approve, and the approved tool runs — there's no prompt
+submission, so without `PostToolUse` the red `󰂚` would stay stuck until the next `Stop`.
+`PostToolUse` fires right after the approved tool executes (the first moment Claude is working
+again), clearing that gap. It fires after every tool, but the script is a no-op-safe single
+`tmux` unset, so the only visible effect is the post-approval clear.
 
 The script branches on `$TMUX`: inside tmux it stores the state token in a per-window
 `@agent_status` option that [`theme.conf`](../terminal/tmux.md#agent-status) maps to a colour

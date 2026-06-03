@@ -135,9 +135,10 @@ agent-tmux-status clear       # lower the indicator (also the default with no/un
 A no-op-safe leaf script shared by two coding agents so the indicator tracks whether either is
 waiting on you:
 
-- **Claude Code** drives it through four
+- **Claude Code** drives it through five
   [hooks](../claude/hooks-skills.md#claude-is-waiting-indicator) — `Stop` calls it with
-  `waiting`, `Notification` with `attention`, and `UserPromptSubmit`/`SessionEnd` with `clear`.
+  `waiting`, `Notification` with `attention`, and `PostToolUse`/`UserPromptSubmit`/`SessionEnd`
+  with `clear` (`PostToolUse` clears the red after you approve a permission and the tool runs).
 - **opencode** drives it through the
   [`agent-tmux-status` plugin](../opencode/plugins.md#status-indicator) — `session.idle` →
   `waiting`, `permission.updated` → `attention`, a new user message → `clear`.

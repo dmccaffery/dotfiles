@@ -420,6 +420,9 @@ See [Terminal → oh-my-posh](../terminal/oh-my-posh.md#claude-code-status-line)
   "Notification": [
     { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status attention" }] }
   ],
+  "PostToolUse": [
+    { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status clear" }] }
+  ],
   "UserPromptSubmit": [
     { "hooks": [{ "type": "command", "command": "~/.local/share/scripts/agent-tmux-status clear" }] }
   ],
@@ -438,10 +441,12 @@ the [`start-tmux-session`](../scripts/tmux.md#start-tmux-session) and
 - `WorktreeRemove` → [`end-worktree`](hooks-skills.md#worktreeremove) tears the worktree back
   down once Claude is done and kills any matching tmux session.
 
-Four more hooks drive the "Claude is waiting for you" indicator via
+Five more hooks drive the "Claude is waiting for you" indicator via
 [`agent-tmux-status`](hooks-skills.md#claude-is-waiting-indicator) — `Stop` raises a calm
 `waiting` state (peach `●`) and `Notification` a louder `attention` one (bold red `󰂚`);
-`UserPromptSubmit` and `SessionEnd` clear it (you replied, or the session ended). The same
+`PostToolUse`, `UserPromptSubmit`, and `SessionEnd` clear it (a tool ran after you approved a
+permission, you replied, or the session ended — `PostToolUse` is what clears the red once you
+approve a prompt and Claude resumes, instead of leaving it stuck until the next `Stop`). The same
 script is shared with opencode's [status-indicator plugin](../opencode/plugins.md#status-indicator).
 
 ### Worktree
