@@ -2,7 +2,7 @@
 
 set -eu
 
-target=$(git config github.account 2> /dev/null)
+target=$(git config github.account 2> /dev/null || true)
 
 if [ -n "${target:-}" ]; then
 
