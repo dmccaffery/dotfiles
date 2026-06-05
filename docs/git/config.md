@@ -69,8 +69,18 @@ SSH signing using a hardware security key, with the allowed-signers file managed
     format = ssh
 
 [gpg "ssh"]
-    allowedSignersFile = ~/.config/git/allowed_signers
+    allowedSignersFile = ~/.config/private/git/allowed_signers
 ```
+
+Provider-specific includes set the default signing-key resolver:
+
+```ini
+[gpg "ssh"]
+    defaultKeyCommand = "ssh-sk get --git"
+```
+
+`ssh-sk get --git` reads `github.account` or `forgejo.account` from the current repository and
+matches that account to the saved YubiKey stub, so signing does not require provider API access.
 
 See [Git → Signing](signing-security-keys.md) for the full flow.
 

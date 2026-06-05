@@ -4,7 +4,8 @@ icon: lucide/shield-check
 
 # Signing & security keys
 
-Commits are SSH-signed using a YubiKey resident key. The same key acts as the SSH auth key.
+Commits are SSH-signed using YubiKey-resident Ed25519 security keys, with local stubs saved by
+YubiKey serial.
 
 ## How signing works
 
@@ -13,34 +14,40 @@ Commits are SSH-signed using a YubiKey resident key. The same key acts as the SS
     format = ssh
 
 [gpg "ssh"]
-    allowedSignersFile = ~/.config/git/allowed_signers
+    allowedSignersFile = ~/.config/private/git/allowed_signers
 ```
 
-```ini title=".config/git/github.gitconfig"
+```ini title=".config/git/github.gitconfig and .config/git/forgejo.gitconfig"
 [gpg "ssh"]
-    defaultKeyCommand = "ssh-sk get --github"
+    defaultKeyCommand = "ssh-sk get --git"
 ```
 
-When git needs a signing key, it runs `ssh-sk get --github` (only for github.com remotes per
-`includeIf`). That command asks the `gh` CLI which of your SSH keys are marked for signing,
-then checks `ssh-add -L` to find one currently loaded in the agent that matches. The match
-is returned in the `key::<...>` format git expects.
+When git needs a signing key, it runs `ssh-sk get --git` from the provider-specific include. That
+command reads `github.account` or `forgejo.account` from git config, loads the saved stub for that
+account from the currently inserted YubiKey serials, and returns it in the `key::<...>` format git
+expects.
+
+If neither account is configured, or both are configured to different usernames, `ssh-sk get --git`
+refuses to sign. It never queries GitHub or Forgejo, so commit signing works offline and does not
+depend on the active provider CLI session.
 
 ## One-time setup
 
 ### 1. Generate a resident key on the YubiKey
 
 ```sh
-ssh-sk gen <user>
+ssh-sk gen [user]
 ```
 
-The `<user>` argument is **required** and becomes the key comment (`-C`); the script exits with a
-usage error if it's omitted. It generates a `ed25519-sk` **resident** key (stored on the YubiKey
-itself):
+The optional `[user]` becomes the key comment (`-C`) and the local stub suffix. If it is omitted,
+`ssh-sk gen` opens an fzf picker containing the unique usernames already authenticated with GitHub
+or Forgejo. Exactly one YubiKey must be inserted so the script can save the stub under that key's
+serial:
 
 ```sh
 ssh-keygen \
     -t ed25519-sk \
+    -f ~/.config/private/ssh/<serial>/id_ed25519_sk_<user> \
     -O resident \
     -O verify-required \
     -O no-touch-required \
@@ -51,35 +58,47 @@ ssh-keygen \
 
 | Option                      | Effect                                                                                                 |
 | --------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `-f …/<serial>/…`           | Saves the local Ed25519-SK stub under the inserted YubiKey's serial.                                   |
 | `-O resident`               | Key lives on the YubiKey; can be re-extracted with `ssh-keygen -K`.                                    |
 | `-O verify-required`        | PIN required to use the key.                                                                           |
-| `-O no-touch-required`      | No fingerprint touch needed on the YubiKey itself.                                                     |
+| `-O no-touch-required`      | No physical touch is needed when OpenSSH loads the saved stub.                                         |
 | `-O application=ssh:<user>` | Namespaces the resident credential by user so multiple keys coexist and extract to distinct filenames. |
 | `-O user=<user>`            | Sets the FIDO2 user handle — the documented way to hold multiple resident keys for one application.    |
 
-### 2. Load resident keys into the agent
+Repeat `ssh-sk gen [user]` once per YubiKey that should be able to sign. Each key gets its own
+`~/.config/private/ssh/<serial>/` directory.
 
-`ssh-sk gen` finishes by calling `ssh-sk get`, which runs `ssh-add -K` to extract the resident
-keys from the YubiKey into the running ssh-agent.
+!!! warning "Keep the generated stub"
 
-`ssh-sk get` also appends the public key to `~/.ssh/.git_allowed_signers` (the per-user
-allowed-signers file referenced by `~/.config/git/allowed_signers`), so `git log
---show-signature` can verify your own commits. The append is skipped if an identical
+    OpenSSH's resident-key reload path (`ssh-add -K` / `ssh-keygen -K`) synthesizes resident keys
+    as touch-required and does not preserve `-O no-touch-required`. The saved stub contains the key
+    handle and OpenSSH flags needed to keep no-touch signing working.
+
+### 2. Load saved stubs into the agent
+
+`ssh-sk gen` finishes by calling `ssh-sk get` with the generated username, which uses
+`ykman list --serials` to find the inserted YubiKey and loads matching stubs from
+`~/.config/private/ssh/<serial>/` into the running ssh-agent.
+
+`ssh-sk get` also appends the public key to `~/.config/private/git/allowed_signers`, so
+`git log --show-signature` can verify your own commits. The append is skipped if an identical
 signer line is already present, so re-running the script is safe.
 
-### 3. Mark the key as a signing key on GitHub
+### 3. Publish the key to authenticated providers
 
-```sh
-gh ssh-key add ~/.ssh/<your-key>.pub --type signing --title "YubiKey signing"
-```
+If `[user]` matches any authenticated account in `gh auth status` or `fj auth list`, `ssh-sk gen`
+publishes the generated public key to every matching account. GitHub receives a signing key via
+`gh ssh-key add --type signing`; Forgejo receives a regular SSH key via
+`fj -H <host> user key upload`.
 
-`ssh-sk get --github` queries `gh ssh-key list` and looks for keys with the `signing` type —
-that's how it discriminates between auth-only and signing-capable keys.
+If no authenticated provider account matches `[user]`, `ssh-sk gen` warns that the key will not be
+published and asks whether to continue. Without a tty for that confirmation, it refuses to generate
+the unpublished key.
 
 ### 4. Verify
 
 ```sh
-git-github-auth        # ensure gh has the right scopes
+git-github-auth        # ensure gh can upload SSH signing keys
 git commit -S          # the -S is implicit when gpg.format is ssh + a key is set
 ```
 
@@ -101,6 +120,10 @@ The Homebrew-built `ssh-agent` runs as a launch agent (see
 [`ssh-askpass`](../scripts/security-keys.md#ssh-askpass) script. The script delegates to
 `pinentry-mac` for the PIN prompt, with SHA256 fingerprint detection so the prompt knows
 _which_ key is being unlocked.
+
+PIN caching and physical touch are separate. `pinentry-mac` can cache the PIN / user-verification
+step, but the no-touch behavior depends on OpenSSH loading the saved stub that still carries the
+`no-touch-required` flag.
 
 ## See also
 
