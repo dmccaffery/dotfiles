@@ -22,6 +22,28 @@ g.autoformat = true
 -- editor config
 g.editorconfig = true
 
+-- clipboard: yank to the *local* machine over SSH via OSC 52.
+--
+-- LazyVim blanks 'clipboard' on SSH (SSH_CONNECTION and "" or "unnamedplus") so
+-- Neovim auto-enables OSC 52 -- but that branch is unreachable on a macOS
+-- remote, where has('mac') selects the remote `pbcopy` first (see
+-- $VIMRUNTIME/autoload/provider/clipboard.vim). Opt in to OSC 52 explicitly and
+-- restore unnamedplus so a plain `y` still copies.
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+  local osc52 = require("vim.ui.clipboard.osc52")
+  -- Paste from the unnamed register rather than querying the terminal: an
+  -- OSC 52 read round-trips and can hang for up to 10s over SSH + tmux.
+  local paste = function()
+    return { vim.split(vim.fn.getreg('"'), "\n"), vim.fn.getregtype('"') }
+  end
+  o.clipboard = "unnamedplus"
+  g.clipboard = {
+    name = "OSC 52",
+    copy = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
+    paste = { ["+"] = paste, ["*"] = paste },
+  }
+end
+
 -- ui
 g.gui_font_fize = 16
 g.gui_font_face = "Iosevka NF"

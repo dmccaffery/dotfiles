@@ -46,6 +46,34 @@ o.listchars:append({
 
 LSP logging is set to `off` because the log grows unboundedly when on.
 
+### Clipboard over SSH (OSC 52)
+
+When `$SSH_TTY`/`$SSH_CONNECTION` is set, `options.lua` pins Neovim's clipboard provider to its bundled
+[OSC 52](https://github.com/neovim/neovim/blob/master/runtime/lua/vim/ui/clipboard/osc52.lua) implementation so a
+yank reaches the **local** terminal's clipboard instead of the remote host's:
+
+```lua
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+  local osc52 = require("vim.ui.clipboard.osc52")
+  local paste = function()
+    return { vim.split(vim.fn.getreg('"'), "\n"), vim.fn.getregtype('"') }
+  end
+  o.clipboard = "unnamedplus"                 -- override LazyVim's SSH blanking so plain `y` copies
+  g.clipboard = {
+    name = "OSC 52",
+    copy = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
+    paste = { ["+"] = paste, ["*"] = paste }, -- read from the register, never the terminal
+  }
+end
+```
+
+This is needed because LazyVim's default (`opt.clipboard = vim.env.SSH_CONNECTION and "" or "unnamedplus"`) relies on
+Neovim auto-enabling OSC 52, and that branch in `provider/clipboard.vim` is only reached when no other provider matches.
+On a **macOS** remote `has('mac')` selects `pbcopy` first, so the auto path never fires — the explicit `g.clipboard`
+opt-in bypasses it. `paste` reads the unnamed register rather than issuing an OSC 52 read, which otherwise blocks for up
+to 10s waiting on a terminal response over SSH + tmux. Use your terminal's own paste (++cmd+v++) to pull text copied
+**outside** Neovim into a buffer.
+
 ## `keymaps.lua`
 
 Loaded on `VeryLazy`. Notable additions on top of LazyVim defaults:
