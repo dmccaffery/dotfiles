@@ -64,6 +64,7 @@ set -g escape-time 0
 set -g history-limit 50000
 set -g extended-keys on
 set -g extended-keys-format xterm
+set -g set-clipboard on
 ```
 
 Highlights:
@@ -73,6 +74,8 @@ Highlights:
   number from 1 and stay contiguous.
 - **`escape-time 0`** — kill the default 500ms delay that breaks Vim mode.
 - **`extended-keys`** — full xterm key reporting so modified keys work.
+- **`set-clipboard on`** — let programs set the system clipboard via OSC 52, so a yank inside
+  tmux (including over SSH) reaches the **local** machine's clipboard through Ghostty.
 - **Shift+Enter → ++ctrl+j++** — root-level binding lets Claude Code (which uses Shift+Enter
   for newline-without-submit) work inside tmux despite tmux not supporting the kitty keyboard
   protocol.
