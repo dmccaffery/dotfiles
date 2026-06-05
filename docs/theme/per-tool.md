@@ -21,6 +21,7 @@ to each tool's other config.
 | vivid       | `.config/vivid/themes/cyberdream.yaml`                 | Generates `LS_COLORS`; `VIVID_THEME` env points here.                    |
 | lsd         | `.config/lsd/config.yaml`                              | `color: { theme: custom }` driven by `LS_COLORS`.                        |
 | Claude Code | `.claude/themes/cyberdream.json`                       | Selected via `"theme": "custom:cyberdream"`.                             |
+| Codex       | `.config/codex/config.toml` (`[tui].theme`)            | No theme file; `theme = "ansi"` inherits cyberdream from the terminal.   |
 | Docs site   | `docs/assets/extras.css`                               | CSS overrides on Zensical's `slate`/`default` schemes.                   |
 
 ## Pattern

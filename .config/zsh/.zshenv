@@ -20,6 +20,10 @@ export GOENV="${XDG_CACHE_HOME}/go/env"
 export POSH_THEME="${XDG_CONFIG_HOME}/oh-my-posh/prompt.yaml"
 export VIVID_THEME="${XDG_CONFIG_HOME}/vivid/themes/cyberdream.yaml"
 
+# Relocate Codex's home under XDG config so its stow package lives at
+# .config/codex/ like every other tool (Codex defaults to ~/.codex).
+export CODEX_HOME="${XDG_CONFIG_HOME}/codex"
+
 export EDITOR=nvim
 if [ "${TERM_PROGRAM}" = "vscode" ]; then
 	export EDITOR='code --wait'

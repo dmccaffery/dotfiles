@@ -34,6 +34,9 @@ Use this map to find the right page (extend as new sections are added):
 | `.config/opencode/AGENTS.md`                             | `docs/opencode/memory.md`                                             |
 | `.config/opencode/plugin/**`                             | `docs/opencode/plugins.md`                                            |
 | `.config/opencode/themes/**`                             | `docs/theme/per-tool.md` + `docs/opencode/theme.md`                   |
+| `.config/codex/config.toml`                              | `docs/codex/{sandbox-permissions,hooks,theme}.md`                     |
+| `.config/codex/rules/**`, `.config/codex/hooks/**`       | `docs/codex/{sandbox-permissions,hooks}.md`                           |
+| `.config/codex/AGENTS.md`                                | `docs/codex/memory.md`                                                |
 | `setup/darwin/Brewfile.requirements`                     | `docs/terminal/packages.md`                                           |
 | `brew bundle` lifecycle / `HOMEBREW_BUNDLE_*` env vars   | `docs/terminal/brew-bundle.md`                                        |
 | `.config/homebrew/trust.json`                            | `docs/terminal/brew-bundle.md`                                        |
@@ -77,6 +80,34 @@ Skip the doc step only when the diff is provably docs-irrelevant (e.g., a change
 `.claude/plans/`, a release-please-owned file, or a pure formatting pass already covered
 by `make fmt`). When in doubt, update the page — out-of-sync docs are worse than missing
 ones, per the rule above.
+
+## Keep the agent guardrails in sync
+
+`.claude/settings.json` is the source of truth for the agent guardrails. OpenCode
+([`.config/opencode/`](.config/opencode/)) and Codex ([`.config/codex/`](.config/codex/))
+deliberately mirror it so all three agents share the same sandbox, permission, and status
+behaviour. **Whenever you change the `sandbox`, `permissions`, or `hooks` blocks of
+`.claude/settings.json`, mirror the change into both OpenCode and Codex in the same PR.** Drift
+here is a security gap, not a cosmetic one — a deny that lands in one agent but not the others
+leaves a hole an agent can walk through.
+
+| `.claude/settings.json`                                                       | OpenCode mirror (`.config/opencode/`)                                           | Codex mirror (`.config/codex/`)                                                                                                     |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `sandbox.filesystem` (`allowRead`/`allowWrite`/`denyRead`)                    | `permission.read`/`list`/`glob`/`edit`/`external_directory` in `opencode.jsonc` | `sandbox_mode` + `[sandbox_workspace_write].writable_roots` in `config.toml`; credential-read denies in `hooks/pre-tool-use-policy` |
+| `sandbox.network.allowedDomains`                                              | _(no equivalent — `permission.bash` allowlist + prompts)_                       | `[sandbox_workspace_write].network_access` (boolean only — no per-domain allowlist)                                                 |
+| `permissions.allow` / `permissions.deny` (Bash)                               | `permission.bash` allow/deny map in `opencode.jsonc`                            | `rules/default.rules` (execpolicy `allow`/`forbidden`) + the `hooks/pre-tool-use-policy` deny-hook                                  |
+| `hooks` (`Stop`/`Notification`/`PostToolUse`/`UserPromptSubmit`/`SessionEnd`) | `plugin/agent-tmux-status.js` event map                                         | `[[hooks.*]]` in `config.toml` (`Stop`/`PermissionRequest`/`PostToolUse`/`UserPromptSubmit`)                                        |
+
+Each mirror is an approximation, not a copy — some Claude Code settings have no counterpart
+(Codex can't allowlist network by domain; OpenCode has no kernel-enforced sandbox). When a
+setting genuinely can't be mirrored, document the gap in the relevant page rather than leaving
+it silent. The mappings and their limits live in
+[`docs/opencode/permissions.md`](docs/opencode/permissions.md),
+[`docs/codex/sandbox-permissions.md`](docs/codex/sandbox-permissions.md), and
+[`docs/codex/hooks.md`](docs/codex/hooks.md) — update those pages in the same PR (they are
+already in the doc-sync map above). Validate the Codex side with `codex doctor` and
+`codex execpolicy check --rules .config/codex/rules/default.rules -- <command>`; both OpenCode
+and Codex load config at startup, so restart them to pick the change up.
 
 ## Verify before committing
 

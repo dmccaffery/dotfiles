@@ -12,8 +12,9 @@ plugin.
 
 `.config/opencode/plugin/agent-tmux-status.js` flags the tmux window (or terminal title) when OpenCode is waiting on
 you, reusing the shared [`agent-tmux-status`](../scripts/tmux.md#agent-tmux-status) leaf script that Claude Code
-drives from [its hooks](../claude/hooks-skills.md#claude-is-waiting-indicator). One indicator, two agents: whether
-the pane is running OpenCode or Claude Code, the tmux window lights up the same way.
+drives from [its hooks](../claude/hooks-skills.md#claude-is-waiting-indicator). One indicator, every agent: whether
+the pane is running OpenCode, Claude Code, or [Codex](../codex/hooks.md#the-tmux-indicator), the tmux window lights
+up the same way.
 
 The plugin subscribes to OpenCode's [event bus](https://opencode.ai/docs/plugins/) and maps each event to a state
 token the script hands to [`theme.conf`](../terminal/tmux.md#agent-status):

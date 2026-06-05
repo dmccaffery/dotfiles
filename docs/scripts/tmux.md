@@ -37,15 +37,16 @@ What it does:
 5. If a session of that name doesn't exist, creates one. The `nvim` window is created first;
    every other window is created detached and inserted with `-a` (immediately **after** the
    `nvim` window), so the windows end up in reverse creation order. The creation order is
-   `opencode` → `claude` → `zsh`, which yields this layout:
+   `opencode` → `claude` → `codex` → `zsh`, which yields this layout:
     - **Window 1 (` nvim`)** — nvim in the top pane (90%), shell in a small pane below (10%).
     - **Window 2 (` zsh`)** — a plain login shell in the repo root.
-    - **Window 3 (`󰯉  claude`)** — runs `claude` (Claude Code) in the repo root when
+    - **Window 3 (`󱙺  codex`)** — runs `codex` in the repo root when it is available on `PATH`.
+    - **Window 4 (`󰯉  claude`)** — runs `claude` (Claude Code) in the repo root when
       it is available on `PATH`.
-    - **Window 4 (`󰚩  opencode`)** — runs `opencode` in the repo root when it is
+    - **Window 5 (`󰚩  opencode`)** — runs `opencode` in the repo root when it is
       available on `PATH`.
 
-    The two agent windows are skipped entirely when their CLI isn't on `PATH`, so the trailing
+    The three agent windows are skipped entirely when their CLI isn't on `PATH`, so the trailing
     indices shift down accordingly — but `zsh` always lands at window 2, immediately after the
     editor.
 
@@ -57,6 +58,7 @@ What it does:
 ```sh title=".local/share/scripts/tmux-session start (core)"
 claude_bin=$(command -v claude 2> /dev/null || true)
 opencode_bin=$(command -v opencode 2> /dev/null || true)
+codex_bin=$(command -v codex 2> /dev/null || true)
 
 editor_pane=$(tmux -u new-session -d -P -F '#{pane_id}' -s "${name}" -n ' nvim' -c "${selected}" \
     -x - -y - "${EDITOR}" .)
@@ -68,6 +70,8 @@ tmux select-pane -t "${editor_pane}"
     -n '󰚩  opencode' "${opencode_bin}"
 [ -n "${claude_bin}" ] && tmux new-window -a -d -t "${editor_window}" -c "${selected}" \
     -n '󰯉  claude' "${claude_bin}"
+[ -n "${codex_bin}" ] && tmux new-window -a -d -t "${editor_window}" -c "${selected}" \
+    -n '󱙺  codex' "${codex_bin}"
 
 tmux new-window -a -d -t "${editor_window}" -n ' zsh' -c "${selected}"
 ```
@@ -132,7 +136,7 @@ agent-tmux-status attention   # the agent needs you now — permission / notific
 agent-tmux-status clear       # lower the indicator (also the default with no/unknown arg)
 ```
 
-A no-op-safe leaf script shared by two coding agents so the indicator tracks whether either is
+A no-op-safe leaf script shared by three coding agents so the indicator tracks whether any is
 waiting on you:
 
 - **Claude Code** drives it through five
@@ -142,6 +146,8 @@ waiting on you:
 - **opencode** drives it through the
   [`agent-tmux-status` plugin](../opencode/plugins.md#status-indicator) — `session.idle` →
   `waiting`, `permission.updated` → `attention`, a new user message → `clear`.
+- **Codex** drives it through four [hooks](../codex/hooks.md#the-tmux-indicator) — `Stop` →
+  `waiting`, `PermissionRequest` → `attention`, `PostToolUse`/`UserPromptSubmit` → `clear`.
 
 It branches on `$TMUX`:
 

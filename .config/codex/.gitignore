@@ -1,0 +1,14 @@
+# CODEX_HOME points here (~/.config/codex), and stow symlinks this directory into
+# place — so Codex writes ALL of its runtime state into this folder: credentials
+# (auth.json — an API token!), session history, logs, caches, lockfiles, installed
+# plugins. Fail closed: ignore everything, then re-include only the hand-authored
+# config. A new state file Codex invents tomorrow is ignored by default, not leaked.
+*
+
+!.gitignore
+!config.toml
+!AGENTS.md
+!rules/
+!rules/**
+!hooks/
+!hooks/**

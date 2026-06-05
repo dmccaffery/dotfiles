@@ -54,6 +54,7 @@ start() {
 	wt="${2:-}"
 	claude_bin=$(command -v claude 2> /dev/null || true)
 	opencode_bin=$(command -v opencode 2> /dev/null || true)
+	codex_bin=$(command -v codex 2> /dev/null || true)
 
 	if [ ! -d "${REPOS_DIR:-}" ]; then
 		REPOS_DIR='.'
@@ -90,6 +91,10 @@ start() {
 
 		if [ -n "${claude_bin}" ]; then
 			tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󰯉  claude' "${claude_bin}"
+		fi
+
+		if [ -n "${codex_bin}" ]; then
+			tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󱙺  codex' "${codex_bin}"
 		fi
 
 		tmux new-window -a -d -t "${editor_window}" -n ' zsh' -c "${selected}"

@@ -7,7 +7,7 @@ icon: lucide/bot
 [OpenCode](https://opencode.ai) is a coding-agent TUI, configured as a stow-managed package under
 `.config/opencode/`. It deliberately shares this machine's guardrails with [Claude Code](../claude/index.md):
 the same global agent rules, a permission config that mirrors the Claude Code sandbox, the cyberdream palette, and
-the tmux "needs you" status indicator. Switching between the two agents keeps the same boundaries and the same look.
+the tmux "needs you" status indicator. Switching between agents keeps the same boundaries and the same look.
 
 | Page                          | Purpose                                                                   |
 | ----------------------------- | ------------------------------------------------------------------------- |

@@ -33,6 +33,8 @@ export GOENV="${XDG_CACHE_HOME}/go/env"
 export POSH_THEME="${XDG_CONFIG_HOME}/oh-my-posh/prompt.yaml"
 export VIVID_THEME="${XDG_CONFIG_HOME}/vivid/themes/cyberdream.yaml"
 
+export CODEX_HOME="${XDG_CONFIG_HOME}/codex"
+
 export EDITOR=nvim
 if [ "${TERM_PROGRAM}" = "vscode" ]; then
     export EDITOR='code --wait'
@@ -51,6 +53,8 @@ Notable behaviors:
 - **`SCRIPTS_DIR` is appended to `PATH`.** Anything dropped into
   [`.local/share/scripts/`](../scripts/index.md) is automatically callable.
 - **`POSH_THEME` and `VIVID_THEME`** point oh-my-posh and vivid at cyberdream variants.
+- **`CODEX_HOME`** relocates [Codex](../codex/index.md)'s home to `~/.config/codex` so its config lives under XDG
+  config like every other tool (Codex defaults to `~/.codex`).
 - **`HOMEBREW_BUNDLE_FILE_GLOBAL`** points `brew bundle --global` at the merged Brewfile under
   `$XDG_DATA_HOME/homebrew/Brewfile`, which [`setup/darwin/packages.sh`](../getting-started/install.md)
   populates by symlinking the chosen profile from `.config/homebrew/Brewfile.*`.

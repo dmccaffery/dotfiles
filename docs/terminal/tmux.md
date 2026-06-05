@@ -41,6 +41,7 @@ bind C-a send-prefix
 | ++ctrl+a++ ++ctrl+n++                    | Next window.                                                          |
 | ++ctrl+a++ ++shift+c++                   | New window running Claude Code in the current pane path if available. |
 | ++ctrl+a++ ++shift+o++                   | New window running OpenCode in the current pane path if available.    |
+| ++ctrl+a++ ++shift+x++                   | New window running Codex in the current pane path if available.       |
 | ++ctrl+a++ ++h++ / ++j++ / ++k++ / ++l++ | Resize pane left / down / up / right (repeatable).                    |
 | ++ctrl+a++ ++m++                         | Toggle pane zoom.                                                     |
 | ++ctrl+a++ ++backspace++                 | Kill current session.                                                 |
@@ -121,15 +122,16 @@ self-bootstraps by `curl`-ing it from the
 [cyberdream.nvim extras directory](https://github.com/scottmckendry/cyberdream.nvim/tree/main/extras/tmux)
 on first run.
 
-The status bar shows: current pane command + cwd (left) and session name (right, recoloured
-red while the prefix is held).
+The status bar shows: session name plus current pane command on the left, window list in the
+centre, and the short hostname on the right. When tmux has `SSH_CONNECTION`, the hostname is
+followed by `| 󰣀` with the SSH glyph in red; local sessions omit both the separator and glyph.
 
 ### Agent-is-waiting indicator { #agent-status }
 
 `theme.conf` makes the `window-status` format react to a per-window `@agent_status` user
-option that holds a **state token** so a window can flag what a coding agent (Claude Code or
-opencode) needs. Both `window-status-format` and `window-status-current-format` gain a leading
-conditional segment that maps the token to a style:
+option that holds a **state token** so a window can flag what a coding agent (Claude Code,
+opencode, or Codex) needs. Both `window-status-format` and `window-status-current-format` gain a
+leading conditional segment that maps the token to a style:
 
 ```text title=".config/tmux/conf/theme.conf (style segment)"
 #{?@agent_status,#{?#{==:#{@agent_status},attention},#[bg=#{@thm_red}#,fg=#{@thm_bg}#,bold],#[bg=#{@thm_peach}#,fg=#{@thm_bg}]},}
@@ -151,8 +153,9 @@ you" cue.
 
 The option is toggled by the [`agent-tmux-status`](../scripts/tmux.md#agent-tmux-status)
 script, wired into Claude Code's
-[`Stop`/`Notification`/`UserPromptSubmit`/`SessionEnd` hooks](../claude/hooks-skills.md#claude-is-waiting-indicator)
-and opencode's [status-indicator plugin](../opencode/plugins.md#status-indicator).
+[`Stop`/`Notification`/`UserPromptSubmit`/`SessionEnd` hooks](../claude/hooks-skills.md#claude-is-waiting-indicator),
+opencode's [status-indicator plugin](../opencode/plugins.md#status-indicator), and Codex's
+[`Stop`/`PermissionRequest`/`PostToolUse`/`UserPromptSubmit` hooks](../codex/hooks.md#the-tmux-indicator).
 
 ## Companion scripts
 

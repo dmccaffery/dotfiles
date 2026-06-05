@@ -82,6 +82,13 @@ nav = [
         "opencode/theme.md",
         "opencode/plugins.md",
     ] },
+    { "Codex" = [
+        "codex/index.md",
+        "codex/sandbox-permissions.md",
+        "codex/hooks.md",
+        "codex/theme.md",
+        "codex/memory.md",
+    ] },
     { "Contribution Guide" = [
         "tooling/index.md",
         "tooling/stow-and-make.md",

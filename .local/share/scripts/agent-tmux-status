@@ -2,7 +2,7 @@
 
 set -eu
 
-# Shared status indicator for coding agents (Claude Code hooks, opencode plugin). Glyphs
+# Shared status indicator for coding agents (Claude Code + codex hooks, opencode plugin). Glyphs
 # for the OSC (non-tmux) terminal-title fallback. Inside tmux the glyph and colour are
 # chosen by theme.conf from the @agent_status state token set below.
 waiting_glyph='● '
