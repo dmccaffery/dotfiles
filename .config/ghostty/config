@@ -42,3 +42,6 @@ unfocused-split-opacity = 0.50
 # links
 link-url = true
 
+# clipboard
+clipboard-read = true
+clipboard-write = true

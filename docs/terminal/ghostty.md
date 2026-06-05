@@ -37,15 +37,20 @@ cursor-click-to-move = true
 
 # splits
 unfocused-split-opacity = 0.50
+
+# clipboard
+clipboard-read = true
+clipboard-write = true
 ```
 
-| Key                              | Effect                                                                |
-| -------------------------------- | --------------------------------------------------------------------- |
-| `theme = dark:…,light:…`         | Auto-switches between cyberdream variants with the system appearance. |
-| `font-thicken = true`            | Synthetic bolding fix for Iosevka on macOS — small, important.        |
-| `background-opacity 0.9`         | 90% opacity with 16 px blur. Tweak to taste.                          |
-| `window-colorspace = display-p3` | Wide-gamut color on supported displays.                               |
-| `macos-option-as-alt`            | Makes the Option key send Alt, which most TUIs and Vim expect.        |
+| Key                              | Effect                                                                                                      |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `theme = dark:…,light:…`         | Auto-switches between cyberdream variants with the system appearance.                                       |
+| `font-thicken = true`            | Synthetic bolding fix for Iosevka on macOS — small, important.                                              |
+| `background-opacity 0.9`         | 90% opacity with 16 px blur. Tweak to taste.                                                                |
+| `window-colorspace = display-p3` | Wide-gamut color on supported displays.                                                                     |
+| `macos-option-as-alt`            | Makes the Option key send Alt, which most TUIs and Vim expect.                                              |
+| `clipboard-read/write = true`    | Allow apps to read/write the system clipboard via OSC 52 — required for yank-over-SSH from tmux and Neovim. |
 
 ## Themes
 
