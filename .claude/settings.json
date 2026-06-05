@@ -84,7 +84,8 @@
       "Read(~/.config/gcloud)",
       "Read(~/.ssh)",
       "Read(~/.gnupg)",
-      "Read(**/.env*)"
+      "Read(**/.env*)",
+      "Bash(security *)"
     ],
     "defaultMode": "auto"
   },

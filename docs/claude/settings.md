@@ -27,7 +27,14 @@ and opinionated:
     "permissions": {
         "defaultMode": "auto",
         "allow": ["Read(*)", "Glob", "Grep", "WebSearch", "Edit(/tmp/**)", "..."],
-        "deny": ["Read(~/.aws)", "Read(~/.config/gcloud)", "Read(~/.ssh)", "Read(~/.gnupg)", "Read(**/.env*)"]
+        "deny": [
+            "Read(~/.aws)",
+            "Read(~/.config/gcloud)",
+            "Read(~/.ssh)",
+            "Read(~/.gnupg)",
+            "Read(**/.env*)",
+            "Bash(security *)"
+        ]
     },
     "sandbox": {
         "enabled": true,
@@ -187,18 +194,22 @@ suppresses the prompt while the underlying access still fails with `EPERM`, so t
 collapsed onto the sandbox as the single source of truth.
 
 `deny` takes precedence over `allow`, so it carves secrets back out of the broad `Read(*)` grant.
-It lists two kinds of entry: the credential directories `Read(~/.aws)`, `Read(~/.config/gcloud)`,
-`Read(~/.ssh)`, `Read(~/.gnupg)`, and the secret-file glob `Read(**/.env*)` (which matches any
-dotenv file). Per the [permissions docs](https://code.claude.com/docs/en/iam), these
-`Read` deny rules apply to Claude's `Read`/`Edit` tools **and** to the file-reading built-ins
-Claude Code recognises in Bash (`cat`, `head`, `tail`, `sed`) — but _not_ to an arbitrary
-subprocess that opens a file itself (a `python`/`node` script, `awk`, etc.). The credential
-directories matter here precisely because the sandbox does **not** govern the built-in `Read`
-tool: without this list, `Read(*)` would let Claude open `~/.ssh/id_rsa` directly (the file name
-trips none of the globs). The same five entries are mirrored into the sandbox's `denyRead`
-(see [Sandbox](#sandbox)) to cover the subprocess path the permission layer can't reach. The two
-lists are kept identical: `deny` is the tool-aware block, `denyRead` is the boundary nothing
-escapes.
+It lists three kinds of entry: the credential directories `Read(~/.aws)`, `Read(~/.config/gcloud)`,
+`Read(~/.ssh)`, `Read(~/.gnupg)`, the secret-file glob `Read(**/.env*)` (which matches any dotenv
+file), and the command block `Bash(security *)` — the macOS Keychain CLI, which
+`security find-generic-password -w …` would otherwise use to print stored credentials in cleartext.
+Per the [permissions docs](https://code.claude.com/docs/en/iam), the `Read` deny rules apply to
+Claude's `Read`/`Edit` tools **and** to the file-reading built-ins Claude Code recognises in Bash
+(`cat`, `head`, `tail`, `sed`) — but _not_ to an arbitrary subprocess that opens a file itself (a
+`python`/`node` script, `awk`, etc.). The credential directories matter here precisely because the
+sandbox does **not** govern the built-in `Read` tool: without this list, `Read(*)` would let Claude
+open `~/.ssh/id_rsa` directly (the file name trips none of the globs). The five `Read` entries are
+mirrored into the sandbox's `denyRead` (see [Sandbox](#sandbox)) to cover the subprocess path the
+permission layer can't reach, and are kept identical to it — `deny` is the tool-aware block,
+`denyRead` is the boundary nothing escapes. `Bash(security *)` has no `denyRead` counterpart: the
+keychain is reached through the `com.apple.SecurityServer` mach service (which TLS and code-signing
+need, so it stays allowed under [`allowMachLookup`](#sandbox)) rather than a blockable file path, so
+denying the `security` command is what closes the obvious dump path.
 
 `allow` pre-approves common, safe tool invocations so they skip the per-call permission
 prompt. The sandbox (see below) is the real safety net — `allow` only controls prompts.
