@@ -7,12 +7,10 @@ else
 	hash_type=$(echo "${desc}" | awk -F':' '{print $1}')
 	if [[ "${hash_type}" == *"SHA256" ]]; then
 		sha256_hash=$(echo "${1}" | awk -F':' '{print $2}')
-		ask_prompt="SETDESC ${desc}\nOPTION allow-external-password-cache\nSETKEYINFO ${sha256_hash}\nGETPIN"
+		ask_prompt="SETDESC ${desc}\nOPTION allow-external-password-cache\nSETKEYINFO s/${sha256_hash}\nGETPIN"
 	else
 		ask_prompt="SETDESC ${desc}\nGETPIN"
 	fi
-
-	echo "$ask_prompt" > /tmp/ssh-askpass.log
 
 	pin_entry=$(echo -e "${ask_prompt}" | /opt/homebrew/bin/pinentry-mac | grep D | tr -d '\n')
 	echo "${pin_entry:2}"
