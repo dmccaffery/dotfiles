@@ -99,7 +99,6 @@ Pulled from non-`homebrew/core` taps, so they're not indexed on `formulae.brew.s
 
 | Package                                | Upstream                                                                  | Purpose                                                                                                     |
 | -------------------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `derailed/k9s/k9s`                     | [derailed/k9s](https://github.com/derailed/k9s)                           | Kubernetes TUI.                                                                                             |
 | `jandedobbeleer/oh-my-posh/oh-my-posh` | [JanDeDobbeleer/oh-my-posh](https://github.com/JanDeDobbeleer/oh-my-posh) | Prompt engine — see [oh-my-posh](oh-my-posh.md). Pinned with `args: ["formula"]` to avoid the cask variant. |
 
 ## Casks

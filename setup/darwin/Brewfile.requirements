@@ -35,7 +35,6 @@ brew "zinit"
 brew "zoxide"
 brew "zsh"
 
-brew "derailed/k9s/k9s"
 brew "jandedobbeleer/oh-my-posh/oh-my-posh", args: ["formula"]
 
 cask "font-fira-code-nerd-font"
