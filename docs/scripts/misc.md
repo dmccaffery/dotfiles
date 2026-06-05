@@ -83,9 +83,18 @@ brewfile remove <package>
 Wraps the two-step day-2 Brewfile flow into one command:
 
 1. `brew bundle <add|remove> "$@" --global` — edit `$HOMEBREW_BUNDLE_FILE_GLOBAL`.
-2. `brew bundle install --global` — install (or, on remove with `HOMEBREW_BUNDLE_INSTALL_CLEANUP=1`,
-   uninstall) so the Brewfile and the installed state stay in lockstep.
+2. `brew bundle install --global --zap --upgrade` — install, upgrade outdated formulae, and (because
+   `HOMEBREW_BUNDLE_FORCE_INSTALL_CLEANUP=1` is exported) uninstall/zap anything no longer in the Brewfile, so the
+   Brewfile and the installed state stay in lockstep.
 
 Flags after the action are passed through to `brew bundle`, so `brewfile add --cask ghostty` and
 `brewfile add --tap user/tap` work. See [Brew bundle](../terminal/brew-bundle.md) for the underlying
 commands and the environment variables that shape them.
+
+On `add`, the wrapper trust-checks anything that comes from a non-official tap (a `user/tap/...` reference)
+before the install runs. The `--cask`/`--tap`/`--formula` flag decides which `trust.json` list to look in
+(`trustedcasks`, `trustedtaps`, `trustedformulae`); bare names resolve to `homebrew/core`/`homebrew/cask` and
+are trusted by default, so they are skipped. If a referenced entry is missing from
+[`trust.json`](../../.config/homebrew/trust.json), you are prompted to `brew trust --<type> <name>` it — keeping
+`brew bundle install` from stalling on an untrusted tap mid-run. Answer `N` to leave it untrusted; with no tty
+the prompt is skipped with a warning.

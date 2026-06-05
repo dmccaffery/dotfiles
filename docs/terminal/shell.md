@@ -22,7 +22,8 @@ export XDG_RUNTIME_DIR="${HOME}/.local/runtime"
 export REPOS_DIR="${HOME}/Repos"
 
 export HOMEBREW_BUNDLE_FILE_GLOBAL="${XDG_DATA_HOME}/homebrew/Brewfile"
-export HOMEBREW_BUNDLE_INSTALL_CLEANUP=1
+export HOMEBREW_BUNDLE_FORCE_INSTALL_CLEANUP=1
+export HOMEBREW_REQUIRE_TAP_TRUST=1
 
 export GOPATH="${XDG_DATA_HOME}/go"
 export GOCACHE="${XDG_CACHE_HOME}/go/build"
@@ -53,6 +54,9 @@ Notable behaviors:
 - **`HOMEBREW_BUNDLE_FILE_GLOBAL`** points `brew bundle --global` at the merged Brewfile under
   `$XDG_DATA_HOME/homebrew/Brewfile`, which [`setup/darwin/packages.sh`](../getting-started/install.md)
   populates by symlinking the chosen profile from `.config/homebrew/Brewfile.*`.
+- **`HOMEBREW_BUNDLE_FORCE_INSTALL_CLEANUP`** and **`HOMEBREW_REQUIRE_TAP_TRUST`** shape every
+  `brew bundle` run — auto-cleanup on install and the non-official-tap trust gate. See
+  [Brew bundle](brew-bundle.md#environment-variables) and its [trusted-taps](brew-bundle.md#trusted-taps) section.
 - **The `GO*` overrides** relocate Go's scattered, non-XDG default locations onto XDG paths:
   `GOPATH` to `$XDG_DATA_HOME/go` (workspace + `go install` binaries) and the build, module, and
   `env` caches under `$XDG_CACHE_HOME/go`. They live here rather than in Claude Code's

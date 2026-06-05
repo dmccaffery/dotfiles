@@ -36,6 +36,7 @@ Use this map to find the right page (extend as new sections are added):
 | `.config/opencode/themes/**`                             | `docs/theme/per-tool.md` + `docs/opencode/theme.md`                   |
 | `setup/darwin/Brewfile.requirements`                     | `docs/terminal/packages.md`                                           |
 | `brew bundle` lifecycle / `HOMEBREW_BUNDLE_*` env vars   | `docs/terminal/brew-bundle.md`                                        |
+| `.config/homebrew/trust.json`                            | `docs/terminal/brew-bundle.md`                                        |
 | `.config/nvim/lua/config/lazy.lua`                       | `docs/neovim/lazyvim.md` + `docs/neovim/extras.md`                    |
 | `.config/nvim/lua/plugins/**`                            | `docs/neovim/plugins.md`                                              |
 | `.config/nvim/lua/config/{autocmds,keymaps,options}.lua` | `docs/neovim/autocmds-keymaps.md`                                     |

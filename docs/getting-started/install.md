@@ -40,14 +40,14 @@ To run a subset, pass stages as arguments:
 
 ## Stages
 
-| Stage          | Script                         | Purpose                                                                                |
-| -------------- | ------------------------------ | -------------------------------------------------------------------------------------- |
-| `xdg`          | `setup/xdg.sh`                 | Create the XDG base directories under `$HOME`.                                         |
-| `requirements` | `setup/darwin/requirements.sh` | Install Xcode CLI tools, Homebrew, and the core Brewfile.                              |
-| `config`       | `setup/darwin/config.sh`       | Apply macOS system defaults (see [macOS](../macos/system-defaults.md)).                |
-| `stow`         | `setup/stow.sh`                | Symlink configs from this repo into `$HOME` via GNU stow.                              |
-| `packages`     | `setup/darwin/packages.sh`     | Pick a Brewfile profile, merge required packages, then `brew bundle install --global`. |
-| `shell`        | `setup/darwin/shell.sh`        | Set Zsh from Homebrew as the default login shell.                                      |
+| Stage          | Script                         | Purpose                                                                                                                |
+| -------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| `xdg`          | `setup/xdg.sh`                 | Create the XDG base directories under `$HOME`.                                                                         |
+| `requirements` | `setup/darwin/requirements.sh` | Install Xcode CLI tools, Homebrew, and the core Brewfile.                                                              |
+| `config`       | `setup/darwin/config.sh`       | Apply macOS system defaults (see [macOS](../macos/system-defaults.md)).                                                |
+| `stow`         | `setup/stow.sh`                | Symlink configs from this repo into `$HOME` via GNU stow.                                                              |
+| `packages`     | `setup/darwin/packages.sh`     | Pick a Brewfile profile, merge required packages, confirm the required trust set, then `brew bundle install --global`. |
+| `shell`        | `setup/darwin/shell.sh`        | Set Zsh from Homebrew as the default login shell.                                                                      |
 
 The Makefile exposes a target for the full run and one for each stage:
 
@@ -82,6 +82,16 @@ contents of `setup/darwin/Brewfile.requirements` (marked `# required packages --
 followed by everything else from the profile (marked `# profile packages`). Duplicates that are
 already in requirements are stripped from the profile section. Then `brew bundle install --global`
 syncs the merged file.
+
+!!! warning "Review the required trust set before installing"
+
+    Before the first `brew bundle install`, `packages.sh` prints the non-official taps, formulae, and casks
+    trusted by the repo-shipped [`setup/darwin/homebrew/trust.json`](../../setup/darwin/homebrew/trust.json) — the
+    set the requirements install loads, since the stage pins `XDG_CONFIG_HOME` to that directory — and waits for
+    you to confirm. These run third-party code; if you forked this repo, review the entries (and the
+    [trusted-taps list](../terminal/brew-bundle.md#trusted-taps)) and drop anything you don't want before
+    answering `y`. Once the install finishes, those entries are merged into your primary
+    `~/.config/homebrew/trust.json` so day-2 `brew bundle` runs trust them too.
 
 The shipped profile is [`Brewfile.personal`](../../.config/homebrew/Brewfile.personal) — the
 casks (`ghostty`, `hyperkey`, `yubico-authenticator`, the Nerd Fonts) and extras live there.

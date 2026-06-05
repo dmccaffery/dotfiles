@@ -117,9 +117,61 @@ if [ -r "${HOMEBREW_BUNDLE_FILE_GLOBAL}" ] && [ -r "${requirements_file}" ]; the
 	rm -f "${merged}"
 fi
 
+# The requirements install below pins XDG_CONFIG_HOME to SCRIPT_DIR, so brew
+# reads its trusted set from this repo-shipped file rather than the user's
+# primary ~/.config/homebrew/trust.json. Review *that* file here so the prompt
+# matches exactly what the install is about to load.
+required_trust_file="${SCRIPT_DIR}/homebrew/trust.json"
+if [ -r "${required_trust_file}" ]; then
+	trusted_entries=$(grep -oE '"[^"]*/[^"]*"' "${required_trust_file}" | tr -d '"' || true)
+	if [ -n "${trusted_entries:-}" ]; then
+		warn "the required trust.json trusts these non-official taps/formulae/casks; their code loads during install:"
+		printf '%s\n' "${trusted_entries}" | sed 's/^/      - /'
+
+		if [ -r /dev/tty ]; then
+			warn "review the entries above; proceed with install? [y/N]"
+			read -r reply < /dev/tty || reply=""
+			case "${reply}" in
+			[Yy] | [Yy][Ee][Ss]) ;;
+			*)
+				error "aborted: required trust not confirmed"
+				exit 1
+				;;
+			esac
+		else
+			warn "no tty available; skipping required-trust confirmation"
+		fi
+	fi
+fi
+
 info "installing / upgrading from brewfile..."
-brew bundle install --global
+XDG_CONFIG_HOME="${SCRIPT_DIR}" brew bundle install --global
 brew reinstall stow 1> /dev/null 2>&1
+
+# Fold the required trust entries into the user's primary trust.json so later
+# `brew bundle` / `brewfile` runs — which read ~/.config/homebrew/trust.json —
+# already trust everything the requirements install pulled in. jq is on PATH now
+# that the install (which provides it via Brewfile.requirements) has finished.
+primary_trust_file="${HOMEBREW_BUNDLE_DIR}/trust.json"
+if [ -r "${required_trust_file}" ] && command -v jq > /dev/null 2>&1; then
+	info "merging required trust entries into ${primary_trust_file}..."
+	mkdir -p "$(dirname "${primary_trust_file}")"
+	[ -e "${primary_trust_file}" ] || printf '{}\n' > "${primary_trust_file}"
+
+	merged_trust=$(mktemp)
+	if jq -s '
+		(.[0] // {}) as $primary
+		| (.[1] // {}) as $required
+		| reduce (($primary + $required) | keys_unsorted[]) as $key
+			({}; .[$key] = ((($primary[$key] // []) + ($required[$key] // [])) | unique))
+	' "${primary_trust_file}" "${required_trust_file}" > "${merged_trust}"; then
+		cat "${merged_trust}" > "${primary_trust_file}"
+		chmod 600 "${primary_trust_file}"
+	else
+		warn "could not merge required trust into ${primary_trust_file}; left unchanged"
+	fi
+	rm -f "${merged_trust}"
+fi
 
 info "cleaning up brew services"
 brew services cleanup --quiet

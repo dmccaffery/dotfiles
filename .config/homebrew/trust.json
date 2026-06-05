@@ -1,0 +1,13 @@
+{
+  "trustedtaps": [
+    "anomalyco/tap",
+    "bufbuild/buf",
+    "controlplaneio-fluxcd/tap",
+    "derailed/k9s",
+    "fluxcd/tap",
+    "hashicorp/tap",
+    "jandedobbeleer/oh-my-posh",
+    "oven-sh/bun"
+  ],
+  "trustedformulae": ["derailed/k9s/k9s"]
+}
