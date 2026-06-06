@@ -9,6 +9,10 @@ CHANGELOG.md
 # Claude Code owns settings.json formatting; the sandbox also blocks rewriting it.
 .claude/settings.json
 
+# Go sources and test fixtures (prettier would mangle .go, JSON and golden data).
+cmd/
+internal/
+
 # Build/runtime artifacts (also in .gitignore, repeated for clarity).
 site/
 node_modules/

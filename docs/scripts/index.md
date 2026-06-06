@@ -5,7 +5,9 @@ icon: lucide/code
 # Custom scripts
 
 All scripts live in `.local/share/scripts/`. The directory is added to `PATH` by `.zshenv`
-(only if it exists), so anything dropped in is immediately callable by name.
+(only if it exists), so anything dropped in is immediately callable by name. A few commands —
+`worktree`, `agent-tmux-status`, and `brewfile` — are now provided by the
+[`dot`](../tooling/dot.md) Go CLI and appear here as symlinks to the built binary.
 
 ## Inventory
 
@@ -35,7 +37,7 @@ All scripts live in `.local/share/scripts/`. The directory is added to `PATH` by
 
 ## How scripts use color & logging
 
-Every script uses the same minimal pattern based on `tput`:
+Every **shell** script uses the same minimal pattern based on `tput`:
 
 ```sh
 default_color=$(tput sgr 0)
@@ -49,4 +51,6 @@ red="$(tput setaf 1)"
 error()   { printf "%s==> %s%s\n" "$red"    "$1" "$default_color"; }
 ```
 
-This makes script output trivially scannable when chained together by the installer.
+This makes shell-script output trivially scannable when chained together by the installer. The
+[`dot`](../tooling/dot.md) commands log through `log/slog` instead — styled, leveled lines on a
+terminal, or structured JSON when their output is piped.

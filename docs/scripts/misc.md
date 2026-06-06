@@ -80,7 +80,8 @@ brewfile add <package> [brew bundle flags...]
 brewfile remove <package>
 ```
 
-Wraps the two-step day-2 Brewfile flow into one command:
+A [`dot`](../tooling/dot.md) applet (same interface as the former shell script) that wraps the
+two-step day-2 Brewfile flow into one command:
 
 1. `brew bundle <add|remove> "$@" --global` — edit `$HOMEBREW_BUNDLE_FILE_GLOBAL`.
 2. `brew bundle install --global --zap --upgrade` — install, upgrade outdated formulae, and (because
@@ -96,5 +97,5 @@ before the install runs. The `--cask`/`--tap`/`--formula` flag decides which `tr
 (`trustedcasks`, `trustedtaps`, `trustedformulae`); bare names resolve to `homebrew/core`/`homebrew/cask` and
 are trusted by default, so they are skipped. If a referenced entry is missing from
 [`trust.json`](../../.config/homebrew/trust.json), you are prompted to `brew trust --<type> <name>` it — keeping
-`brew bundle install` from stalling on an untrusted tap mid-run. Answer `N` to leave it untrusted; with no tty
-the prompt is skipped with a warning.
+`brew bundle install` from stalling on an untrusted tap mid-run. Decline to leave it untrusted; with no tty the
+prompt is skipped with a warning.

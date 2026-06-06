@@ -1,34 +1,23 @@
-.*
+# macos
+.DS_Store
+
+# backup / restore
 backups/
 
 # zensical docs site
 site/
 __pycache__/
+.venv/
+.cache/
 
 # npm toolchain
 node_modules/
 
-!.claude/
+# go (the dot binary installs to ~/.local/bin; these guard accidental in-tree builds)
+/dot
+*.test
+coverage.out
+coverage.html
+
+# claude
 .claude/plans/
-.claude/worktrees/
-
-!.config/
-!.github/
-!.local/
-!.ssh/
-!.terminfo/
-
-!.gitignore
-!.gitattributes
-!.gitkeep
-
-!.zshrc
-!.zshenv
-!.stowrc
-!.stow-local-ignore
-!.editorconfig
-!.prettierignore
-!.markdownlint-cli2.yaml
-!.release-please-manifest.json
-
-!.luarc.json

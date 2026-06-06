@@ -92,6 +92,7 @@ nav = [
     { "Contribution Guide" = [
         "tooling/index.md",
         "tooling/stow-and-make.md",
+        "tooling/dot.md",
         "tooling/release-please.md",
         "tooling/linting.md",
         "tooling/contributing.md",

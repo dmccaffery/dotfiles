@@ -78,8 +78,9 @@ tmux new-window -a -d -t "${editor_window}" -n '  zsh' -c "${selected}"
 
 ### The shared sanitizer { #sanitizer }
 
-Both [`tmux-session start`](#tmux-session-start) and [`worktree start`](index.md) run names
-through the same `sanitize` helper, so `fix/stow symlinks` becomes `fix-stow-symlinks`. It
+[`tmux-session start`](#tmux-session-start) and [`worktree start`](index.md) apply the same
+sanitization rules — `worktree` now via the [`dot`](../tooling/dot.md) CLI's
+`internal/worktree.Sanitize` — so `fix/stow symlinks` becomes `fix-stow-symlinks`. It
 collapses any character outside `A-Za-z0-9_-` to `-`, with special handling for `.`: tmux
 3.5+ rejects `.` in session names (it's the session/window/pane separator), so dots are
 encoded rather than dropped — a leading `.` becomes `dot-`, a trailing `.` becomes `-dot`,
@@ -136,8 +137,8 @@ agent-tmux-status attention   # the agent needs you now — permission / notific
 agent-tmux-status clear       # lower the indicator (also the default with no/unknown arg)
 ```
 
-A no-op-safe leaf script shared by three coding agents so the indicator tracks whether any is
-waiting on you:
+A no-op-safe [`dot`](../tooling/dot.md) applet shared by three coding agents so the indicator
+tracks whether any is waiting on you:
 
 - **Claude Code** drives it through five
   [hooks](../claude/hooks-skills.md#claude-is-waiting-indicator) — `Stop` calls it with
@@ -163,7 +164,7 @@ It branches on `$TMUX`:
   caller's stdout), prefixing the cwd basename with `●` (waiting) or `󰂚` (attention) and
   dropping it on clear.
 
-Every `tmux`/`printf` call is guarded with `|| true` and the script never exits non-zero, so a
-missing tmux server or detached tty can't fail an agent turn. The fallback glyphs live in the
-`waiting_glyph` / `attention_glyph` lines at the top of the script; the in-tmux colours and
-glyphs live in [`theme.conf`](../terminal/tmux.md#agent-status).
+Every `tmux` call and title write is best-effort and the command never exits non-zero, so a
+missing tmux server or detached tty can't fail an agent turn. The fallback glyphs are defined in
+the `agent-tmux-status` command; the in-tmux colours and glyphs live in
+[`theme.conf`](../terminal/tmux.md#agent-status).

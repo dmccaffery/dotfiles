@@ -109,6 +109,7 @@ requirements: ## Install Xcode CLI tools, Homebrew, and the base Brewfile
 | `make help` (default) | Self-documenting target list                                                                                       |
 | `make packages`       | `./install.sh packages`                                                                                            |
 | `make stow`           | `./install.sh stow`                                                                                                |
+| `make build`          | `./install.sh build` — build the [`dot`](dot.md) CLI and link its applets                                          |
 | `make fmt`            | `npm install` + `npx prettier --write 'docs/**/*.md'`                                                              |
 | `make lint`           | `fmt` first, then `shellcheck --severity=warning` over every shell script + `markdownlint-cli2 'docs/**/*.md'`     |
 | `make docs-serve`     | `uv sync` + `uv run zensical serve`                                                                                |

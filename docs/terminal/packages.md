@@ -89,9 +89,10 @@ so credit lands where it belongs.
 
 ### Utilities
 
-| Package                                         | Upstream                                       | Purpose                                                                |
-| ----------------------------------------------- | ---------------------------------------------- | ---------------------------------------------------------------------- |
-| [`stow`](https://formulae.brew.sh/formula/stow) | [GNU Stow](https://www.gnu.org/software/stow/) | Symlink-farm manager — see [Stow & Make](../tooling/stow-and-make.md). |
+| Package                                         | Upstream                                       | Purpose                                                                   |
+| ----------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------- |
+| [`stow`](https://formulae.brew.sh/formula/stow) | [GNU Stow](https://www.gnu.org/software/stow/) | Symlink-farm manager — see [Stow & Make](../tooling/stow-and-make.md).    |
+| [`go`](https://formulae.brew.sh/formula/go)     | [golang/go](https://github.com/golang/go)      | Go toolchain — builds the [`dot`](../tooling/dot.md) CLI at install time. |
 
 ### Third-party formulae
 

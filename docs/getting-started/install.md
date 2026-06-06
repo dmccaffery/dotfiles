@@ -29,7 +29,7 @@ cd ~/Repos/dotfiles
 The default invocation runs every stage in order:
 
 ```text
-xdg → requirements → config → stow → packages → shell
+xdg → requirements → config → stow → build → packages → shell
 ```
 
 To run a subset, pass stages as arguments:
@@ -46,6 +46,7 @@ To run a subset, pass stages as arguments:
 | `requirements` | `setup/darwin/requirements.sh` | Install Xcode CLI tools, Homebrew, and the core Brewfile.                                                              |
 | `config`       | `setup/darwin/config.sh`       | Apply macOS system defaults (see [macOS](../macos/system-defaults.md)).                                                |
 | `stow`         | `setup/stow.sh`                | Symlink configs from this repo into `$HOME` via GNU stow.                                                              |
+| `build`        | `setup/build.sh`               | Build the [`dot`](../tooling/dot.md) Go CLI into `~/.local/bin` and link its applets into `~/.local/share/scripts`.    |
 | `packages`     | `setup/darwin/packages.sh`     | Pick a Brewfile profile, merge required packages, confirm the required trust set, then `brew bundle install --global`. |
 | `shell`        | `setup/darwin/shell.sh`        | Set Zsh from Homebrew as the default login shell.                                                                      |
 
@@ -58,6 +59,7 @@ make xdg            # ./install.sh xdg
 make requirements   # ./install.sh requirements
 make config         # ./install.sh config
 make stow           # ./install.sh stow
+make build          # ./install.sh build
 make packages       # ./install.sh packages
 make shell          # ./install.sh shell
 ```

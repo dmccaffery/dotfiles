@@ -47,6 +47,7 @@ Use this map to find the right page (extend as new sections are added):
 | `.config/git/config` and friends                         | `docs/git/config.md` (+ `git-town.md` / `auth.md`)                    |
 | Security-key flow scripts                                | `docs/git/signing-security-keys.md` + `docs/scripts/security-keys.md` |
 | `.local/share/scripts/**`                                | the relevant `docs/scripts/*.md` page (+ `index.md` table)            |
+| `cmd/**`, `internal/**`, `go.mod`, `setup/build.sh`      | `docs/tooling/dot.md`                                                 |
 | `setup/darwin/config.sh`                                 | `docs/macos/system-defaults.md`                                       |
 | `Library/LaunchAgents/**`                                | `docs/macos/launchagents.md`                                          |
 | `.claude/settings.json`, `.claude/themes/**`             | `docs/claude/{settings,theme}.md`                                     |

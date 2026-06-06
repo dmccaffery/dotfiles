@@ -32,6 +32,10 @@ config: ## Apply macOS system defaults
 stow: ## Symlink configs into ~/ via stow
 	@ ./install.sh stow
 
+.PHONY: build
+build: ## Build the dot CLI and link its applets into ~/.local/share/scripts
+	@ ./install.sh build
+
 .PHONY: packages
 packages: ## Install all packages, including those in a selected profile
 	@ ./install.sh packages
