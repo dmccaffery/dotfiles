@@ -12,12 +12,12 @@ and opinionated:
 
 ```json title=".claude/settings.json"
 {
+    "$schema": "https://json.schemastore.org/claude-code-settings.json",
     "theme": "custom:cyberdream",
     "tui": "fullscreen",
     "autoMemoryEnabled": true,
     "cleanupPeriodDays": 7,
     "editorMode": "vim",
-    "effortLevel": "high",
     "attribution": { "commit": "", "pr": "" },
     "autoUpdatesChannel": "stable",
     "includeGitInstructions": false,
@@ -86,10 +86,7 @@ and opinionated:
         "WorktreeCreate": [{ "hooks": [{ "type": "command", "command": "~/.local/share/scripts/worktree start" }] }],
         "WorktreeRemove": [{ "hooks": [{ "type": "command", "command": "~/.local/share/scripts/worktree end" }] }]
     },
-    "worktree": { "baseRef": "head" },
-    "env": {
-        "IS_DEMO": "1"
-    }
+    "worktree": { "baseRef": "head" }
 }
 ```
 
@@ -97,10 +94,10 @@ and opinionated:
 > Claude Code does not perform environment-variable expansion on values in `settings.json`, so
 > tokens like `${REPOS_DIR}` were being treated as literal directory names and silently failing
 > to match anything. The `statusLine` and `hooks` command paths use `~/` (which Claude expands
-> for command fields) or absolute roots (`/opt/homebrew`, `/tmp`). The `env` block is stricter
-> still — it does **not** expand `~` or `$HOME` either, so any value there must be a literal
-> absolute path. That is why Go's path overrides live in [`.zshenv`](../terminal/shell.md), not
-> here: a relative-looking `~/...` or `$HOME/...` `GOPATH` makes `go` fail with
+> for command fields) or absolute roots (`/opt/homebrew`, `/tmp`). An `env` block would be
+> stricter still — it does **not** expand `~` or `$HOME` either, so any value there must be a
+> literal absolute path. That is why Go's path overrides live in [`.zshenv`](../terminal/shell.md),
+> not here: a relative-looking `~/...` or `$HOME/...` `GOPATH` makes `go` fail with
 > _"GOPATH entry is relative; must be absolute path"_.
 
 ## What each block does
@@ -152,16 +149,6 @@ lets Claude Code pick the mode based on context rather than always opening in th
 prompt-for-everything mode — sandbox-safe
 commands run without a prompt while the [sandbox](#sandbox) and the [permission](#permissions)
 `deny`/`denyRead` lists remain the real boundary. Cycle modes mid-session with ++shift+tab++.
-
-### Effort level
-
-```json
-"effortLevel": "high"
-```
-
-Biases the model toward more thorough reasoning on each turn. `high` favours deeper analysis
-over latency — the right default for the configuration and infrastructure work this repo is
-mostly used for.
 
 ### Attribution
 
@@ -472,20 +459,11 @@ committed locally.
 
 ### Environment
 
-```json
-"env": {
-  "IS_DEMO": "1"
-}
-```
-
-`env` injects environment variables into every Claude Code session:
-
-| Variable  | Value | Purpose                                                                 |
-| --------- | ----- | ----------------------------------------------------------------------- |
-| `IS_DEMO` | `1`   | Enables Claude Code's demo mode (intentional, not a leaked credential). |
+The shipped file sets **no `env` block** — Claude Code injects nothing into the session
+environment beyond what the shell already provides.
 
 Go's path overrides (`GOPATH`, `GOCACHE`, `GOMODCACHE`, `GOENV`) deliberately do **not** live
-here. The `env` block does no variable expansion, so a `~/...` or `$HOME/...` value reaches `go`
+here. An `env` block does no variable expansion, so a `~/...` or `$HOME/...` value would reach `go`
 verbatim and fails as a relative path (_"GOPATH entry is relative; must be absolute path"_).
 They live in [`.zshenv`](../terminal/shell.md) instead, where `${XDG_DATA_HOME}` /
 `${XDG_CACHE_HOME}` expand to absolute paths. The targets still land under `~/.cache/go` and
