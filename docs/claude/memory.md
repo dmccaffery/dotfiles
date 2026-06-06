@@ -54,14 +54,14 @@ working in a git worktree:
 
 Both forms obey the same rules:
 
-| Rule            | Detail                                                                                                                                                                                                                                         |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Location        | Written at the working-directory root (the repo root, or the worktree root).                                                                                                                                                                   |
-| Never committed | Kept out of version control. The name has no leading dot, so the top-level `.*` rule misses it — in this repo an explicit `commit.sh` entry in [`.gitignore`](https://github.com/dmccaffery/dotfiles/blob/main/.gitignore) catches it instead. |
-| Header          | Starts with `#!/usr/bin/env sh`, then `set -eu`.                                                                                                                                                                                               |
-| Single batch    | Overwrites any prior `commit.sh` — the file is the _current_ batch, not history.                                                                                                                                                               |
-| Executable      | `chmod +x`'d on write, so you can run it as `./commit.sh`.                                                                                                                                                                                     |
-| Self-deleting   | Ends with `rm -- "$0"`, so a successful run removes the script; under `set -eu` a failed commit aborts before the `rm`, leaving it in place to rerun.                                                                                          |
+| Rule            | Detail                                                                                                                                                                                                  |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Location        | Written at the working-directory root (the repo root, or the worktree root).                                                                                                                            |
+| Never committed | Kept out of version control by the global ignore at `~/.config/git/ignore` (wired up via `core.excludesFile` in [`.config/git/config`](../git/config.md)), so no per-repo `.gitignore` entry is needed. |
+| Header          | Starts with `#!/usr/bin/env sh`, then `set -eu`.                                                                                                                                                        |
+| Single batch    | Overwrites any prior `commit.sh` — the file is the _current_ batch, not history.                                                                                                                        |
+| Executable      | `chmod +x`'d on write, so you can run it as `./commit.sh`.                                                                                                                                              |
+| Self-deleting   | Ends with `rm -- "$0"`, so a successful run removes the script; under `set -eu` a failed commit aborts before the `rm`, leaving it in place to rerun.                                                   |
 
 !!! note "Why the indirection"
 

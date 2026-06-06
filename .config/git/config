@@ -1,5 +1,6 @@
 [core]
-	autocrlf = input
+    autocrlf = input
+    excludesFile = ~/.config/git/ignore
 
 [checkout]
 	defaultRemote = origin

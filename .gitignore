@@ -1,9 +1,6 @@
 .*
 backups/
 
-# transient agent commit-handoff script (no leading dot, so .* misses it)
-commit.sh
-
 # zensical docs site
 site/
 __pycache__/

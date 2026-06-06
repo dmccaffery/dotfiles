@@ -38,11 +38,7 @@ from inside the sandbox is therefore unsigned. Hand the real commit off to the u
 
 Both variants:
 
-- Live at the working-directory root and **must be gitignored before you write it**. The
-  name has no leading dot, so a `.*` rule won't catch it — add an explicit `commit.sh` entry
-  to the repo's `.gitignore` (or `.git/info/exclude`) if one isn't already there, then
-  confirm with `git check-ignore commit.sh` that it's covered. The script must never appear
-  as a tracked or committable change.
+- Do not add to the repository `.gitignore`. It is in the global `~/.config/git/ignore`.
 - Start with `#!/usr/bin/env sh` + `set -eu` and overwrite any prior `commit.sh` — the file
   is the _current_ batch, not history.
 - Are `chmod +x`'d when written so the user can run them as `./commit.sh`.

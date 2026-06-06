@@ -12,6 +12,7 @@ icon: simple/git
 ```ini
 [core]
     autocrlf = input
+    excludesFile = ~/.config/git/ignore
 
 [checkout]
     defaultRemote = origin
@@ -33,16 +34,17 @@ icon: simple/git
     templatedir = ~/.config/git/template
 ```
 
-| Setting                     | Effect                                                                  |
-| --------------------------- | ----------------------------------------------------------------------- |
-| `core.autocrlf = input`     | Normalize line endings to LF in the repo; never auto-convert on out.    |
-| `log.showSignature = true`  | `git log` displays signature verification status by default.            |
-| `pull.ff = only`            | `git pull` only fast-forwards — refuses to create merge commits.        |
-| `pull.rebase = true`        | When fast-forward isn't possible, rebase instead of merging.            |
-| `rebase.autoStash`          | Auto-stash dirty working tree before rebasing.                          |
-| `rebase.autoSquash`         | Honor `fixup!` / `squash!` commit prefixes when rebasing interactively. |
-| `init.defaultBranch = main` | New repos use `main`.                                                   |
-| `init.templatedir`          | New repos get the commit-msg hook (see [Template](#template)).          |
+| Setting                     | Effect                                                                      |
+| --------------------------- | --------------------------------------------------------------------------- |
+| `core.autocrlf = input`     | Normalize line endings to LF in the repo; never auto-convert on out.        |
+| `core.excludesFile`         | Global ignore at `~/.config/git/ignore` (e.g. agent-generated `commit.sh`). |
+| `log.showSignature = true`  | `git log` displays signature verification status by default.                |
+| `pull.ff = only`            | `git pull` only fast-forwards — refuses to create merge commits.            |
+| `pull.rebase = true`        | When fast-forward isn't possible, rebase instead of merging.                |
+| `rebase.autoStash`          | Auto-stash dirty working tree before rebasing.                              |
+| `rebase.autoSquash`         | Honor `fixup!` / `squash!` commit prefixes when rebasing interactively.     |
+| `init.defaultBranch = main` | New repos use `main`.                                                       |
+| `init.templatedir`          | New repos get the commit-msg hook (see [Template](#template)).              |
 
 ## LFS
 
