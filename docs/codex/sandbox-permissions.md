@@ -52,7 +52,8 @@ that land outside the current repo. Verify the resolved policy with `codex docto
 Starlark execpolicy that auto-loads from `$CODEX_HOME/rules/`. It mirrors the OpenCode/Claude Code Bash allowlist:
 
 - **`decision = "allow"`** auto-runs read-only inspection (`ls`, `cat`, `grep`, `rg`, `find`, `jq`, …), read-only
-  Homebrew and Git queries, the staging/branch Git verbs the agent routinely needs, and `chmod +x commit.sh`.
+  Homebrew and Git queries, the staging/branch Git verbs the agent routinely needs, Codex's own `--help` probes
+  (`codex --help`, `codex doctor --help`, `codex exec --help`), and `chmod +x commit.sh`.
 - **`decision = "forbidden"`** blocks `security` (the macOS keychain dump path — Claude Code's `Bash(security *)`).
 - Anything unmatched (e.g. `rm -rf …`, `curl …`) falls through to an approval prompt.
 

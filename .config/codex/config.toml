@@ -1,3 +1,5 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
 # Codex CLI configuration — the OpenAI agent, brought to the same guardrails as
 # Claude Code (.claude/settings.json) and OpenCode (.config/opencode/opencode.jsonc).
 #
@@ -29,13 +31,13 @@ sandbox_mode = "workspace-write"
 # inside ~/Repos/<repo> needs no entry here; these cover writes that land
 # outside the current repo (agent worktrees + language/tool caches).
 writable_roots = [
-    "~/Repos",
-    "~/.cache/agent/worktrees",
-    "~/.cache/uv",
-    "~/.cache/pip",
-    "~/.cache/go",
-    "~/.local/share/go",
-    "~/.npm",
+  "~/Repos",
+  "~/.cache/agent/worktrees",
+  "~/.cache/uv",
+  "~/.cache/pip",
+  "~/.cache/go",
+  "~/.local/share/go",
+  "~/.npm",
 ]
 # Claude Code allow-lists ~20 network hosts (npm, pypi, github, …). Codex's
 # sandbox can only toggle network as a whole, so we enable it to keep installs
@@ -94,6 +96,7 @@ command = "~/.local/share/scripts/agent-tmux-status clear"
 # a .env file, or the macOS `security` keychain tool — the OpenCode bash-deny set.
 [[hooks.PreToolUse]]
 matcher = "^Bash$"
+
 [[hooks.PreToolUse.hooks]]
 type = "command"
 command = "~/.config/codex/hooks/pre-tool-use-policy"
