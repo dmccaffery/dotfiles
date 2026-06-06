@@ -1,5 +1,9 @@
 .DEFAULT_GOAL := help
 
+# Run Node CLIs straight from node_modules so package-lock.json is the source of
+# truth. Do not use npx or global developer-installed tools.
+NPMBIN := ./node_modules/.bin
+
 .PHONY: backup
 backup: ## Move conflicting configs out of $HOME into ./backups
 	@ ./backup.sh
@@ -36,10 +40,17 @@ packages: ## Install all packages, including those in a selected profile
 shell: ## Set Zsh from Homebrew as the default login shell
 	@ ./install.sh shell
 
+node_modules: package.json package-lock.json
+	@ npm ci
+	@ touch node_modules
+
 .PHONY: fmt
-fmt: ## Install npm deps and auto-format the repo with prettier
-	@ npm install --silent --no-audit --no-fund
-	@ npx prettier --write .
+fmt: node_modules ## Install locked npm deps and auto-format the repo with prettier
+	@ $(NPMBIN)/prettier --write .
+
+.PHONY: scrub
+scrub: ## Remove generated private state from tracked config files
+	@ ./hack/scrub-codex-config-state.sh
 
 .PHONY: lint
 lint: SHELL := bash
@@ -52,7 +63,7 @@ lint: fmt ## Format the repo, then run shellcheck on shell scripts and markdownl
 		.local/share/scripts/* \
 		.config/git/template/hooks/* \
 		.ssh/rc
-	@ npx markdownlint-cli2 '**/*.md'
+	@ $(NPMBIN)/markdownlint-cli2 '**/*.md'
 
 .PHONY: docs-serve
 docs-serve: ## Sync deps and serve the docs site at http://localhost:8000
@@ -63,6 +74,13 @@ docs-serve: ## Sync deps and serve the docs site at http://localhost:8000
 docs-build: lint ## Lint, then sync deps and build the docs site into ./site
 	@ uv sync
 	@ uv run zensical build --clean
+
+.PHONY: commit
+commit: ## Run ./commit.sh when the current batch has one
+	@ if [ -f ./commit.sh ]; then ./commit.sh; else printf 'No commit.sh found; skipping.\n'; fi
+
+.PHONY: pr
+pr: scrub fmt lint commit ## Scrub generated state, format, lint, then run commit.sh if present
 
 .PHONY: upgrade
 upgrade: ## Upgrade npm + uv deps (bypasses dependabot cooldown — confirms first)

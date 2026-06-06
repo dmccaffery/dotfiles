@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/refs/heads/main/schema/markdownlint-cli2-config-schema.json
 config:
   default: true
   line-length:
@@ -19,13 +20,6 @@ config:
       - p
   no-space-in-code: false
   link-fragments: false
+gitignore: true
 ignores:
   - CHANGELOG.md
-  - node_modules/
-  - "**/node_modules/**"
-  - .venv/
-  - .cache/
-  - site/
-  - backups/
-  - .claude/plans
-  - .claude/worktrees

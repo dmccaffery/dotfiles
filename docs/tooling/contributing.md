@@ -18,31 +18,44 @@ in a dedicated `.markdownlint-cli2.yaml`.
 # install zensical + deps into .venv, then serve at http://localhost:8000
 make docs-serve
 
-# auto-format docs with prettier (npm install on first run)
+# auto-format with the package-lock-pinned prettier
 make fmt
 
 # fmt + shellcheck + markdownlint
 make lint
 
+# remove generated private Codex state from tracked config
+make scrub
+
 # lint + zensical build --clean, output: ./site
 make docs-build
+
+# scrub + fmt + lint + ./commit.sh when present
+make pr
 
 # upgrade npm + uv deps to latest matching versions (prompts before running)
 make upgrade
 ```
 
-`make docs-serve` wraps `uv sync` + `uv run zensical serve`. `make fmt` runs
-`npm install --silent` (idempotent against `package-lock.json`) then
-`npx prettier --write 'docs/**/*.md'`. `make lint` depends on `fmt`, then runs
+`make docs-serve` wraps `uv sync` + `uv run zensical serve`. `make fmt` depends on
+`node_modules`, which runs `npm ci` so `package-lock.json` is the exact source of truth,
+then runs `./node_modules/.bin/prettier --write .`. `make scrub` strips Codex-generated runtime
+state from `.config/codex/config.toml` so it (and the absolute local paths it embeds) never lands
+in the public repo. It works off an allowlist of the real configuration tables and drops every
+other table, so any state form Codex appends later (`[projects]`, `[hooks.state]`,
+`[tui.model_availability_nux]`, …) is scrubbed without a script change.
+`make lint` depends on `fmt`, then runs
 `shellcheck --severity=warning --external-sources …` over every shell script
 (`install.sh`, `restore.sh`, `backup.sh`, `hack/*.sh`, `setup/**/*.sh`,
 `.local/share/scripts/*`, the git template hooks, and `.ssh/rc`) followed by
-`npx markdownlint-cli2 'docs/**/*.md'`.
+`./node_modules/.bin/markdownlint-cli2 '**/*.md'`.
 `make docs-build` depends on `lint`, then runs `uv sync` + `uv run zensical build --clean`.
+`make commit` runs `./commit.sh` when the current batch has one and otherwise skips cleanly;
+`make pr` runs `scrub`, `fmt`, `lint`, and `commit` in order.
 `make upgrade` prompts for confirmation (because it bypasses the 7-day dependabot
 cooldown), then runs `npm update` to refresh `package-lock.json` and `uv sync --upgrade` to
 refresh `uv.lock`. Prefer merging the matching dependabot PR when one is already open.
-Drop down to raw `uv` / `npx` / `shellcheck` commands when you need flags the targets don't
+Drop down to raw `uv` / `shellcheck` commands when you need flags the targets don't
 pass through.
 
 The first `uv sync` pins `zensical>=0.0.43` (latest at time of writing — still alpha) and

@@ -86,6 +86,7 @@ config:
             - p
     no-space-in-code: false
     link-fragments: false
+gitignore: true
 ignores:
     - CHANGELOG.md
     - node_modules/
@@ -98,8 +99,8 @@ ignores:
     - .claude/worktrees
 ```
 
-- **Whole-repo scope** — `make lint` runs `npx markdownlint-cli2 '**/*.md'`, so every
-  markdown file in the repo is linted, not just `docs/`. The top-level `README.md` and
+- **Whole-repo scope** — `make lint` runs `./node_modules/.bin/markdownlint-cli2 '**/*.md'`, so
+  every markdown file in the repo is linted, not just `docs/`. The top-level `README.md` and
   `AGENTS.md` are now covered.
 - **120-char wrap** across body, headings, and fenced code blocks; tables are exempt because
   prettier auto-pads them past 120.
@@ -115,10 +116,13 @@ ignores:
   is needed for tmux window names with nerd-font prefixes.
 - **`link-fragments: false`** — pymdownx `attr_list` IDs (`## Heading { #anchor }`) render
   in zensical but markdownlint can't resolve them.
+- **`gitignore: true`** makes markdownlint-cli2 honor `.gitignore`, so locally-generated but
+  untracked markdown (e.g. the `.config/codex/skills/` agent skills) is skipped automatically
+  instead of failing the lint. The explicit `ignores` list stays as a belt-and-suspenders for
+  paths that are tracked but should not be linted.
 - **`CHANGELOG.md` is ignored** — release-please writes it. The remaining `ignores` entries
-  keep markdownlint out of build/runtime artifacts, including nested package installs like
-  `.config/opencode/node_modules/` (markdownlint-cli2 does not honor `.gitignore`
-  automatically, so these need to be listed explicitly).
+  keep markdownlint out of build/runtime artifacts and nested package installs like
+  `.config/opencode/node_modules/`.
 
 ## shellcheck
 
@@ -137,9 +141,9 @@ make lint   # depends on fmt → shellcheck + markdownlint-cli2
 make docs-build   # depends on lint → uv sync + zensical build --clean
 ```
 
-`make fmt` runs `npm install` first, so the first invocation populates `node_modules/` from
-`package-lock.json`. Re-runs are fast because `npm install` is a no-op when the lock is in
-sync.
+`make fmt` depends on a `node_modules` target that runs `npm ci`, so `package-lock.json` is the
+exact source of truth for the toolchain. The target is gated on the lockfile's mtime, so re-runs
+are a no-op once `node_modules/` is in sync.
 
 Need to run a single tool by hand?
 
