@@ -32,7 +32,7 @@ For programmatic CLI access, use [`git-github-auth`](../scripts/security-keys.md
 a helper script that validates `gh auth status` and ensures the required scopes are present:
 
 > `gist`, `notifications`, `project`, `repo`, `user`, `workflow`, `read:org`,
-> `read:public_key`, `read:ssh_signing_key`
+> `read:public_key`, `read:ssh_signing_key`, `write:ssh_signing_key`
 
 If any scope is missing the script re-runs `gh auth refresh` with the full set.
 
@@ -45,6 +45,9 @@ before every `gh` command. Set it once per clone:
 ```sh
 git config github.account <login>
 ```
+
+The same key also tells [`ssh-sk get --git`](signing-security-keys.md) which local YubiKey stub to
+use for SSH commit signing.
 
 ## Codeberg / Forgejo
 
@@ -76,6 +79,13 @@ flow works because Forgejo implements the standard endpoints.
 For `git-town`, `forge-type = forgejo` switches the workflow integrations (PRs become
 "proposals" mapped to Forgejo PRs).
 
+Set the Forgejo signing account once per clone so `ssh-sk get --git` can choose the matching local
+YubiKey stub without querying the Forgejo API:
+
+```sh
+git config forgejo.account <login>
+```
+
 ## GitLab
 
 ```ini
@@ -95,8 +105,9 @@ git-github-auth                # interactive picker — choose an account or "ne
 git-github-auth <login>        # switch to a specific account
 ```
 
-The picker lists every account already authenticated on this machine, plus a **`new account`** entry. Select
-`new account` to run a fresh `gh auth login` for an account that has never been authenticated here.
+The picker lists every account already authenticated on this machine, plus a **`new account`**
+entry. Select `new account` to run a fresh `gh auth login` for an account that has never been
+authenticated here.
 
 ## See also
 

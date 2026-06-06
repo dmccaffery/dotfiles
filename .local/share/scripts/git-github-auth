@@ -29,7 +29,7 @@ function join_by {
 }
 
 account="${1:-}"
-required_scopes=('gist' 'notifications' 'project' 'repo' 'user' 'workflow' 'read:org' 'read:public_key' 'read:ssh_signing_key')
+required_scopes=('gist' 'notifications' 'project' 'repo' 'user' 'workflow' 'read:org' 'read:public_key' 'read:ssh_signing_key' 'write:ssh_signing_key')
 
 if [ -z "${account:-}" ]; then
 	account=$(

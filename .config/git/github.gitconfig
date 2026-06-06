@@ -7,7 +7,7 @@
 	helper = !gh auth git-credential
 
 [gpg "ssh"]
-	defaultKeyCommand = "ssh-sk get --github"
+	defaultKeyCommand = "ssh-sk get --git"
 
 [git-town]
 	github-connector = gh

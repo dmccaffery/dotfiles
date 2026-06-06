@@ -11,7 +11,7 @@
 	provider = generic
 
 [gpg "ssh"]
-	defaultKeyCommand = "ssh-sk get --forgejo"
+	defaultKeyCommand = "ssh-sk get --git"
 
 [git-town]
     forge-type = forgejo
