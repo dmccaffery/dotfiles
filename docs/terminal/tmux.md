@@ -123,8 +123,10 @@ self-bootstraps by `curl`-ing it from the
 on first run.
 
 The status bar shows: session name plus current pane command on the left, window list in the
-centre, and the short hostname on the right. When tmux has `SSH_CONNECTION`, the hostname is
-followed by `| 󰣀` with the SSH glyph in red; local sessions omit both the separator and glyph.
+centre, and the short hostname on the right. The session name doubles as the prefix-key
+indicator — green while idle, red and bold while the ++ctrl+a++ prefix is held. When tmux has
+`SSH_CONNECTION`, the hostname is followed by `| 󰣀` with the SSH glyph in red; local sessions
+omit both the separator and glyph.
 
 ### Agent-is-waiting indicator { #agent-status }
 
