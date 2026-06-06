@@ -30,13 +30,13 @@ sanitize() {
 	# tmux >=3.5 rejects '.' in session names, so encode dots before falling back
 	# to '-' for any other disallowed character: leading '.' -> 'dot-', trailing
 	# '.' -> '-dot', interior '.' -> '-dot-'.
-	printf '%s' "${1}" \
-		| sed -e 's/^\./dot-/' -e 's/\.$/-dot/' -e 's/\./-dot-/g' \
-		| tr -c 'A-Za-z0-9_-' '-'
+	printf '%s' "${1}" |
+		sed -e 's/^\./dot-/' -e 's/\.$/-dot/' -e 's/\./-dot-/g' |
+		tr -c 'A-Za-z0-9_-' '-'
 }
 
 usage() {
-	cat >&2 <<-'EOF'
+	cat >&2 <<- 'EOF'
 		usage: tmux-session <command> [args]
 
 		commands:
@@ -80,7 +80,7 @@ start() {
 	fi
 
 	if ! tmux has-session -t "${name}" 2> /dev/null; then
-		editor_pane=$(tmux -u new-session -d -P -F '#{pane_id}' -s "${name}" -n ' nvim' -c "${selected}" -x - -y - "${EDITOR}" .)
+		editor_pane=$(tmux -u new-session -d -P -F '#{pane_id}' -s "${name}" -n '  nvim' -c "${selected}" -x - -y - "${EDITOR}" .)
 		editor_window=$(tmux display-message -p -t "${editor_pane}" '#{window_id}')
 		tmux split-window -t "${editor_pane}" -v -l '10%' -c "${selected}"
 		tmux select-pane -t "${editor_pane}"
@@ -89,15 +89,15 @@ start() {
 			tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󰚩  opencode' "${opencode_bin}"
 		fi
 
-		if [ -n "${claude_bin}" ]; then
-			tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󰯉  claude' "${claude_bin}"
-		fi
-
 		if [ -n "${codex_bin}" ]; then
 			tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󱙺  codex' "${codex_bin}"
 		fi
 
-		tmux new-window -a -d -t "${editor_window}" -n ' zsh' -c "${selected}"
+		if [ -n "${claude_bin}" ]; then
+			tmux new-window -a -d -t "${editor_window}" -c "${selected}" -n '󰯉  claude' "${claude_bin}"
+		fi
+
+		tmux new-window -a -d -t "${editor_window}" -n '  zsh' -c "${selected}"
 	fi
 
 	# Set the terminal window/tab title to the session name (OSC 0), otherwise the
@@ -158,8 +158,8 @@ end() {
 			esac
 		done > "${sel_file}"
 	else
-		find "${WORKTREES_DIR}" -mindepth 1 -maxdepth 1 -type d \
-			| fzf -m --exit-0 --prompt='worktrees to remove > ' > "${sel_file}" || true
+		find "${WORKTREES_DIR}" -mindepth 1 -maxdepth 1 -type d |
+			fzf -m --exit-0 --prompt='worktrees to remove > ' > "${sel_file}" || true
 	fi
 
 	if [ ! -s "${sel_file}" ]; then

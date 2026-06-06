@@ -37,12 +37,12 @@ What it does:
 5. If a session of that name doesn't exist, creates one. The `nvim` window is created first;
    every other window is created detached and inserted with `-a` (immediately **after** the
    `nvim` window), so the windows end up in reverse creation order. The creation order is
-   `opencode` → `claude` → `codex` → `zsh`, which yields this layout:
-    - **Window 1 (` nvim`)** — nvim in the top pane (90%), shell in a small pane below (10%).
-    - **Window 2 (` zsh`)** — a plain login shell in the repo root.
-    - **Window 3 (`󱙺  codex`)** — runs `codex` in the repo root when it is available on `PATH`.
-    - **Window 4 (`󰯉  claude`)** — runs `claude` (Claude Code) in the repo root when
-      it is available on `PATH`.
+   `opencode` → `codex` → `claude` → `zsh`, which yields this layout:
+    - **Window 1 (`  nvim`)** — nvim in the top pane (90%), shell in a small pane below (10%).
+    - **Window 2 (`  zsh`)** — a plain login shell in the repo root.
+    - **Window 3 (`󰯉  claude`)** — runs `claude` (Claude Code) in the repo root when it is
+      available on `PATH`.
+    - **Window 4 (`󱙺  codex`)** — runs `codex` in the repo root when it is available on `PATH`.
     - **Window 5 (`󰚩  opencode`)** — runs `opencode` in the repo root when it is
       available on `PATH`.
 
@@ -60,7 +60,7 @@ claude_bin=$(command -v claude 2> /dev/null || true)
 opencode_bin=$(command -v opencode 2> /dev/null || true)
 codex_bin=$(command -v codex 2> /dev/null || true)
 
-editor_pane=$(tmux -u new-session -d -P -F '#{pane_id}' -s "${name}" -n ' nvim' -c "${selected}" \
+editor_pane=$(tmux -u new-session -d -P -F '#{pane_id}' -s "${name}" -n '  nvim' -c "${selected}" \
     -x - -y - "${EDITOR}" .)
 editor_window=$(tmux display-message -p -t "${editor_pane}" '#{window_id}')
 tmux split-window -t "${editor_pane}" -v -l '10%' -c "${selected}"
@@ -68,12 +68,12 @@ tmux select-pane -t "${editor_pane}"
 
 [ -n "${opencode_bin}" ] && tmux new-window -a -d -t "${editor_window}" -c "${selected}" \
     -n '󰚩  opencode' "${opencode_bin}"
-[ -n "${claude_bin}" ] && tmux new-window -a -d -t "${editor_window}" -c "${selected}" \
-    -n '󰯉  claude' "${claude_bin}"
 [ -n "${codex_bin}" ] && tmux new-window -a -d -t "${editor_window}" -c "${selected}" \
     -n '󱙺  codex' "${codex_bin}"
+[ -n "${claude_bin}" ] && tmux new-window -a -d -t "${editor_window}" -c "${selected}" \
+    -n '󰯉  claude' "${claude_bin}"
 
-tmux new-window -a -d -t "${editor_window}" -n ' zsh' -c "${selected}"
+tmux new-window -a -d -t "${editor_window}" -n '  zsh' -c "${selected}"
 ```
 
 ### The shared sanitizer { #sanitizer }
