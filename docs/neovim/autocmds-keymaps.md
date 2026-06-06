@@ -44,7 +44,8 @@ o.listchars:append({
 })
 ```
 
-LSP logging is set to `off` because the log grows unboundedly when on.
+LSP logging is set to `error` — quiet enough that the log doesn't grow unboundedly, but errors are
+still captured when something breaks.
 
 ### Clipboard over SSH (OSC 52)
 
