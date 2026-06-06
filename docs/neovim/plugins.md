@@ -108,6 +108,7 @@ Wires `sqlfluff` into the LazyVim formatting and linting machinery (`format -` a
 | `go.lua`       | Extra Go tooling / debug configuration.                     |
 | `markdown.lua` | Markdown-specific plugin tweaks (treesitter, render, etc.). |
 | `tofu.lua`     | OpenTofu (Terraform fork) support.                          |
+| `toml.lua`     | TOML LSP via `tombi` (replaces LazyVim's taplo extra).      |
 | `xml.lua`      | XML LSP / formatting.                                       |
 | `jinja.lua`    | Jinja2 templating filetype + LSP.                           |
 | `protobuf.lua` | Protocol Buffers LSP / formatting.                          |

@@ -57,7 +57,6 @@ following are imported in `lua/config/lazy.lua`:
 | `lazyvim.plugins.extras.lang.python`     | basedpyright, ruff, debugpy.                        |
 | `lazyvim.plugins.extras.lang.sql`        | sqls + sqlfluff (see [SQL plugin](plugins.md#sql)). |
 | `lazyvim.plugins.extras.lang.terraform`  | terraform-ls.                                       |
-| `lazyvim.plugins.extras.lang.toml`       | taplo.                                              |
 | `lazyvim.plugins.extras.lang.typescript` | vtsls + prettier + eslint.                          |
 | `lazyvim.plugins.extras.lang.yaml`       | yamlls + schemastore.                               |
 
