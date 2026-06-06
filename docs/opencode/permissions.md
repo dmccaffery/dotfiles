@@ -38,6 +38,9 @@ allow/deny rules later — the credential and dotenv denies sit at the end of ea
 re-open them. The top-level `"*": "ask"` flips OpenCode's permissive default: any tool or command that isn't
 explicitly mapped requires approval.
 
+`"security *": "deny"` blocks the macOS keychain-dump CLI outright, mirroring Claude Code's `Bash(security *)`
+deny and Codex's `forbidden` rule for `security` — the credential-exfiltration path is closed in all three agents.
+
 `grep` is allowed for routine searches even though OpenCode matches `grep` permissions against the searched regex,
 not the target path. The path boundaries therefore stay on `read`, `list`, `glob`, `edit`, and `external_directory`,
 which do match against paths.

@@ -169,6 +169,7 @@
             "git switch *": "allow",
             "git commit *": "allow",
             "test *": "allow",
+            "security *": "deny",
             "* .env*": "deny",
             "* */.env*": "deny",
             "* ~/.aws*": "deny",
