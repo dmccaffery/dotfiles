@@ -5,9 +5,10 @@ icon: lucide/code
 # Custom scripts
 
 All scripts live in `.local/share/scripts/`. The directory is added to `PATH` by `.zshenv`
-(only if it exists), so anything dropped in is immediately callable by name. A few commands —
-`worktree`, `agent-tmux-status`, and `brewfile` — are now provided by the
-[`dot`](../tooling/dot.md) Go CLI and appear here as symlinks to the built binary.
+(only if it exists), so anything dropped in is immediately callable by name. **Most** of these
+commands are now provided by the [`dot`](../tooling/dot.md) Go CLI and appear here as symlinks to
+the built binary; only `git-github-auth`, `tmux-session`, `ssh-sk`, and `ssh-askpass` are still
+shell scripts.
 
 ## Inventory
 

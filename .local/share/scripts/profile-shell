@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-ZSHPROFILE=1 time -p zsh -i -c exit

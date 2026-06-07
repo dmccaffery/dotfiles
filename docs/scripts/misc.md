@@ -4,7 +4,10 @@ icon: lucide/sparkles
 
 # Miscellaneous scripts
 
-Small utilities that don't fit a larger category.
+Small utilities that don't fit a larger category. `print-colors`, `profile-shell`,
+`fzf-image-preview`, `reset-background-items`, and `brewfile` are now [`dot`](../tooling/dot.md)
+applets — same names and behaviour, provided by the Go binary (the shell snippets below are
+illustrative).
 
 ## `profile-shell` { #profile-shell }
 
@@ -62,7 +65,7 @@ reset-background-items
 ```
 
 Wraps `sudo sfltool resetbtm` (resets all macOS background-task management state) with two
-"press any key" prompts: one before resetting, one before the required reboot.
+confirmations: one before resetting, one before the required reboot — decline either to abort.
 
 Use this when macOS gets confused about which background items are authorized — usually
 manifests as repeated "Background Items Added" notifications, or login items that can't be
@@ -70,7 +73,7 @@ disabled in System Settings.
 
 !!! warning "Reboot required"
 
-    `sfltool resetbtm` only takes effect after a reboot. The script prompts and runs
+    `sfltool resetbtm` only takes effect after a reboot. The command confirms, then runs
     `sudo reboot` for you.
 
 ## `brewfile` { #brewfile }

@@ -6,7 +6,8 @@ icon: lucide/shield
 
 The `zs` command manages the Zscaler corporate proxy when one is installed, with three verbs:
 `enable`, `disable`, and `certs`. All no-op cleanly when the relevant Zscaler launchd plists are
-absent — safe on personal machines.
+absent — safe on personal machines. It is now a [`dot`](../tooling/dot.md) applet (same behaviour;
+the shell snippets below are illustrative).
 
 ## `zs enable` { #zs-enable }
 

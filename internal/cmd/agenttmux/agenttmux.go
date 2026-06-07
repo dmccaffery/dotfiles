@@ -1,4 +1,5 @@
-package cli
+// Package agenttmux implements the agent-tmux-status command.
+package agenttmux
 
 import (
 	"io"
@@ -6,6 +7,8 @@ import (
 	"path/filepath"
 
 	"github.com/spf13/cobra"
+
+	"github.com/dmccaffery/dotfiles/internal/cmd/cmdutil"
 )
 
 // Glyphs for the OSC (non-tmux) terminal-title fallback. Inside tmux the glyph
@@ -15,7 +18,8 @@ const (
 	attentionGlyph = "󰂚 "
 )
 
-func newAgentTmuxCmd(deps *Deps) *cobra.Command {
+// NewCmd builds the agent-tmux-status command.
+func NewCmd(deps *cmdutil.Deps) *cobra.Command {
 	return &cobra.Command{
 		Use:   "agent-tmux-status [waiting|attention|clear]",
 		Short: "Set the coding-agent status indicator (tmux window option or terminal title)",
@@ -36,7 +40,7 @@ func newAgentTmuxCmd(deps *Deps) *cobra.Command {
 	}
 }
 
-func agentStatus(cmd *cobra.Command, deps *Deps, state string) {
+func agentStatus(cmd *cobra.Command, deps *cmdutil.Deps, state string) {
 	if pane := deps.Env.Get("TMUX"); pane != "" {
 		target := deps.Env.Get("TMUX_PANE")
 		switch state {

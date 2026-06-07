@@ -1,4 +1,5 @@
-package cli
+// Package brewfile implements the brewfile command.
+package brewfile
 
 import (
 	"context"
@@ -10,14 +11,15 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/dmccaffery/dotfiles/internal/brewfile"
-	"github.com/dmccaffery/dotfiles/internal/execx"
+	bf "github.com/dmccaffery/dotfiles/internal/brewfile"
+	"github.com/dmccaffery/dotfiles/internal/cmd/cmdutil"
 	"github.com/dmccaffery/dotfiles/internal/ui"
 )
 
-type brewfileCmd struct{ deps *Deps }
+type brewfileCmd struct{ deps *cmdutil.Deps }
 
-func newBrewfileCmd(deps *Deps) *cobra.Command {
+// NewCmd builds the brewfile command.
+func NewCmd(deps *cmdutil.Deps) *cobra.Command {
 	bc := &brewfileCmd{deps: deps}
 	return &cobra.Command{
 		Use:   "brewfile <add|remove> <package>... [brew bundle flags...]",
@@ -46,7 +48,7 @@ func (b *brewfileCmd) run(cmd *cobra.Command, args []string) error {
 	switch {
 	case len(args) == 0:
 		_ = cmd.Usage()
-		return ErrSilent
+		return cmdutil.ErrSilent
 	case args[0] == "-h", args[0] == "--help", args[0] == "help":
 		return cmd.Help()
 	}
@@ -56,12 +58,12 @@ func (b *brewfileCmd) run(cmd *cobra.Command, args []string) error {
 	if action != "add" && action != "remove" {
 		log.Error("unknown action: " + action)
 		_ = cmd.Usage()
-		return ErrSilent
+		return cmdutil.ErrSilent
 	}
 	if len(rest) == 0 {
 		log.Error("missing package argument")
 		_ = cmd.Usage()
-		return ErrSilent
+		return cmdutil.ErrSilent
 	}
 
 	if action == "add" {
@@ -74,13 +76,13 @@ func (b *brewfileCmd) run(cmd *cobra.Command, args []string) error {
 	bundleArgs = append(bundleArgs, "--global")
 	if err := b.brew(ctx, cmd, bundleArgs...); err != nil {
 		log.Error("brew bundle " + action + " failed: " + err.Error())
-		return ErrSilent
+		return cmdutil.ErrSilent
 	}
 
 	log.Info("brew bundle install --global --zap")
 	if err := b.brew(ctx, cmd, "bundle", "install", "--global", "--zap", "--upgrade"); err != nil {
 		log.Error("brew bundle install failed: " + err.Error())
-		return ErrSilent
+		return cmdutil.ErrSilent
 	}
 
 	log.Info("Brewfile in sync")
@@ -90,13 +92,13 @@ func (b *brewfileCmd) run(cmd *cobra.Command, args []string) error {
 // ensureTrusted trust-checks every non-official tap reference named on an add,
 // prompting to `brew trust` any that are not already trusted.
 func (b *brewfileCmd) ensureTrusted(cmd *cobra.Command, addArgs []string) {
-	kind := brewfile.KindFromFlags(addArgs)
-	if kind == brewfile.KindNone {
+	kind := bf.KindFromFlags(addArgs)
+	if kind == bf.KindNone {
 		return
 	}
-	trust, _ := brewfile.ParseTrust(b.readTrust())
+	trust, _ := bf.ParseTrust(b.readTrust())
 	for _, a := range addArgs {
-		if !brewfile.IsTapReference(a) || trust.IsTrusted(kind, a) {
+		if !bf.IsTapReference(a) || trust.IsTrusted(kind, a) {
 			continue
 		}
 		b.promptTrust(cmd, kind, a)
@@ -117,7 +119,7 @@ func (b *brewfileCmd) readTrust() []byte {
 	return data
 }
 
-func (b *brewfileCmd) promptTrust(cmd *cobra.Command, kind brewfile.Kind, name string) {
+func (b *brewfileCmd) promptTrust(cmd *cobra.Command, kind bf.Kind, name string) {
 	log := b.deps.Log
 	log.Warn(fmt.Sprintf("%s '%s' is not trusted; brew will run its third-party code during install", kind, name))
 
@@ -143,9 +145,5 @@ func (b *brewfileCmd) promptTrust(cmd *cobra.Command, kind brewfile.Kind, name s
 // brew runs `brew <args>` with stdio wired straight through (install is long
 // and informational; brewfile's stdout is not a captured value).
 func (b *brewfileCmd) brew(ctx context.Context, cmd *cobra.Command, args ...string) error {
-	return b.deps.Runner.RunIO(ctx, execx.Streams{
-		In:  cmd.InOrStdin(),
-		Out: cmd.OutOrStdout(),
-		Err: cmd.ErrOrStderr(),
-	}, "brew", args...)
+	return b.deps.Runner.RunIO(ctx, cmdutil.Streams(cmd), "brew", args...)
 }

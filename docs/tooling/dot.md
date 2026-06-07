@@ -12,16 +12,19 @@ running them against live `git`/`brew` state.
 
 Standard Go layout, module rooted at the repository:
 
-| Path                                     | What                                                                                               |
-| ---------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `go.mod` / `go.sum`                      | Module `github.com/dmccaffery/dotfiles`; direct deps: Cobra, charmbracelet/log, charmbracelet/huh. |
-| `cmd/dot/main.go`                        | Entry point and `argv[0]` dispatch.                                                                |
-| `internal/cli/`                          | Cobra commands — thin: parse flags, delegate to the logic packages.                                |
-| `internal/worktree`, `internal/brewfile` | Pure, table-tested logic (name sanitizer, hook JSON, `trust.json` parsing).                        |
-| `internal/execx`                         | A mockable `Runner` over `os/exec` — the unit-test seam for git/tmux/brew calls.                   |
-| `internal/logx`                          | slog diagnostics via charmbracelet/log: styled levels on a TTY, JSON when piped.                   |
-| `internal/ui`                            | A testable `Prompter` (confirmations/questions) backed by charmbracelet/huh.                       |
-| `internal/envx`                          | Environment and XDG lookups.                                                                       |
+| Path                                                          | What                                                                                               |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `go.mod` / `go.sum`                                           | Module `github.com/dmccaffery/dotfiles`; direct deps: Cobra, charmbracelet/log, charmbracelet/huh. |
+| `cmd/dot/main.go`                                             | Entry point and `argv[0]` dispatch.                                                                |
+| `internal/cmd/root`                                           | Assembles the root command from the per-command packages; owns the applet registry.                |
+| `internal/cmd/<command>`                                      | One package per command (`worktree`, `brewfile`, `zs`, …), each exposing `NewCmd`.                 |
+| `internal/cmd/cmdutil`                                        | Shared command framework: the injectable `Deps`, `ErrSilent`, and small helpers.                   |
+| `internal/cmd/cmdtest`                                        | Test-only helpers that drive a command and build fake `Deps`.                                      |
+| `internal/worktree`, `internal/brewfile`, `internal/colorbar` | Pure, table-tested logic (sanitizer, hook JSON, `trust.json`, gradient).                           |
+| `internal/execx`                                              | A mockable `Runner` over `os/exec` — the unit-test seam for git/tmux/brew calls.                   |
+| `internal/logx`                                               | slog diagnostics via charmbracelet/log: styled levels on a TTY, JSON when piped.                   |
+| `internal/ui`                                                 | A testable `Prompter` (confirmations/questions) backed by charmbracelet/huh.                       |
+| `internal/envx`                                               | Environment and XDG lookups.                                                                       |
 
 ## Multi-call dispatch
 
@@ -83,14 +86,19 @@ Three layers, all under `go test ./...`:
 
 ## What's ported
 
-| Command                                                     | Replaced                        | Notes                                                                            |
-| ----------------------------------------------------------- | ------------------------------- | -------------------------------------------------------------------------------- |
-| [`worktree`](../scripts/tmux.md)                            | `.local/share/scripts/worktree` | start/end; the `agent/*` branch-delete guard and name sanitizer are unit-tested. |
-| [`agent-tmux-status`](../scripts/tmux.md#agent-tmux-status) | shell leaf script               | no-op-safe; identical tmux-option / `OSC` title behaviour.                       |
-| [`brewfile`](../scripts/misc.md#brewfile)                   | shell wrapper                   | `trust.json` parsing and flag classification are unit-tested.                    |
+Each command's external interface (name, arguments, output) is unchanged — only the implementation moved into
+`dot`.
 
-More scripts will follow. The security-key flows (`ssh-sk`, `ssh-askpass`) are sequenced last, so commit signing
-and ssh-agent login never come to depend on a successful build.
+- **Wave 1** — [`worktree`](../scripts/tmux.md), [`agent-tmux-status`](../scripts/tmux.md#agent-tmux-status),
+  [`brewfile`](../scripts/misc.md#brewfile)
+- **Wave 2** — [`print-colors`](../scripts/misc.md#print-colors),
+  [`profile-shell`](../scripts/misc.md#profile-shell), [`git-resign`](../scripts/security-keys.md#git-resign),
+  [`gh-switch-user`](../scripts/security-keys.md#gh-switch-user),
+  [`fzf-image-preview`](../scripts/misc.md#fzf-image-preview),
+  [`reset-background-items`](../scripts/misc.md#reset-background-items), [`zs`](../scripts/zscaler.md)
+
+Still shell, ported later: `git-github-auth` and `tmux-session`, then the security-key flows `ssh-sk` and
+`ssh-askpass` **last** — so commit signing and ssh-agent login never come to depend on a successful build.
 
 ## CI
 

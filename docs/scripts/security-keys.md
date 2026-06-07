@@ -109,9 +109,9 @@ to stdout, so git reads it cleanly.
 gh-switch-user <gh-args…>   # called automatically via alias gh='gh-switch-user'
 ```
 
-A thin `gh` wrapper that reads `git config github.account` from the current repository and, if
-the named account is not already the active `gh` session, calls `gh auth switch --user <account>`
-before forwarding all arguments to `command gh`.
+A thin `gh` wrapper (now a [`dot`](../tooling/dot.md) applet) that reads `git config github.account`
+from the current repository and, if the named account is not already the active `gh` session, calls
+`gh auth switch --user <account>` before forwarding all arguments to `gh`.
 
 Configured as the shell-wide `gh` alias in `.zshrc` so that every `gh` invocation in a repo with
 `github.account` set automatically operates under the right identity — no manual switching needed.
@@ -154,7 +154,8 @@ used on this machine.
 git-resign <target-ref>
 ```
 
-Re-signs every commit from `<target-ref>..HEAD` with the currently-configured signing key:
+Re-signs every commit from `<target-ref>..HEAD` with the currently-configured signing key (now a
+[`dot`](../tooling/dot.md) applet, invoked as `git resign` via git's `git-*` subcommand dispatch):
 
 ```sh
 git rebase --exec 'git commit --amend --no-edit -n -S' -i "${target}"

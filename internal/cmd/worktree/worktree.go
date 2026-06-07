@@ -1,21 +1,26 @@
-package cli
+// Package worktree implements the worktree command (the agent worktree lifecycle).
+package worktree
 
 import (
 	"context"
 	"fmt"
+	"io"
+	"os"
 	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
 
+	"github.com/dmccaffery/dotfiles/internal/cmd/cmdutil"
 	"github.com/dmccaffery/dotfiles/internal/logx"
-	"github.com/dmccaffery/dotfiles/internal/worktree"
+	wt "github.com/dmccaffery/dotfiles/internal/worktree"
 )
 
-type worktreeCmd struct{ deps *Deps }
+type worktreeCmd struct{ deps *cmdutil.Deps }
 
-func newWorktreeCmd(deps *Deps) *cobra.Command {
+// NewCmd builds the worktree command.
+func NewCmd(deps *cmdutil.Deps) *cobra.Command {
 	wc := &worktreeCmd{deps: deps}
 	cmd := &cobra.Command{
 		Use:   "worktree",
@@ -52,7 +57,7 @@ func (w *worktreeCmd) start(cmd *cobra.Command, args []string) error {
 	log := w.deps.Log
 	r := w.deps.Runner
 
-	repo := arg(args, 0)
+	repo := cmdutil.Arg(args, 0)
 	if repo == "" {
 		repo = w.deps.Env.Get("CLAUDE_PROJECT_DIR")
 	}
@@ -64,13 +69,13 @@ func (w *worktreeCmd) start(cmd *cobra.Command, args []string) error {
 	}
 	if repo == "" {
 		log.Error("no repository found; did you forget to specify an argument?")
-		return ErrSilent
+		return cmdutil.ErrSilent
 	}
 
-	suffix := arg(args, 1)
+	suffix := cmdutil.Arg(args, 1)
 	if suffix == "" {
 		if data, ok := readIfPiped(cmd.InOrStdin()); ok {
-			suffix = worktree.ParseStartName(data)
+			suffix = wt.ParseStartName(data)
 		}
 	}
 	if suffix == "" {
@@ -78,22 +83,22 @@ func (w *worktreeCmd) start(cmd *cobra.Command, args []string) error {
 		suffix = time.Now().UTC().Format("20060102-150405")
 	}
 
-	names := worktree.Derive(repo, suffix, w.worktreesRoot())
+	names := wt.Derive(repo, suffix, w.worktreesRoot())
 
 	switch {
-	case dirExists(names.Path):
+	case cmdutil.DirExists(names.Path):
 		log.Warn(fmt.Sprintf("worktree already exists at %s; reusing", names.Path))
 	case w.branchExists(ctx, repo, names.Branch):
 		log.Info(fmt.Sprintf("branch %s exists; checking it out at %s", names.Branch, names.Path))
 		if _, err := r.Run(ctx, "git", "-C", repo, "worktree", "add", names.Path, names.Branch); err != nil {
 			log.Error(fmt.Sprintf("failed to check out worktree: %v", err))
-			return ErrSilent
+			return cmdutil.ErrSilent
 		}
 	default:
 		log.Info(fmt.Sprintf("creating worktree %s at %s", names.Name, names.Path))
 		if _, err := r.Run(ctx, "git", "-C", repo, "worktree", "add", "-b", names.Branch, names.Path); err != nil {
 			log.Error(fmt.Sprintf("failed to create worktree: %v", err))
-			return ErrSilent
+			return cmdutil.ErrSilent
 		}
 	}
 
@@ -109,17 +114,17 @@ func (w *worktreeCmd) end(cmd *cobra.Command, args []string) error {
 	log := w.deps.Log
 	r := w.deps.Runner
 
-	path := arg(args, 0)
+	path := cmdutil.Arg(args, 0)
 	if path == "" {
 		if data, ok := readIfPiped(cmd.InOrStdin()); ok {
-			path = worktree.ParseEndPath(data)
+			path = wt.ParseEndPath(data)
 		}
 	}
 	if path == "" {
 		log.Error(`worktree end: no worktree path; pass as an argument or pipe JSON {"worktree_path":"..."}`)
-		return ErrSilent
+		return cmdutil.ErrSilent
 	}
-	if !dirExists(path) {
+	if !cmdutil.DirExists(path) {
 		log.Warn(fmt.Sprintf("worktree at %s no longer exists; exiting gracefully", path))
 		return nil
 	}
@@ -128,7 +133,7 @@ func (w *worktreeCmd) end(cmd *cobra.Command, args []string) error {
 	mainRepo := w.mainRepo(ctx, path)
 
 	uncommitted := countNonEmptyLines(w.gitOutput(ctx, "git", "-C", path, "status", "--porcelain"))
-	unpushed := atoi(w.gitOutput(ctx, "git", "-C", path, "rev-list", "--count", "HEAD", "--not", "--remotes"))
+	unpushed := cmdutil.Atoi(w.gitOutput(ctx, "git", "-C", path, "rev-list", "--count", "HEAD", "--not", "--remotes"))
 	if uncommitted != 0 || unpushed != 0 {
 		shown := branch
 		if shown == "" {
@@ -148,7 +153,7 @@ func (w *worktreeCmd) end(cmd *cobra.Command, args []string) error {
 		_, _ = r.Run(ctx, "git", "worktree", "remove", "--force", path)
 	}
 
-	if worktree.IsAgentBranch(branch) {
+	if wt.IsAgentBranch(branch) {
 		if mainRepo != "" {
 			_, _ = r.Run(ctx, "git", "-C", mainRepo, "branch", "-D", branch)
 		} else {
@@ -186,9 +191,26 @@ func (w *worktreeCmd) gitOutput(ctx context.Context, name string, args ...string
 	return strings.TrimSpace(res.Stdout)
 }
 
-func arg(args []string, i int) string {
-	if i < len(args) {
-		return args[i]
+// readIfPiped returns stdin's contents when it is not a terminal (a hook pipe),
+// matching the shell's `[ ! -t 0 ]` guard. For a tty it returns false.
+func readIfPiped(in io.Reader) ([]byte, bool) {
+	if f, ok := in.(*os.File); ok && logx.IsTerminal(f) {
+		return nil, false
 	}
-	return ""
+	data, err := io.ReadAll(in)
+	if err != nil || len(data) == 0 {
+		return nil, false
+	}
+	return data, true
+}
+
+// countNonEmptyLines mirrors `... | wc -l` over git --porcelain output.
+func countNonEmptyLines(s string) int {
+	n := 0
+	for line := range strings.SplitSeq(s, "\n") {
+		if strings.TrimSpace(line) != "" {
+			n++
+		}
+	}
+	return n
 }

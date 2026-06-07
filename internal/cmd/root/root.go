@@ -1,26 +1,27 @@
-// Package cli wires the dot subcommands (Cobra) to the testable internal logic.
-package cli
+// Package root assembles the dot root command from the per-command packages and
+// owns the applet registry that the build stage reads.
+package root
 
 import (
 	"fmt"
 
 	"github.com/spf13/cobra"
 
-	"github.com/dmccaffery/dotfiles/internal/envx"
+	"github.com/dmccaffery/dotfiles/internal/cmd/agenttmux"
+	"github.com/dmccaffery/dotfiles/internal/cmd/brewfile"
+	"github.com/dmccaffery/dotfiles/internal/cmd/cmdutil"
+	"github.com/dmccaffery/dotfiles/internal/cmd/fzfpreview"
+	"github.com/dmccaffery/dotfiles/internal/cmd/ghswitch"
+	"github.com/dmccaffery/dotfiles/internal/cmd/gitresign"
+	"github.com/dmccaffery/dotfiles/internal/cmd/printcolors"
+	"github.com/dmccaffery/dotfiles/internal/cmd/profileshell"
+	"github.com/dmccaffery/dotfiles/internal/cmd/resetbackground"
+	"github.com/dmccaffery/dotfiles/internal/cmd/worktree"
+	"github.com/dmccaffery/dotfiles/internal/cmd/zs"
 	"github.com/dmccaffery/dotfiles/internal/execx"
 	"github.com/dmccaffery/dotfiles/internal/logx"
 	"github.com/dmccaffery/dotfiles/internal/ui"
 )
-
-// Deps are the injectable dependencies shared by every command. Tests supply a
-// fake Runner, a literal Env, a buffer-backed Log and a fake Prompter; main
-// supplies the real ones (Log/Prompt are built in PersistentPreRunE when nil).
-type Deps struct {
-	Runner execx.Runner
-	Env    envx.Env
-	Log    *logx.Logger
-	Prompt ui.Prompter
-}
 
 // appletAnnotation marks a command whose name the build stage exposes as a
 // standalone symlink (enumerated by the hidden `dot applets` command).
@@ -35,7 +36,7 @@ func applet(c *cobra.Command) *cobra.Command {
 }
 
 // NewRootCmd builds the dot root command with every subcommand registered.
-func NewRootCmd(version string, deps *Deps) *cobra.Command {
+func NewRootCmd(version string, deps *cmdutil.Deps) *cobra.Command {
 	root := &cobra.Command{
 		Use:   "dot",
 		Short: "dotfiles helper CLI",
@@ -62,18 +63,24 @@ func NewRootCmd(version string, deps *Deps) *cobra.Command {
 	}
 
 	root.AddCommand(
-		applet(newWorktreeCmd(deps)),
-		applet(newAgentTmuxCmd(deps)),
-		applet(newBrewfileCmd(deps)),
+		applet(worktree.NewCmd(deps)),
+		applet(agenttmux.NewCmd(deps)),
+		applet(brewfile.NewCmd(deps)),
+		applet(printcolors.NewCmd(deps)),
+		applet(profileshell.NewCmd(deps)),
+		applet(gitresign.NewCmd(deps)),
+		applet(ghswitch.NewCmd(deps)),
+		applet(fzfpreview.NewCmd(deps)),
+		applet(resetbackground.NewCmd(deps)),
+		applet(zs.NewCmd(deps)),
 	)
 	root.AddCommand(newAppletsCmd(root))
 	return root
 }
 
 // HasCommand reports whether name matches a registered subcommand. The argv[0]
-// dispatch uses it so a binary whose name is neither "dot" nor a command (e.g.
-// a dev build named "dot.test") still behaves as plain `dot` instead of failing
-// on an unknown applet.
+// dispatch uses it so a binary whose name is neither "dot" nor a command still
+// behaves as plain `dot` instead of failing on an unknown applet.
 func HasCommand(root *cobra.Command, name string) bool {
 	for _, c := range root.Commands() {
 		if c.Name() == name {

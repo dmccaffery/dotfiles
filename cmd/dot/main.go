@@ -8,9 +8,11 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 
-	"github.com/dmccaffery/dotfiles/internal/cli"
+	"github.com/dmccaffery/dotfiles/internal/cmd/cmdutil"
+	"github.com/dmccaffery/dotfiles/internal/cmd/root"
 	"github.com/dmccaffery/dotfiles/internal/envx"
 )
 
@@ -18,25 +20,33 @@ import (
 var version = "dev"
 
 func main() {
-	deps := &cli.Deps{Env: envx.System()}
-	root := cli.NewRootCmd(version, deps)
+	deps := &cmdutil.Deps{Env: envx.System()}
+	rootCmd := root.NewRootCmd(version, deps)
 
 	// Multi-call dispatch: when invoked via a symlink whose name matches a
 	// command (argv[0] is e.g. `worktree`), prepend it so Cobra routes there —
 	// and `--help` still works at every level. A binary named anything else
 	// (`dot`, a dev build, …) just runs as plain `dot`.
 	args := os.Args[1:]
-	if applet := filepath.Base(os.Args[0]); applet != "dot" && cli.HasCommand(root, applet) {
+	if applet := filepath.Base(os.Args[0]); applet != "dot" && root.HasCommand(rootCmd, applet) {
 		args = append([]string{applet}, args...)
 	}
-	root.SetArgs(args)
+	rootCmd.SetArgs(args)
 
-	if err := root.Execute(); err != nil {
-		// Commands log their own diagnostics and return ErrSilent; print only
-		// cobra-level errors (unknown command/flag) so they aren't swallowed.
-		if !errors.Is(err, cli.ErrSilent) {
+	if err := rootCmd.Execute(); err != nil {
+		var exitErr *exec.ExitError
+		switch {
+		case errors.As(err, &exitErr):
+			// A forwarded child (gh, git, …) failed; its output already went to the
+			// terminal, so just mirror its exit code.
+			os.Exit(exitErr.ExitCode())
+		case errors.Is(err, cmdutil.ErrSilent):
+			// The command logged its own diagnostics.
+			os.Exit(1)
+		default:
+			// A cobra-level error (unknown command/flag) — print it.
 			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
 		}
-		os.Exit(1)
 	}
 }

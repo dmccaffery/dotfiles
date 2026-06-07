@@ -1,21 +1,25 @@
-package cli_test
+package worktree_test
 
 // These tests run the worktree command against REAL git in a temp repo, proving
-// that worktrees and agent/* branches are actually created and removed (not just
-// that the right commands were issued). They skip when git is unavailable; CI
-// always has it. GIT_CONFIG_GLOBAL/SYSTEM are pinned to /dev/null so the run is
-// hermetic (no signing config, no user settings leaking in).
+// that worktrees and agent/* branches are actually created and removed. They skip
+// when git is unavailable; CI always has it. GIT_CONFIG_GLOBAL/SYSTEM are pinned
+// to /dev/null so the run is hermetic (no signing config, no user settings).
 
 import (
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
 
-	"github.com/dmccaffery/dotfiles/internal/cli"
+	"github.com/dmccaffery/dotfiles/internal/cmd/cmdtest"
+	"github.com/dmccaffery/dotfiles/internal/cmd/cmdutil"
+	"github.com/dmccaffery/dotfiles/internal/cmd/worktree"
 	"github.com/dmccaffery/dotfiles/internal/envx"
 	"github.com/dmccaffery/dotfiles/internal/execx"
+	"github.com/dmccaffery/dotfiles/internal/logx"
+	"github.com/dmccaffery/dotfiles/internal/ui"
 )
 
 func gitRepo(t *testing.T) string {
@@ -40,15 +44,21 @@ func mustGit(t *testing.T, repo string, args ...string) string {
 	return strings.TrimSpace(string(out))
 }
 
-func realDeps(home string) *cli.Deps {
-	return &cli.Deps{Runner: execx.Real{}, Env: envx.New(home, nil)}
+func realDeps(home string) *cmdutil.Deps {
+	return &cmdutil.Deps{
+		Runner: execx.Real{},
+		Env:    envx.New(home, nil),
+		Log:    logx.For(io.Discard, false),
+		Prompt: &ui.Fake{},
+	}
 }
 
 func TestWorktreeIntegrationLifecycle(t *testing.T) {
 	repo := gitRepo(t)
 	home := t.TempDir()
+	deps := realDeps(home)
 
-	out, _, err := runRoot(t, realDeps(home), "", "worktree", "start", repo, "feature")
+	out, _, err := cmdtest.Run(t, worktree.NewCmd(deps), "", "start", repo, "feature")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -66,13 +76,13 @@ func TestWorktreeIntegrationLifecycle(t *testing.T) {
 	}
 
 	// Reuse: a second start of the same name returns the same path.
-	out2, _, err := runRoot(t, realDeps(home), "", "worktree", "start", repo, "feature")
+	out2, _, err := cmdtest.Run(t, worktree.NewCmd(deps), "", "start", repo, "feature")
 	if err != nil || strings.TrimSpace(out2) != path {
 		t.Fatalf("reuse returned %q (err %v), want %q", strings.TrimSpace(out2), err, path)
 	}
 
 	// End: worktree dir and agent/* branch are both removed.
-	if _, _, err := runRoot(t, realDeps(home), "", "worktree", "end", path); err != nil {
+	if _, _, err := cmdtest.Run(t, worktree.NewCmd(deps), "", "end", path); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := os.Stat(path); !os.IsNotExist(err) {
@@ -86,7 +96,7 @@ func TestWorktreeIntegrationLifecycle(t *testing.T) {
 func TestWorktreeIntegrationStartFromStdinJSON(t *testing.T) {
 	repo := gitRepo(t)
 	home := t.TempDir()
-	out, _, err := runRoot(t, realDeps(home), `{"name":"hookwt"}`, "worktree", "start", repo)
+	out, _, err := cmdtest.Run(t, worktree.NewCmd(realDeps(home)), `{"name":"hookwt"}`, "start", repo)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -105,7 +115,7 @@ func TestWorktreeIntegrationKeepsNonAgentBranch(t *testing.T) {
 	wt := filepath.Join(t.TempDir(), "plain")
 	mustGit(t, repo, "worktree", "add", "-q", "-b", "feature/plain", wt)
 
-	if _, _, err := runRoot(t, realDeps(home), "", "worktree", "end", wt); err != nil {
+	if _, _, err := cmdtest.Run(t, worktree.NewCmd(realDeps(home)), "", "end", wt); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := os.Stat(wt); !os.IsNotExist(err) {
