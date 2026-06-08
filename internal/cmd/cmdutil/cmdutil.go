@@ -62,3 +62,41 @@ func Atoi(s string) int {
 	n, _ := strconv.Atoi(strings.TrimSpace(s))
 	return n
 }
+
+// NonEmptyLines splits s into trimmed, non-empty lines.
+func NonEmptyLines(s string) []string {
+	var out []string
+	for line := range strings.SplitSeq(s, "\n") {
+		if line = strings.TrimSpace(line); line != "" {
+			out = append(out, line)
+		}
+	}
+	return out
+}
+
+// CountNonEmptyLines mirrors `... | wc -l` over non-empty output.
+func CountNonEmptyLines(s string) int { return len(NonEmptyLines(s)) }
+
+// PickOne resolves a selection like fzf's --query/--select-1/--exit-0: it filters
+// options by a case-insensitive substring query, returns the sole match without
+// prompting, returns "" when nothing matches, and otherwise prompts the user.
+func PickOne(p ui.Prompter, title, query string, options []string) (string, error) {
+	matches := options
+	if query != "" {
+		matches = nil
+		q := strings.ToLower(query)
+		for _, o := range options {
+			if strings.Contains(strings.ToLower(o), q) {
+				matches = append(matches, o)
+			}
+		}
+	}
+	switch len(matches) {
+	case 0:
+		return "", nil
+	case 1:
+		return matches[0], nil
+	default:
+		return p.Select(title, matches)
+	}
+}

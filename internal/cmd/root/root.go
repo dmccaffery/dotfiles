@@ -12,10 +12,12 @@ import (
 	"github.com/dmccaffery/dotfiles/internal/cmd/cmdutil"
 	"github.com/dmccaffery/dotfiles/internal/cmd/fzfpreview"
 	"github.com/dmccaffery/dotfiles/internal/cmd/ghswitch"
+	"github.com/dmccaffery/dotfiles/internal/cmd/githubauth"
 	"github.com/dmccaffery/dotfiles/internal/cmd/gitresign"
 	"github.com/dmccaffery/dotfiles/internal/cmd/printcolors"
 	"github.com/dmccaffery/dotfiles/internal/cmd/profileshell"
 	"github.com/dmccaffery/dotfiles/internal/cmd/resetbackground"
+	"github.com/dmccaffery/dotfiles/internal/cmd/tmuxsession"
 	"github.com/dmccaffery/dotfiles/internal/cmd/worktree"
 	"github.com/dmccaffery/dotfiles/internal/cmd/zs"
 	"github.com/dmccaffery/dotfiles/internal/execx"
@@ -73,6 +75,8 @@ func NewRootCmd(version string, deps *cmdutil.Deps) *cobra.Command {
 		applet(fzfpreview.NewCmd(deps)),
 		applet(resetbackground.NewCmd(deps)),
 		applet(zs.NewCmd(deps)),
+		applet(githubauth.NewCmd(deps)),
+		applet(tmuxsession.NewCmd(deps)),
 	)
 	root.AddCommand(newAppletsCmd(root))
 	return root

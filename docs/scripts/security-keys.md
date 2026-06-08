@@ -143,8 +143,8 @@ Behaviour:
 - Logged in but wrong account → `gh auth switch --user <login>`.
 - Missing scopes → `gh auth refresh --scopes <set>`.
 
-When no `<login>` argument is provided, the script presents an fzf picker listing every account
-already authenticated on this machine, plus a **`new account`** entry at the bottom. Selecting
+When no `<login>` argument is provided, the [`dot`](../tooling/dot.md) applet presents a huh picker
+listing every account already authenticated on this machine, plus a **`new account`** entry. Selecting
 `new account` runs `gh auth login` so you can authenticate a GitHub account that has never been
 used on this machine.
 

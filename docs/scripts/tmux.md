@@ -11,11 +11,15 @@ work itself is delegated to [`worktree start`](index.md) / [`worktree end`](inde
 also wired in as [Claude Code's `WorktreeCreate`/`WorktreeRemove` hooks](../claude/hooks-skills.md#hooks)
 so the naming convention stays consistent regardless of who created the worktree.
 
+`tmux-session` is now a [`dot`](../tooling/dot.md) applet: its repo/session/worktree pickers use huh's
+filterable select/multi-select rather than fzf, and it drives the worktree lifecycle in-process. The behaviour
+below is otherwise unchanged (the shell snippets are illustrative).
+
 ## `tmux-session start` { #tmux-session-start }
 
 ```sh
 sts                          # alias for tmux-session start
-sts <query>                  # pre-fill the fzf query
+sts <query>                  # pre-fill the picker query
 sts .                        # operate on $PWD instead of $REPOS_DIR
 sts <query> <worktree-name>  # create/attach a session inside a per-worktree checkout
 ```
@@ -24,7 +28,7 @@ What it does:
 
 1. Walks `$REPOS_DIR` (default `$HOME/Repos`) up to 4 levels deep looking for directories
    that contain a `.git/` entry.
-2. Pipes the list into `fzf` for selection (`--select-1` auto-picks if there's only one).
+2. Presents the list as a huh filterable select (a single match auto-picks; an empty query lists all).
 3. Sanitises the repo's basename to derive the bare-repo session name (see the
    [shared sanitizer](#sanitizer) below).
 4. **If a second `<worktree-name>` argument is supplied**, hands off to
@@ -91,11 +95,11 @@ becomes `dot-config`, keeping each name unique and tmux-safe.
 
 ```sh
 ats                  # alias for tmux-session attach
-ats <query>          # pre-fill the fzf query
+ats <query>          # pre-fill the picker query
 ```
 
-Simpler: lists `tmux list-session -F '#S'`, fzf-picks, and either attaches (if running
-outside tmux) or switches client (if inside).
+Simpler: lists `tmux list-session -F '#S'`, picks one via huh, and either attaches (when running
+outside tmux) or switches client (when inside).
 
 The Snacks picker in nvim (++leader++ ++f++ ++s++) does the same thing without leaving the
 editor — see [neovim/plugins](../neovim/plugins.md#snackslua).
@@ -103,15 +107,15 @@ editor — see [neovim/plugins](../neovim/plugins.md#snackslua).
 ## `tmux-session end` { #tmux-session-end }
 
 ```sh
-ets                          # alias for tmux-session end — fzf multi-select over agent worktrees
+ets                          # alias for tmux-session end — huh multi-select over agent worktrees
 ets <worktree-name>...       # remove specific worktrees by name (or absolute path)
 ets -f <worktree-name>...    # skip the confirmation prompt when worktrees are dirty
 ```
 
 What it does:
 
-1. Builds a selection list from positional args, or interactively via `fzf -m` over
-   `~/.cache/agent/worktrees/*` (tab to mark, enter to confirm).
+1. Builds a selection list from positional args, or interactively via a huh multi-select over
+   `~/.cache/agent/worktrees/*`.
 2. **Inspect pass** — for each selection, prints status and flags concerns:
     - `uncommitted` — count of working-tree changes (`git status --porcelain`).
     - `unpushed` — count of commits reachable from `HEAD` but absent from any remote ref

@@ -7,16 +7,15 @@ icon: lucide/code
 All scripts live in `.local/share/scripts/`. The directory is added to `PATH` by `.zshenv`
 (only if it exists), so anything dropped in is immediately callable by name. **Most** of these
 commands are now provided by the [`dot`](../tooling/dot.md) Go CLI and appear here as symlinks to
-the built binary; only `git-github-auth`, `tmux-session`, `ssh-sk`, and `ssh-askpass` are still
-shell scripts.
+the built binary; only `ssh-sk` and `ssh-askpass` (the security-key flows) are still shell scripts.
 
 ## Inventory
 
 | Script                                                       | Purpose                                                                                                                                                                                                                    |
 | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`tmux-session start`](tmux.md#tmux-session-start)           | fzf-pick a repo and create/attach a tmux session — optionally per worktree.                                                                                                                                                |
-| [`tmux-session attach`](tmux.md#tmux-session-attach)         | fzf-pick an existing tmux session and attach.                                                                                                                                                                              |
-| [`tmux-session end`](tmux.md#tmux-session-end)               | fzf multi-select agent worktrees and remove them (with unpushed-commit warnings).                                                                                                                                          |
+| [`tmux-session start`](tmux.md#tmux-session-start)           | Pick a repo and create/attach a tmux session — optionally per worktree.                                                                                                                                                    |
+| [`tmux-session attach`](tmux.md#tmux-session-attach)         | Pick an existing tmux session and attach.                                                                                                                                                                                  |
+| [`tmux-session end`](tmux.md#tmux-session-end)               | Multi-select agent worktrees and remove them (with unpushed-commit warnings).                                                                                                                                              |
 | [`worktree start`](../claude/hooks-skills.md#worktreecreate) | Create a worktree at `~/.cache/agent/worktrees/<repo>-<suffix>`. Used by `tmux-session start` and Claude Code's `WorktreeCreate` hook.                                                                                     |
 | [`worktree end`](../claude/hooks-skills.md#worktreeremove)   | Remove a worktree, its `agent/*` branch, and matching tmux session. Used by `tmux-session end` and Claude Code's `WorktreeRemove` hook.                                                                                    |
 | [`agent-tmux-status`](tmux.md#agent-tmux-status)             | Flag the tmux window red (or set the terminal title) when a coding agent is waiting for input. Driven by Claude Code's `Stop`/`Notification`/`UserPromptSubmit`/`SessionEnd` hooks and opencode's status-indicator plugin. |

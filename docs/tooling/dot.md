@@ -69,10 +69,11 @@ Diagnostics go through [`internal/logx`](../../internal/logx), which adapts `cha
 leveled lines on a terminal and structured JSON when output is piped, with typed attributes. Command **results**
 (such as the worktree path) are written to stdout only, so callers and hooks read them cleanly.
 
-Interactive confirmations and questions go through [`internal/ui`](../../internal/ui)'s `Prompter`, backed by
-`charmbracelet/huh` on `/dev/tty` (so prompts reach the terminal even when stdout is captured). With no tty the
-prompt is skipped via `ErrNoTTY` and the caller falls back — e.g. brewfile leaves a tap untrusted with a warning.
-`Prompter` is an interface, so commands unit-test their prompt flows against a fake.
+Interactive confirmations and pickers (`Confirm`/`Select`/`MultiSelect`) go through
+[`internal/ui`](../../internal/ui)'s `Prompter`, backed by `charmbracelet/huh` on `/dev/tty` (so prompts reach
+the terminal even when stdout is captured). With no tty the prompt is skipped via `ErrNoTTY` and the caller
+falls back — e.g. brewfile leaves a tap untrusted with a warning. `Prompter` is an interface, so commands
+unit-test their prompt flows against a fake.
 
 ## Testing
 
@@ -96,9 +97,11 @@ Each command's external interface (name, arguments, output) is unchanged — onl
   [`gh-switch-user`](../scripts/security-keys.md#gh-switch-user),
   [`fzf-image-preview`](../scripts/misc.md#fzf-image-preview),
   [`reset-background-items`](../scripts/misc.md#reset-background-items), [`zs`](../scripts/zscaler.md)
+- **Wave 3** — [`git-github-auth`](../scripts/security-keys.md#git-github-auth),
+  [`tmux-session`](../scripts/tmux.md) (its fzf pickers replaced by huh select/multi-select)
 
-Still shell, ported later: `git-github-auth` and `tmux-session`, then the security-key flows `ssh-sk` and
-`ssh-askpass` **last** — so commit signing and ssh-agent login never come to depend on a successful build.
+Still shell, ported **last**: the security-key flows `ssh-sk` and `ssh-askpass` — so commit signing and
+ssh-agent login never come to depend on a successful build.
 
 ## CI
 

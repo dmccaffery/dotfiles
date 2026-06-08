@@ -14,12 +14,16 @@ import (
 // terminal, so callers can fall back (e.g. skip a confirmation with a warning).
 var ErrNoTTY = errors.New("no controlling terminal")
 
-// Prompter asks the user interactive questions. Confirm is the only form needed
-// today; Select/Input can be added as later script ports require them.
+// Prompter asks the user interactive questions.
 type Prompter interface {
 	// Confirm asks a yes/no question, returning def if the user aborts (Esc/Ctrl-C).
 	// It returns ErrNoTTY when there is no terminal to prompt on.
 	Confirm(title string, def bool) (bool, error)
+	// Select asks the user to pick one option, returning "" if they abort.
+	Select(title string, options []string) (string, error)
+	// MultiSelect asks the user to pick any number of options, returning nil if
+	// they abort or pick nothing.
+	MultiSelect(title string, options []string) ([]string, error)
 }
 
 // huhPrompter is the real Prompter: charmbracelet/huh on /dev/tty.
@@ -36,15 +40,9 @@ func (huhPrompter) Confirm(title string, def bool) (bool, error) {
 	defer tty.Close()
 
 	value := def
-	form := huh.NewForm(
-		huh.NewGroup(
-			huh.NewConfirm().
-				Title(title).
-				Affirmative("Yes").
-				Negative("No").
-				Value(&value),
-		),
-	).WithInput(tty).WithOutput(tty)
+	form := huh.NewForm(huh.NewGroup(
+		huh.NewConfirm().Title(title).Affirmative("Yes").Negative("No").Value(&value),
+	)).WithInput(tty).WithOutput(tty)
 
 	if err := form.Run(); err != nil {
 		if errors.Is(err, huh.ErrUserAborted) {
@@ -53,4 +51,46 @@ func (huhPrompter) Confirm(title string, def bool) (bool, error) {
 		return def, err
 	}
 	return value, nil
+}
+
+func (huhPrompter) Select(title string, options []string) (string, error) {
+	tty, err := os.OpenFile("/dev/tty", os.O_RDWR, 0)
+	if err != nil {
+		return "", ErrNoTTY
+	}
+	defer tty.Close()
+
+	var choice string
+	form := huh.NewForm(huh.NewGroup(
+		huh.NewSelect[string]().Title(title).Options(huh.NewOptions(options...)...).Value(&choice).Filtering(true),
+	)).WithInput(tty).WithOutput(tty)
+
+	if err := form.Run(); err != nil {
+		if errors.Is(err, huh.ErrUserAborted) {
+			return "", nil
+		}
+		return "", err
+	}
+	return choice, nil
+}
+
+func (huhPrompter) MultiSelect(title string, options []string) ([]string, error) {
+	tty, err := os.OpenFile("/dev/tty", os.O_RDWR, 0)
+	if err != nil {
+		return nil, ErrNoTTY
+	}
+	defer tty.Close()
+
+	var chosen []string
+	form := huh.NewForm(huh.NewGroup(
+		huh.NewMultiSelect[string]().Title(title).Options(huh.NewOptions(options...)...).Value(&chosen).Filterable(true),
+	)).WithInput(tty).WithOutput(tty)
+
+	if err := form.Run(); err != nil {
+		if errors.Is(err, huh.ErrUserAborted) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return chosen, nil
 }

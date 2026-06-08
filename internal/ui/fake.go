@@ -1,12 +1,14 @@
 package ui
 
-// Fake is a scripted Prompter for tests.
+// Fake is a scripted Prompter for tests. Each queue is consumed in order; when a
+// queue is exhausted the zero value is returned (no prompt).
 type Fake struct {
-	// Replies are consumed in order by Confirm; once exhausted, def is returned.
-	Replies []bool
-	// NoTTY makes Confirm return ErrNoTTY (simulating a non-interactive context).
+	Replies         []bool     // Confirm answers
+	Selections      []string   // Select answers
+	MultiSelections [][]string // MultiSelect answers
+	// NoTTY makes every method return ErrNoTTY (a non-interactive context).
 	NoTTY bool
-	// Asked records each Confirm title, in order.
+	// Asked records each prompt title, in order.
 	Asked []string
 }
 
@@ -22,4 +24,32 @@ func (f *Fake) Confirm(title string, def bool) (bool, error) {
 	r := f.Replies[0]
 	f.Replies = f.Replies[1:]
 	return r, nil
+}
+
+// Select implements Prompter.
+func (f *Fake) Select(title string, _ []string) (string, error) {
+	f.Asked = append(f.Asked, title)
+	if f.NoTTY {
+		return "", ErrNoTTY
+	}
+	if len(f.Selections) == 0 {
+		return "", nil
+	}
+	s := f.Selections[0]
+	f.Selections = f.Selections[1:]
+	return s, nil
+}
+
+// MultiSelect implements Prompter.
+func (f *Fake) MultiSelect(title string, _ []string) ([]string, error) {
+	f.Asked = append(f.Asked, title)
+	if f.NoTTY {
+		return nil, ErrNoTTY
+	}
+	if len(f.MultiSelections) == 0 {
+		return nil, nil
+	}
+	s := f.MultiSelections[0]
+	f.MultiSelections = f.MultiSelections[1:]
+	return s, nil
 }
