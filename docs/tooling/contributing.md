@@ -40,14 +40,14 @@ make upgrade
 `make docs-serve` wraps `uv sync` + `uv run zensical serve`. `make fmt` depends on
 `node_modules`, which runs `npm ci` so `package-lock.json` is the exact source of truth,
 then runs `./node_modules/.bin/prettier --write .`. `make scrub` strips Codex-generated runtime
-state from `.config/codex/config.toml` so it (and the absolute local paths it embeds) never lands
+state from `stow/.config/codex/config.toml` so it (and the absolute local paths it embeds) never lands
 in the public repo. It works off an allowlist of the real configuration tables and drops every
 other table, so any state form Codex appends later (`[projects]`, `[hooks.state]`,
 `[tui.model_availability_nux]`, …) is scrubbed without a script change.
 `make lint` depends on `fmt`, then runs
 `shellcheck --severity=warning --external-sources …` over every shell script
 (`install.sh`, `restore.sh`, `backup.sh`, `hack/*.sh`, `setup/**/*.sh`,
-`.local/share/scripts/*`, the git template hooks, and `.ssh/rc`) followed by
+`stow/.local/share/scripts/*`, the git template hooks, and `stow/.ssh/rc`) followed by
 `./node_modules/.bin/markdownlint-cli2 '**/*.md'`.
 `make docs-build` depends on `lint`, then runs `uv sync` + `uv run zensical build --clean`.
 `make commit` runs `./commit.sh` when the current batch has one and otherwise skips cleanly;

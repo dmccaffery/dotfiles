@@ -3,11 +3,11 @@ CHANGELOG.md
 .release-please-manifest.json
 
 # LazyVim / lazy.nvim regenerate these on startup.
-.config/nvim/lazyvim.json
-.config/nvim/lazy-lock.json
+stow/.config/nvim/lazyvim.json
+stow/.config/nvim/lazy-lock.json
 
 # Claude Code owns settings.json formatting; the sandbox also blocks rewriting it.
-.claude/settings.json
+stow/.claude/settings.json
 
 # Go sources and test fixtures (prettier would mangle .go, JSON and golden data).
 cmd/

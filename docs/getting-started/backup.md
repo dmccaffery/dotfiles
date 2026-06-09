@@ -24,7 +24,7 @@ Entries (skipped if absent or already a symlink):
 
 - `~/.claude/settings.json`, `~/.claude/themes`
 - every top-level entry under `~/.config/` that this repo also ships (iterated from the repo's
-  own `.config/` listing — i.e. `~/.config/ghostty`, `~/.config/nvim`, `~/.config/zsh`, …)
+  own `stow/.config/` listing — i.e. `~/.config/ghostty`, `~/.config/nvim`, `~/.config/zsh`, …)
 - `~/.local/share/scripts`, `~/.local/share/wallpapers`
 - `~/.ssh/rc`
 - `~/.terminfo/67/ghostty`, `~/.terminfo/78/xterm-ghostty`
@@ -60,7 +60,8 @@ The `backups/` directory is already ignored by `.gitignore`, so nothing committe
 1. Lists every directory under `./backups/` via `fzf` (newest first) so you can pick one.
    An optional first argument is passed to `fzf --query` for fuzzy filtering; combined
    with `--select-1`, a unique match skips the picker entirely.
-2. Asks for confirmation, then runs `stow -D .` to remove the existing symlink layer.
+2. Asks for confirmation, then runs `stow -D` over each stowed tree (`stow/.config`, `stow/.claude`,
+   `stow/.local`, …) to remove the existing symlink layer.
 3. Walks the chosen backup tree and **aborts** if any entry would collide with something
    still present in `$HOME` (after the unstow). Nothing has been written at this point —
    resolve the listed collisions manually and re-run.

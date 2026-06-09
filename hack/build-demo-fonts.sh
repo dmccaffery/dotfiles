@@ -47,7 +47,7 @@ with open(sys.argv[1]) as f:
             sys.stdout.write(ev[2])
 PY
 
-# "Iosevka NF" (the non-Mono Nerd Font, matching font-family in .config/ghostty/config).
+# "Iosevka NF" (the non-Mono Nerd Font, matching font-family in stow/.config/ghostty/config).
 for face in Regular Bold Italic BoldItalic; do
 	src="$FONT_DIR/IosevkaNerdFont-$face.ttf"
 	if [ ! -f "$src" ]; then

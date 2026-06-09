@@ -39,7 +39,7 @@ backup_name=$(printf '%s\n' "${chosen}" | cut -f1)
 backup_path=$(printf '%s\n' "${chosen}" | cut -f2)
 
 info "selected backup: ${backup_name}"
-warn "this will run 'stow -D .' and copy ${backup_name} back into \$HOME"
+warn "this will unstow the symlinks (stow -D) and copy ${backup_name} back into \$HOME"
 printf '==> continue? [y/N] '
 read -r reply
 case "${reply:-}" in
@@ -52,7 +52,14 @@ esac
 
 if command -v stow 1> /dev/null 2>&1; then
 	info "removing existing stow symlinks..."
-	(cd "${SCRIPT_DIR}" && stow -D .)
+	# Mirror setup/stow.sh: the trees live under stow/ and each is unstowed from
+	# its own $HOME target. Keep this list in sync with setup/stow.sh.
+	stow -D --dir="${SCRIPT_DIR}/stow/.claude" --target="${HOME}/.claude" .
+	stow -D --dir="${SCRIPT_DIR}/stow/.config" --target="${HOME}/.config" .
+	stow -D --dir="${SCRIPT_DIR}/stow/.local" --target="${HOME}/.local" .
+	stow -D --dir="${SCRIPT_DIR}/stow/.terminfo" --target="${HOME}/.terminfo" .
+	stow -D --dir="${SCRIPT_DIR}/stow/.ssh" --target="${HOME}/.ssh" .
+	stow -D --dir="${SCRIPT_DIR}/stow/Library" --target="${HOME}/Library" .
 else
 	warn "stow could not be found; skipping unstow (collision check will catch leftovers)"
 fi

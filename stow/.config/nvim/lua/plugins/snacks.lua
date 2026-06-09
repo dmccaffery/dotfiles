@@ -8,6 +8,10 @@ return {
           hidden = true,
           ignored = false,
         },
+        files = {
+          hidden = true,
+          ignored = false,
+        },
         sessions = {
           supports_live = false,
           layout = {

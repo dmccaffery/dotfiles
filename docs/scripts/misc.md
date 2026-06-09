@@ -99,6 +99,6 @@ On `add`, the wrapper trust-checks anything that comes from a non-official tap (
 before the install runs. The `--cask`/`--tap`/`--formula` flag decides which `trust.json` list to look in
 (`trustedcasks`, `trustedtaps`, `trustedformulae`); bare names resolve to `homebrew/core`/`homebrew/cask` and
 are trusted by default, so they are skipped. If a referenced entry is missing from
-[`trust.json`](../../.config/homebrew/trust.json), you are prompted to `brew trust --<type> <name>` it — keeping
+[`trust.json`](../../stow/.config/homebrew/trust.json), you are prompted to `brew trust --<type> <name>` it — keeping
 `brew bundle install` from stalling on an untrusted tap mid-run. Decline to leave it untrusted; with no tty the
 prompt is skipped with a warning.

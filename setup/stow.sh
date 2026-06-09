@@ -21,11 +21,17 @@ else
 	mkdir -p "${HOME}/.local/share/wallpapers"
 	mkdir -p "${HOME}/.ssh"
 
-	stow --dir="${INSTALL_DIR}/.config" --target="${HOME}/.config" .
-	stow --dir="${INSTALL_DIR}/.local" --target="${HOME}/.local" .
-	stow --dir="${INSTALL_DIR}/.terminfo" --target="${HOME}/.terminfo" .
-	stow --dir="${INSTALL_DIR}/.ssh" --target="${HOME}/.ssh" .
-	stow --dir="${INSTALL_DIR}/Library" --target="${HOME}/Library" .
+	# The stowed trees live under stow/ in the repo; each is symlinked into its
+	# own $HOME target so ~/.config, ~/.claude, etc. stay real directories that
+	# stow descends into (rather than folding the whole tree into one symlink).
+	# Claude Code's plan-mode runtime stays at the repo-root .claude/plans (per
+	# the plansDirectory setting), so it is outside this stow source by design.
+	stow --dir="${INSTALL_DIR}/stow/.claude" --target="${HOME}/.claude" .
+	stow --dir="${INSTALL_DIR}/stow/.config" --target="${HOME}/.config" .
+	stow --dir="${INSTALL_DIR}/stow/.local" --target="${HOME}/.local" .
+	stow --dir="${INSTALL_DIR}/stow/.terminfo" --target="${HOME}/.terminfo" .
+	stow --dir="${INSTALL_DIR}/stow/.ssh" --target="${HOME}/.ssh" .
+	stow --dir="${INSTALL_DIR}/stow/Library" --target="${HOME}/Library" .
 
 	ln -Ffs "${INSTALL_DIR}/.zshenv" "${HOME}/.zshenv"
 fi

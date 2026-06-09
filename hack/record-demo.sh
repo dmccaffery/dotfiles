@@ -41,9 +41,9 @@ poster="$repo_root/docs/assets/images/demo-poster.png"
 tmp=$(mktemp)
 
 # Cyberdream palette for agg, as bg,fg,<16 ANSI colors> (comma-separated, no '#').
-# Keep in sync with .config/ghostty/themes/cyberdream and docs/assets/extras.css.
+# Keep in sync with stow/.config/ghostty/themes/cyberdream and docs/assets/extras.css.
 AGG_THEME="16181a,ffffff,16181a,ff6e5e,5eff6c,f1ff5e,5ea1ff,bd5eff,5ef1ff,ffffff,3c4048,ff6e5e,5eff6c,f1ff5e,5ea1ff,bd5eff,5ef1ff,ffffff"
-# Terminal font: "Iosevka NF" (matches font-family in .config/ghostty/config), rendered by agg
+# Terminal font: "Iosevka NF" (matches font-family in stow/.config/ghostty/config), rendered by agg
 # from the installed Nerd Font in FONT_DIR so the poster matches the player.
 FONT_DIR="${FONT_DIR:-$HOME/Library/Fonts}"
 FONT_FAMILY="${FONT_FAMILY:-Iosevka NF}"

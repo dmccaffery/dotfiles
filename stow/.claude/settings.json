@@ -215,7 +215,9 @@
         "~/.cache/uv",
         "~/.cache/pip",
         "~/.cache/go",
+        "~/.local/share/scripts",
         "~/.local/share/go",
+        "~/.local/bin",
         "/tmp",
         "~/.npm"
       ],
@@ -230,6 +232,7 @@
         "~/Repos",
         "~/.config",
         "~/.cache",
+        "~/.local/bin",
         "~/.local/runtime",
         "~/.local/share",
         "~/.npm",
@@ -246,5 +249,6 @@
   "tui": "fullscreen",
   "autoMemoryEnabled": true,
   "theme": "custom:cyberdream",
-  "editorMode": "vim"
+  "editorMode": "vim",
+  "effortLevel": "xhigh"
 }

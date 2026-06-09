@@ -37,6 +37,7 @@
 	# this is assumed to be maintained in a private repository that symlinks to this location
 	# although it will work if you use the `ssh-sk get` command to load resident keys into the ssh agent
 	allowedSignersFile = ~/.config/private/git/allowed_signers
+    defaultKeyCommand = "dot ssh-sk get --git"
 
 [credential]
 	# this is the default namespace when not specified elsewhere and is used to override which git credential

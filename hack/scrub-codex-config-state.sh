@@ -22,7 +22,7 @@ set -eu
 # banner above a dropped state table is dropped with it.
 
 repo_root=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
-config_file=${1:-"$repo_root/.config/codex/config.toml"}
+config_file=${1:-"$repo_root/stow/.config/codex/config.toml"}
 tmp_file=$(mktemp "$TMPDIR/codex-config.XXXXXX")
 trap 'rm -f "$tmp_file"' EXIT HUP INT TERM
 

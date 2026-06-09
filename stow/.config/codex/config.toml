@@ -57,6 +57,9 @@ exclude_tmpdir_env_var = false
 [tui]
 theme = "ansi"
 
+[tui.model_availability_nux]
+"gpt-5.5" = 4
+
 # ── Status hooks: the tmux "needs you" indicator ─────────────────────────────
 # Reuse the shared, tool-agnostic ~/.local/share/scripts/agent-tmux-status (also
 # driven by Claude Code's hooks and OpenCode's plugin). It sets a per-window
@@ -100,3 +103,26 @@ matcher = "^Bash$"
 [[hooks.PreToolUse.hooks]]
 type = "command"
 command = "~/.config/codex/hooks/pre-tool-use-policy"
+
+[hooks.state]
+
+[hooks.state."/Users/deavon/.config/codex/config.toml:pre_tool_use:0:0"]
+trusted_hash = "sha256:0f915b14527017f78055c3d83636754e9b7f17b42af2d9e8570d5f270232de6c"
+
+[hooks.state."/Users/deavon/.config/codex/config.toml:permission_request:0:0"]
+trusted_hash = "sha256:55bd2b0a2ebbee1e2d2a9f97c7732d39571573df5e272afe0f9930e03aeaf495"
+
+[hooks.state."/Users/deavon/.config/codex/config.toml:post_tool_use:0:0"]
+trusted_hash = "sha256:4d12c04b235daa2a0b47347b60980dad5f3837e3c8f8c939f72735f586186a43"
+
+[hooks.state."/Users/deavon/.config/codex/config.toml:user_prompt_submit:0:0"]
+trusted_hash = "sha256:513694a0a65b5b548dd1404b15e127e773732bdbac789ab69f1f341c91ef0048"
+
+[hooks.state."/Users/deavon/.config/codex/config.toml:stop:0:0"]
+trusted_hash = "sha256:ef7900813632398bd5b7c8489325d0786201742339d6f1b0f53b57f1e0395377"
+
+[projects."/Users/deavon/Repos/bitwise-media-group/podcast-workflow"]
+trust_level = "trusted"
+
+[projects."/Users/deavon/Repos/dmccaffery/dotfiles"]
+trust_level = "trusted"

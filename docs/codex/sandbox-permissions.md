@@ -48,7 +48,7 @@ that land outside the current repo. Verify the resolved policy with `codex docto
 
 `approval_policy = "untrusted"` flips Codex to "prompt unless explicitly trusted" — the analog of Claude Code's
 `autoAllowBashIfSandboxed = false`. The trust list lives in
-[`rules/default.rules`](https://github.com/dmccaffery/dotfiles/blob/main/.config/codex/rules/default.rules), a
+[`rules/default.rules`](https://github.com/dmccaffery/dotfiles/blob/main/stow/.config/codex/rules/default.rules), a
 Starlark execpolicy that auto-loads from `$CODEX_HOME/rules/`. It mirrors the OpenCode/Claude Code Bash allowlist:
 
 - **`decision = "allow"`** auto-runs read-only inspection (`ls`, `cat`, `grep`, `rg`, `find`, `jq`, …), read-only
@@ -64,7 +64,7 @@ with `codex execpolicy check --rules ~/.config/codex/rules/default.rules -- <com
 
 Codex's Seatbelt sandbox only restricts **writes** in workspace-write mode — it grants broad filesystem reads, so it
 has no equivalent of Claude Code's `denyRead`. The
-[`pre-tool-use-policy`](https://github.com/dmccaffery/dotfiles/blob/main/.config/codex/hooks/pre-tool-use-policy)
+[`pre-tool-use-policy`](https://github.com/dmccaffery/dotfiles/blob/main/stow/.config/codex/hooks/pre-tool-use-policy)
 hook recovers that protection at the tool layer: a `PreToolUse` hook scoped to the Bash tool inspects each command
 and returns a `deny` decision when it touches `~/.ssh`, `~/.aws`, `~/.config/gcloud`, `~/.gnupg`, a `.env` file, or
 the macOS `security` tool — the same set OpenCode denies in its `bash` rules. See [Hooks](hooks.md) for the wiring.

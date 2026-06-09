@@ -169,8 +169,9 @@ that lands.
 When Claude Code is in plan mode, plan files write to `<repo>/.claude/plans/`. The relative
 `./.claude/plans` resolves against Claude's working directory (the repo root) — deliberately relative so this
 user-level setting still scopes plans per-repo rather than dumping them all under `~/.claude/plans/`. The repo's
-`.gitignore` excludes `.claude/plans/` by default, and `.stowrc` ignores `^.claude/plans` so plan artifacts are
-never stowed into `$HOME`.
+`.gitignore` excludes `.claude/plans/`. The stowed Claude source lives under `stow/.claude/`, while plan
+artifacts are written to the repo-root `.claude/plans/` — outside the stow source — so they are never stowed
+into `$HOME`.
 
 ### Permissions
 

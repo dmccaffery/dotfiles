@@ -5,7 +5,7 @@ icon: lucide/image
 # Wallpapers
 
 This repository ships a small curated set of wallpapers under
-[`.local/share/wallpapers/`](https://github.com/dmccaffery/dotfiles/tree/main/.local/share/wallpapers).
+[`.local/share/wallpapers/`](https://github.com/dmccaffery/dotfiles/tree/main/stow/.local/share/wallpapers).
 The directory is stow-packed, so the files symlink into `~/.local/share/wallpapers/`
 (the XDG-compliant location) on `stow` apply.
 
@@ -14,16 +14,16 @@ inline thumbnails for each image.
 
 ## Included wallpapers
 
-| File                                                                                                                    | Description                                                                                                                             |
-| ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| [`beach.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/beach.png)                       | Painterly anime tropical cove — turquoise surf, sand crescent, palm fronds framing lush green hillsides under a bright sky.             |
-| [`gojo-sensei.jpg`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/gojo-sensei.jpg)           | Satoru Gojo (Jujutsu Kaisen) in profile, white-flame hair and blindfold against a magenta/violet inferno on near-black. 4K.             |
-| [`gojo-sensei-dark.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/gojo-sensei-dark.png) | Gojo lifting his blindfold to reveal cyan eyes, conjuring a purple cursed-energy orb in a dark cosmic void.                             |
-| [`london-night.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/london-night.png)         | Storybook illustration of the London skyline at night — Big Ben, the Shard, St Paul's, an airship, and a crescent moon over the Thames. |
-| [`mountain-valley.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/mountain-valley.png)   | Sunlit Genshin-style meadow strewn with blue wildflowers, drifting petals, and distant cliffs under cumulus clouds.                     |
-| [`totoro.jpg`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/totoro.jpg)                     | Studio Ghibli's Totoro and Chibi-Totoro perched on a cloud bank beneath a dense starfield, umbrella in hand. 4K.                        |
-| [`window-skyline.png`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/window-skyline.png)     | Anime interior looking through an open window onto a patchwork valley with a domed hilltop temple in the distance.                      |
-| [`your-name.jpg`](https://github.com/dmccaffery/dotfiles/blob/main/.local/share/wallpapers/your-name.jpg)               | _Kimi no Na wa_–inspired silhouette on a grassy ridge beneath an aurora-streaked sky and falling comet trails. 16K.                     |
+| File                                                                                                                         | Description                                                                                                                             |
+| ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| [`beach.png`](https://github.com/dmccaffery/dotfiles/blob/main/stow/.local/share/wallpapers/beach.png)                       | Painterly anime tropical cove — turquoise surf, sand crescent, palm fronds framing lush green hillsides under a bright sky.             |
+| [`gojo-sensei.jpg`](https://github.com/dmccaffery/dotfiles/blob/main/stow/.local/share/wallpapers/gojo-sensei.jpg)           | Satoru Gojo (Jujutsu Kaisen) in profile, white-flame hair and blindfold against a magenta/violet inferno on near-black. 4K.             |
+| [`gojo-sensei-dark.png`](https://github.com/dmccaffery/dotfiles/blob/main/stow/.local/share/wallpapers/gojo-sensei-dark.png) | Gojo lifting his blindfold to reveal cyan eyes, conjuring a purple cursed-energy orb in a dark cosmic void.                             |
+| [`london-night.png`](https://github.com/dmccaffery/dotfiles/blob/main/stow/.local/share/wallpapers/london-night.png)         | Storybook illustration of the London skyline at night — Big Ben, the Shard, St Paul's, an airship, and a crescent moon over the Thames. |
+| [`mountain-valley.png`](https://github.com/dmccaffery/dotfiles/blob/main/stow/.local/share/wallpapers/mountain-valley.png)   | Sunlit Genshin-style meadow strewn with blue wildflowers, drifting petals, and distant cliffs under cumulus clouds.                     |
+| [`totoro.jpg`](https://github.com/dmccaffery/dotfiles/blob/main/stow/.local/share/wallpapers/totoro.jpg)                     | Studio Ghibli's Totoro and Chibi-Totoro perched on a cloud bank beneath a dense starfield, umbrella in hand. 4K.                        |
+| [`window-skyline.png`](https://github.com/dmccaffery/dotfiles/blob/main/stow/.local/share/wallpapers/window-skyline.png)     | Anime interior looking through an open window onto a patchwork valley with a domed hilltop temple in the distance.                      |
+| [`your-name.jpg`](https://github.com/dmccaffery/dotfiles/blob/main/stow/.local/share/wallpapers/your-name.jpg)               | _Kimi no Na wa_–inspired silhouette on a grassy ridge beneath an aurora-streaked sky and falling comet trails. 16K.                     |
 
 If you fork this repo and add your own, drop them in `.local/share/wallpapers/`
 and they'll be picked up by `stow` on the next apply.

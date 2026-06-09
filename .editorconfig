@@ -26,7 +26,7 @@ indent_style = tab
 [*.config]
 indent_style = tab
 
-[.local/share/scripts/*]
+[stow/.local/share/scripts/*]
 indent_style = tab
 language_dialect = posix
 space_redirects = true

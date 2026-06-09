@@ -52,5 +52,5 @@ This is a permission-layer approximation, not the kernel-enforced boundary Claud
 OpenCode config equivalent today. Network-capable Bash commands are therefore controlled by the `permission.bash`
 allowlist and approval prompts rather than by domain-level egress rules.
 
-See [`opencode.jsonc`](https://github.com/dmccaffery/dotfiles/blob/main/.config/opencode/opencode.jsonc) for the
+See [`opencode.jsonc`](https://github.com/dmccaffery/dotfiles/blob/main/stow/.config/opencode/opencode.jsonc) for the
 full rule set. After changing it, quit and restart OpenCode — config is loaded at startup.

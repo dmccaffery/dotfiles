@@ -133,7 +133,7 @@ Provider-specific overrides are scoped via `hasconfig:remote.*.url` matching —
 [Private overlay](private-extension.md) for the unconditional include.
 
 The trailing `includeIf "gitdir:…"` block loads
-[`agent.gitconfig`](https://github.com/dmccaffery/dotfiles/blob/main/.config/git/agent.gitconfig)
+[`agent.gitconfig`](https://github.com/dmccaffery/dotfiles/blob/main/stow/.config/git/agent.gitconfig)
 when the repository's `.git` directory sits under `~/.cache/agent/worktrees/` — i.e. a
 worktree created by Claude Code's [WorktreeCreate hook](../claude/hooks-skills.md#worktreecreate).
 Worktrees live in XDG cache (not config) because they're throwaway work areas. The same

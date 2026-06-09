@@ -55,7 +55,9 @@ __backup .claude/settings.json
 __backup .claude/themes
 
 (
-	cd "${BACKUP_DIR}"
+	# The stowed trees live under stow/ now; cd into it so each discovered entry
+	# stays $HOME-relative (.config/<name>) for __backup to resolve under $HOME.
+	cd "${BACKUP_DIR}/stow"
 	find .config/ -mindepth 1 -maxdepth 1 |
 		while read -r config; do
 			if [ -z "${config:-}" ]; then

@@ -71,10 +71,10 @@ skipped without a prompt.
 
 The repo exports two `HOMEBREW_BUNDLE_*` variables that shape every `brew bundle` invocation:
 
-| Variable                                | Set in                                             | Effect                                                                                                                                                                               |
-| --------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `HOMEBREW_BUNDLE_FILE_GLOBAL`           | [`.config/zsh/.zshenv`](../../.config/zsh/.zshenv) | Resolves `brew bundle … --global` to `~/.local/share/homebrew/Brewfile` (the merged symlink target).                                                                                 |
-| `HOMEBREW_BUNDLE_FORCE_INSTALL_CLEANUP` | [`.config/zsh/.zshenv`](../../.config/zsh/.zshenv) | With `--global`, `brew bundle install` runs cleanup automatically — uninstalling anything not in the Brewfile — and skips the confirmation prompt (the `--force-cleanup` behaviour). |
+| Variable                                | Set in                                                  | Effect                                                                                                                                                                               |
+| --------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `HOMEBREW_BUNDLE_FILE_GLOBAL`           | [`.config/zsh/.zshenv`](../../stow/.config/zsh/.zshenv) | Resolves `brew bundle … --global` to `~/.local/share/homebrew/Brewfile` (the merged symlink target).                                                                                 |
+| `HOMEBREW_BUNDLE_FORCE_INSTALL_CLEANUP` | [`.config/zsh/.zshenv`](../../stow/.config/zsh/.zshenv) | With `--global`, `brew bundle install` runs cleanup automatically — uninstalling anything not in the Brewfile — and skips the confirmation prompt (the `--force-cleanup` behaviour). |
 
 A third variable is set only during install, scoped to the setup script:
 
@@ -96,7 +96,7 @@ Run `brew bundle --help` for the full list.
 Recent Homebrew gates formulae, casks, and commands from **non-official taps** behind a trust check
 (`$HOMEBREW_REQUIRE_TAP_TRUST`, on its way to becoming the default). Until a tap is trusted, `brew bundle install`
 refuses to load anything from it. The trusted set lives in
-[`.config/homebrew/trust.json`](../../.config/homebrew/trust.json) — Homebrew reads it from
+[`.config/homebrew/trust.json`](../../stow/.config/homebrew/trust.json) — Homebrew reads it from
 `$XDG_CONFIG_HOME/homebrew/trust.json` — and is managed with `brew trust --tap <name>` / `brew untrust --tap <name>`.
 The [`brewfile`](#the-brewfile-wrapper) wrapper also offers to run `brew trust` for you when an `add` references a
 non-official tap, formula, or cask that is not yet listed here.

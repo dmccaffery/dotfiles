@@ -35,7 +35,7 @@ Code hardcodes its `~/.claude` home.
 
 `CODEX_HOME` points at this stow-managed directory, so Codex writes **all** of its runtime state here:
 `auth.json` (an API token), session history, logs, caches, and lockfiles. The
-[`.gitignore`](https://github.com/dmccaffery/dotfiles/blob/main/.config/codex/.gitignore) ignores everything and
+[`.gitignore`](https://github.com/dmccaffery/dotfiles/blob/main/stow/.config/codex/.gitignore) ignores everything and
 re-includes only the five hand-authored files, so a new state file Codex invents tomorrow is ignored by default,
 not leaked into the repo.
 

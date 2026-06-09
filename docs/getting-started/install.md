@@ -95,7 +95,7 @@ syncs the merged file.
     answering `y`. Once the install finishes, those entries are merged into your primary
     `~/.config/homebrew/trust.json` so day-2 `brew bundle` runs trust them too.
 
-The shipped profile is [`Brewfile.personal`](../../.config/homebrew/Brewfile.personal) — the
+The shipped profile is [`Brewfile.personal`](../../stow/.config/homebrew/Brewfile.personal) — the
 casks (`ghostty`, `hyperkey`, `yubico-authenticator`, the Nerd Fonts) and extras live there.
 
 After everything finishes, `install.sh` runs [`fastfetch`](https://github.com/fastfetch-cli/fastfetch)

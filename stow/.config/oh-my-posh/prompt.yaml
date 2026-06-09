@@ -63,6 +63,17 @@ blocks:
         leading_diamond: ╭─
         trailing_diamond: 
 
+      - type: session
+        template: '{{ if .SSHSession }}  {{ end }} {{ first (splitList "." .HostName) }} '
+        style: diamond
+        leading_diamond: <p:crust></>
+        trailing_diamond: 
+        foreground: p:crust
+        background: p:sapphire
+        background_templates:
+          - "{{ if .SSHSession }}p:mauve{{ end }}"
+          - "{{ if .Root }}p:red{{ end }}"
+
       - type: path
         template: "  {{ .Path }} "
         foreground: p:crust
@@ -74,7 +85,7 @@ blocks:
           duration: none
         options:
           folder_icon: "  "
-          home_icon: 
+          home_icon: " "
           style: folder
 
       - type: git

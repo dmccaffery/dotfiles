@@ -64,9 +64,9 @@ lint: fmt ## Format the repo, then run shellcheck on shell scripts and markdownl
 		install.sh restore.sh backup.sh \
 		hack/*.sh \
 		setup/**/*.sh \
-		.local/share/scripts/* \
-		.config/git/template/hooks/* \
-		.ssh/rc
+		stow/.local/share/scripts/* \
+		stow/.config/git/template/hooks/* \
+		stow/.ssh/rc
 	@ $(NPMBIN)/markdownlint-cli2 '**/*.md'
 
 .PHONY: docs-serve
