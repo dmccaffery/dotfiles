@@ -1,5 +1,45 @@
 # Changelog
 
+## [4.0.0](https://github.com/dmccaffery/dotfiles/compare/v3.11.1...v4.0.0) (2026-06-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **scripts:** the gen-sk-ssh, get-sk-ssh, git-github-sk, git-forgejo-sk, start-tmux-session, attach-tmux-session, end-tmux-session, start-worktree, end-worktree, enable-zs, disable-zs and use-zs-certs commands are removed in favour of the ssh-sk, tmux-session, worktree and zs dispatchers.
+
+### Features
+
+* **brew:** gate non-official taps behind brew trust ([3e90c55](https://github.com/dmccaffery/dotfiles/commit/3e90c55c2f9191670d844e0f8f2682e3d7039d39))
+* **claude:** block the macOS keychain security CLI ([6d29c90](https://github.com/dmccaffery/dotfiles/commit/6d29c90d1a5cc9f9470fbb899d5d6e8fe2e58534))
+* **codex:** mirror Claude Code sandbox, permissions, tmux status, and theme ([c4bbef5](https://github.com/dmccaffery/dotfiles/commit/c4bbef5b188f34ea4fb9b153f31fa50a149a86ed))
+* **codex:** pin config schema and allow codex --help probes ([666562b](https://github.com/dmccaffery/dotfiles/commit/666562bcf51e0cf9763ec51bfeb5626b23f4d2d4))
+* **dot:** add `dot backup`, replacing backup.sh ([67a7356](https://github.com/dmccaffery/dotfiles/commit/67a73568988fe14b33f46e02f77b6c1b2e9e7e8c))
+* **dot:** add testable Go CLI; port worktree, agent-tmux-status, brewfile ([29ec93d](https://github.com/dmccaffery/dotfiles/commit/29ec93d9f19a132c680c8c5d515ef65cf6fe8524))
+* **dot:** port wave-2 scripts and split the CLI into per-command packages ([97865dc](https://github.com/dmccaffery/dotfiles/commit/97865dc305b8cc0d7b37f2312aeec0d5ff13f2ec))
+* **dot:** port wave-3 commands (git-github-auth, tmux-session) with huh pickers ([e5412b4](https://github.com/dmccaffery/dotfiles/commit/e5412b4892beeff3b8c9b1127d8b6605ba5b6cb8))
+* **dot:** port wave-4 security-key commands (ssh-sk, ssh-askpass) ([afd5ad8](https://github.com/dmccaffery/dotfiles/commit/afd5ad837f9ac0ec962aac7529c2728f4e529fdc))
+* **ghostty:** allow OSC 52 clipboard read/write ([a596749](https://github.com/dmccaffery/dotfiles/commit/a596749528e8025d75ab734453a6cc1698eb9b71))
+* **git:** unify SSH signing key resolution to ssh-sk get --git ([adb5f0c](https://github.com/dmccaffery/dotfiles/commit/adb5f0cc0bb734966c7852b548d5480f9248fe91))
+* **nvim:** swap the LazyVim toml extra for a tombi LSP ([ddf7b85](https://github.com/dmccaffery/dotfiles/commit/ddf7b8556f2c1985767631905c16a5545f3f343e))
+* **nvim:** yank to the local clipboard over SSH via OSC 52 ([557de13](https://github.com/dmccaffery/dotfiles/commit/557de13436447d1e5ef2a60f66155b42948f5d96))
+* **opencode:** deny the macOS security keychain CLI ([03a7223](https://github.com/dmccaffery/dotfiles/commit/03a7223971d2c561c9549e5c58d18083ddb54b23))
+* **tmux:** show session/prefix left, host and SSH right ([a2daa19](https://github.com/dmccaffery/dotfiles/commit/a2daa19e426b63dc476a09cc115707efcf40b08a))
+* **tmux:** yank to the local clipboard over SSH ([0b2f7b7](https://github.com/dmccaffery/dotfiles/commit/0b2f7b7014575df27a8762b5002b640c13f3e992))
+
+
+### Bug Fixes
+
+* **ghostty:** use allow instead of true for clipboard access ([294e9e6](https://github.com/dmccaffery/dotfiles/commit/294e9e664d1959faddcf66d92c551e6ff24e3bf9))
+* **scripts:** do not error on missing git config ([4d8077c](https://github.com/dmccaffery/dotfiles/commit/4d8077cef59b423ae6996b43e01dd181944d4c9f))
+* **scripts:** load YubiKey signing stubs by serial ([9a2f3b2](https://github.com/dmccaffery/dotfiles/commit/9a2f3b22e7c652e092ac4c1e537116e16744edfe))
+* **scripts:** set key-type in ssh-askpass keyinfo for ssh ([617913a](https://github.com/dmccaffery/dotfiles/commit/617913a6885b2e69c9ddefe2f28c44c5c0b907b3))
+* **stow:** stow specific paths to avoid maintenance of stowrc ([8d94836](https://github.com/dmccaffery/dotfiles/commit/8d94836ae372d84a6dceaa8c9a114c6267d4b353))
+
+
+### Code Refactoring
+
+* **scripts:** consolidate related scripts into &lt;noun&gt; &lt;verb&gt; dispatchers ([d668cf2](https://github.com/dmccaffery/dotfiles/commit/d668cf2dd1fddff23befc36141c93c3210dba145))
+
 ## [3.11.1](https://github.com/dmccaffery/dotfiles/compare/v3.11.0...v3.11.1) (2026-06-03)
 
 
