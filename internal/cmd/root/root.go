@@ -17,6 +17,8 @@ import (
 	"github.com/dmccaffery/dotfiles/internal/cmd/printcolors"
 	"github.com/dmccaffery/dotfiles/internal/cmd/profileshell"
 	"github.com/dmccaffery/dotfiles/internal/cmd/resetbackground"
+	"github.com/dmccaffery/dotfiles/internal/cmd/sshaskpass"
+	"github.com/dmccaffery/dotfiles/internal/cmd/sshsk"
 	"github.com/dmccaffery/dotfiles/internal/cmd/tmuxsession"
 	"github.com/dmccaffery/dotfiles/internal/cmd/worktree"
 	"github.com/dmccaffery/dotfiles/internal/cmd/zs"
@@ -77,6 +79,8 @@ func NewRootCmd(version string, deps *cmdutil.Deps) *cobra.Command {
 		applet(zs.NewCmd(deps)),
 		applet(githubauth.NewCmd(deps)),
 		applet(tmuxsession.NewCmd(deps)),
+		applet(sshsk.NewCmd(deps)),
+		applet(sshaskpass.NewCmd(deps)),
 	)
 	root.AddCommand(newAppletsCmd(root))
 	return root

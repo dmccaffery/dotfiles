@@ -99,9 +99,14 @@ Each command's external interface (name, arguments, output) is unchanged — onl
   [`reset-background-items`](../scripts/misc.md#reset-background-items), [`zs`](../scripts/zscaler.md)
 - **Wave 3** — [`git-github-auth`](../scripts/security-keys.md#git-github-auth),
   [`tmux-session`](../scripts/tmux.md) (its fzf pickers replaced by huh select/multi-select)
+- **Wave 4** — [`ssh-sk`](../scripts/security-keys.md#ssh-sk),
+  [`ssh-askpass`](../scripts/security-keys.md#ssh-askpass), the security-key flows, ported **last** so
+  commit signing and ssh-agent login only came to depend on a built binary once everything else was
+  proven. `ssh-sk gen`'s fzf account picker is now a huh select.
 
-Still shell, ported **last**: the security-key flows `ssh-sk` and `ssh-askpass` — so commit signing and
-ssh-agent login never come to depend on a successful build.
+Every script in `.local/share/scripts/` is now a `dot` applet — the directory holds only symlinks. Because
+commit signing (`ssh-sk get --git`) and the ssh-agent PIN bridge (`ssh-askpass`) now run through the binary,
+**rebuilding after a pull** is load-bearing for signing, not just a convenience.
 
 ## CI
 

@@ -36,6 +36,7 @@ func TestAppletsListsSymlinkNames(t *testing.T) {
 		"gh-switch-user": true, "fzf-image-preview": true,
 		"reset-background-items": true, "zs": true,
 		"git-github-auth": true, "tmux-session": true,
+		"ssh-sk": true, "ssh-askpass": true,
 	}
 	if len(got) != len(want) {
 		t.Fatalf("applets = %v, want keys %v", got, want)

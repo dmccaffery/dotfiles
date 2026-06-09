@@ -5,9 +5,9 @@ icon: lucide/code
 # Custom scripts
 
 All scripts live in `.local/share/scripts/`. The directory is added to `PATH` by `.zshenv`
-(only if it exists), so anything dropped in is immediately callable by name. **Most** of these
-commands are now provided by the [`dot`](../tooling/dot.md) Go CLI and appear here as symlinks to
-the built binary; only `ssh-sk` and `ssh-askpass` (the security-key flows) are still shell scripts.
+(only if it exists), so anything dropped in is immediately callable by name. Every one of these
+commands is now provided by the [`dot`](../tooling/dot.md) Go CLI and appears here as a symlink to
+the built binary — the directory holds no shell scripts of its own.
 
 ## Inventory
 
@@ -37,7 +37,12 @@ the built binary; only `ssh-sk` and `ssh-askpass` (the security-key flows) are s
 
 ## How scripts use color & logging
 
-Every **shell** script uses the same minimal pattern based on `tput`:
+Now that every command here is a [`dot`](../tooling/dot.md) applet, they all log through `log/slog`
+— styled, leveled lines on a terminal, or structured JSON when their output is piped — while
+**results** (such as the worktree path or `ssh-sk get --git`'s `key::` line) go to stdout untouched.
+
+The repo's remaining shell scripts — the installer stages under [`setup/`](../getting-started/install.md) —
+still use the same minimal `tput` pattern, which keeps their output scannable when chained together:
 
 ```sh
 default_color=$(tput sgr 0)
@@ -50,7 +55,3 @@ warn()    { printf "%s==> %s%s\n" "$yellow" "$1" "$default_color"; }
 red="$(tput setaf 1)"
 error()   { printf "%s==> %s%s\n" "$red"    "$1" "$default_color"; }
 ```
-
-This makes shell-script output trivially scannable when chained together by the installer. The
-[`dot`](../tooling/dot.md) commands log through `log/slog` instead — styled, leveled lines on a
-terminal, or structured JSON when their output is piped.

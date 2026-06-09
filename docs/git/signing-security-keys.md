@@ -40,8 +40,8 @@ ssh-sk gen [user]
 ```
 
 The optional `[user]` becomes the key comment (`-C`) and the local stub suffix. If it is omitted,
-`ssh-sk gen` opens an fzf picker containing the unique usernames already authenticated with GitHub
-or Forgejo. Exactly one YubiKey must be inserted so the script can save the stub under that key's
+`ssh-sk gen` opens a huh picker containing the unique usernames already authenticated with GitHub
+or Forgejo. Exactly one YubiKey must be inserted so it can save the stub under that key's
 serial:
 
 ```sh

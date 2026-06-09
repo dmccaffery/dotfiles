@@ -10,8 +10,9 @@ standalone helpers round it out: `gh-switch-user` and `git-github-auth` for GitH
 
 ## `ssh-sk` { #ssh-sk }
 
-A single dispatcher with two verbs. `gen` creates a resident Ed25519 security key and stores its
-local stub by YubiKey serial; `get` loads saved stubs and updates the git allowed-signers file.
+A single dispatcher with two verbs, now a [`dot`](../tooling/dot.md) applet. `gen` creates a resident
+Ed25519 security key and stores its local stub by YubiKey serial; `get` loads saved stubs and updates
+the git allowed-signers file.
 The `get --git` flag narrows `get` to just resolving and printing the configured signing key —
 the form git's `defaultKeyCommand` consumes.
 
@@ -22,8 +23,8 @@ ssh-sk gen [user]
 ```
 
 The optional `[user]` becomes the key comment (`-C`) and the local stub suffix. If it is omitted,
-the command builds an fzf picker from the unique usernames already authenticated with GitHub
-(`gh auth status`) and Forgejo (`fj auth list`). Exactly one YubiKey must be inserted so the script
+the command builds a huh picker from the unique usernames already authenticated with GitHub
+(`gh auth status`) and Forgejo (`fj auth list`). Exactly one YubiKey must be inserted so it
 can save the generated stub under that key's serial.
 
 Generates a resident `ed25519-sk` key on the YubiKey:
@@ -171,7 +172,7 @@ the chain signed before opening a PR.
 
 ## `ssh-askpass` { #ssh-askpass }
 
-A bash wrapper that bridges `SSH_ASKPASS` callbacks from `ssh-agent` to
+A [`dot`](../tooling/dot.md) applet that bridges `SSH_ASKPASS` callbacks from `ssh-agent` to
 [`pinentry-mac`](https://gpgtools.org). Wired up via the
 [launch agent plist](../macos/launchagents.md).
 
