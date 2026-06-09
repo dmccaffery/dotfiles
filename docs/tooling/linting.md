@@ -127,8 +127,8 @@ ignores:
 ## shellcheck
 
 [shellcheck](https://www.shellcheck.net) lints every shell script in the repo —
-`install.sh`, `restore.sh`, `backup.sh`, `setup/**/*.sh`, every executable under
-`.local/share/scripts/`, the git template hooks, and `.ssh/rc`. CI and `make lint` both run
+`install.sh`, `restore.sh`, `setup/**/*.sh`, every executable under
+`stow/.local/share/scripts/`, the git template hooks, and `stow/.ssh/rc`. CI and `make lint` both run
 it with `--severity=warning --external-sources` so style/info findings are skipped (most
 notably SC1091 for dynamic `${SETUP_DIR}/printing.sh` sources) while real warnings and
 errors still fail.

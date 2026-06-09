@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/dmccaffery/dotfiles/internal/cmd/agenttmux"
+	"github.com/dmccaffery/dotfiles/internal/cmd/backup"
 	"github.com/dmccaffery/dotfiles/internal/cmd/brewfile"
 	"github.com/dmccaffery/dotfiles/internal/cmd/cmdutil"
 	"github.com/dmccaffery/dotfiles/internal/cmd/fzfpreview"
@@ -82,6 +83,9 @@ func NewRootCmd(version string, deps *cmdutil.Deps) *cobra.Command {
 		applet(sshsk.NewCmd(deps)),
 		applet(sshaskpass.NewCmd(deps)),
 	)
+	// backup is a plain subcommand, not an applet: the name is too generic to put
+	// on PATH, so it stays reachable only as `dot backup`.
+	root.AddCommand(backup.NewCmd(deps))
 	root.AddCommand(newAppletsCmd(root))
 	return root
 }

@@ -22,7 +22,7 @@ be re-run independently.
 ```sh
 git clone git@github.com:<your-fork>/dotfiles.git ~/Repos/dotfiles
 cd ~/Repos/dotfiles
-./backup.sh    # move conflicting configs out of $HOME (optional but recommended)
+make backup    # move conflicting configs out of $HOME (optional; needs Go — see Backup)
 ./install.sh   # run all stages
 ```
 
@@ -53,7 +53,7 @@ To run a subset, pass stages as arguments:
 The Makefile exposes a target for the full run and one for each stage:
 
 ```sh
-make backup         # ./backup.sh
+make backup         # go run ./cmd/dot backup
 make install        # ./install.sh (runs every stage in order)
 make xdg            # ./install.sh xdg
 make requirements   # ./install.sh requirements

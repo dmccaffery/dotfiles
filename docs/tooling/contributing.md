@@ -46,7 +46,7 @@ other table, so any state form Codex appends later (`[projects]`, `[hooks.state]
 `[tui.model_availability_nux]`, …) is scrubbed without a script change.
 `make lint` depends on `fmt`, then runs
 `shellcheck --severity=warning --external-sources …` over every shell script
-(`install.sh`, `restore.sh`, `backup.sh`, `hack/*.sh`, `setup/**/*.sh`,
+(`install.sh`, `restore.sh`, `hack/*.sh`, `setup/**/*.sh`,
 `stow/.local/share/scripts/*`, the git template hooks, and `stow/.ssh/rc`) followed by
 `./node_modules/.bin/markdownlint-cli2 '**/*.md'`.
 `make docs-build` depends on `lint`, then runs `uv sync` + `uv run zensical build --clean`.

@@ -108,6 +108,13 @@ Every script in `.local/share/scripts/` is now a `dot` applet — the directory 
 commit signing (`ssh-sk get --git`) and the ssh-agent PIN bridge (`ssh-askpass`) now run through the binary,
 **rebuilding after a pull** is load-bearing for signing, not just a convenience.
 
+Beyond those applets, the repo-root [`backup.sh`](../getting-started/backup.md) was reimplemented as the
+**`dot backup`** subcommand. It is the one command that is deliberately **not** an applet — `backup` is too
+generic a name to put on `PATH`, so it is reachable only as `dot backup`. Its behaviour also changed rather than
+being a verbatim port: instead of a fixed list of paths it walks the `stow/` tree, and it now actively clears
+symlinks (backing up valid ones, deleting broken ones) rather than skipping them. `make backup` runs it via
+`go run ./cmd/dot backup`.
+
 ## CI
 
 [`pull-request-go.yaml`](../../.github/workflows/pull-request-go.yaml) runs `go build`, `go vet`, `go test` and a

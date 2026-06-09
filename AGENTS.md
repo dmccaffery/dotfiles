@@ -23,7 +23,8 @@ Use this map to find the right page (extend as new sections are added):
 
 | If you change…                                           | Update…                                                               |
 | -------------------------------------------------------- | --------------------------------------------------------------------- |
-| `install.sh`, `backup.sh`, `setup/**`, `Makefile`        | `docs/getting-started/{install,backup,customize}.md`                  |
+| `install.sh`, `setup/**`, `Makefile`                     | `docs/getting-started/{install,backup,customize}.md`                  |
+| `internal/cmd/backup/**`                                 | `docs/getting-started/backup.md` + `docs/tooling/dot.md`              |
 | `package.json`, `.prettierignore`, shellcheck rules      | `docs/tooling/linting.md`                                             |
 | `.config/ghostty/**`                                     | `docs/terminal/ghostty.md`                                            |
 | `.config/zsh/**`                                         | `docs/terminal/shell.md`                                              |

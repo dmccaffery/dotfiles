@@ -5,8 +5,8 @@
 NPMBIN := ./node_modules/.bin
 
 .PHONY: backup
-backup: ## Move conflicting configs out of $HOME into ./backups
-	@ ./backup.sh
+backup: ## Move conflicting configs out of $HOME into ./backups (runs `dot backup`)
+	@ go run ./cmd/dot backup
 
 .PHONY: restore
 restore: ## Restore a chosen backup from ./backups back into $HOME (uses fzf)
@@ -61,7 +61,7 @@ lint: SHELL := bash
 lint: .SHELLFLAGS := -eu -o pipefail -c
 lint: fmt ## Format the repo, then run shellcheck on shell scripts and markdownlint on every .md file
 	@ shopt -s globstar nullglob; shellcheck --severity=warning --external-sources \
-		install.sh restore.sh backup.sh \
+		install.sh restore.sh \
 		hack/*.sh \
 		setup/**/*.sh \
 		stow/.local/share/scripts/* \

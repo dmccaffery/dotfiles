@@ -112,6 +112,6 @@ make stow
 ```
 
 `make stow` re-runs every per-tree `stow` invocation shown above. Stow refuses to overwrite existing
-files, so run [`./backup.sh`](../getting-started/backup.md) first if there are conflicts. To remove the
+files, so run [`dot backup`](../getting-started/backup.md) first if there are conflicts. To remove the
 symlinks, [`./restore.sh`](../getting-started/backup.md#restoring-a-backup) runs the matching `stow -D`
 over each tree — or do it by hand with `stow -D --dir=stow/<tree> --target=~/<target> .`.

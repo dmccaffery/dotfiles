@@ -30,7 +30,7 @@ cyberdream. The thumbnail links to the playable recording on the [docs site][dem
 > [forking guide][forking-url] for the recommended workflow.
 
 ```sh
-./backup.sh   # move existing dotfiles aside (stow refuses to overwrite)
+make backup   # move existing dotfiles aside (stow refuses to overwrite)
 ./install.sh  # stage-by-stage, idempotent installer
 ```
 
